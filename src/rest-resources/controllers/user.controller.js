@@ -83,6 +83,9 @@ export default class UserController {
 
 
   static async userSignUp(req, res, next) {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>",req)
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>",req.context)
     try {
       const data = await UserSignUpHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)

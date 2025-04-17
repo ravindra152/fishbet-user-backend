@@ -76,11 +76,11 @@ export class UserSignUpHandler extends BaseHandler {
       }, this.context)
 
     }
-    
+
     await db.Limit.create({
       userId: user.userId,
     }, { transaction })
-    
+
     delete user.dataValues.password
     const accessToken = await createAccessToken(user)
     user.dataValues.token = accessToken
