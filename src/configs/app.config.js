@@ -144,23 +144,23 @@ const config = convict({
   },
   sequelize: {
     name: {
-      default: 'test_db',
+      default: 'postgres',
       env: 'DB_NAME'
     },
     user: {
-      default: 'dev_test',
+      default: 'postgres',
       env: 'DB_USER'
     },
     password: {
-      default: '123456',
+      default: 'FOGVideR5Px2uB7fmkuv',
       env: 'DB_PASSWORD'
     },
     readHost: {
-      default: 'localhost',
+      default: 'database-1.calaiaqq6gig.us-east-1.rds.amazonaws.com',
       env: 'DB_READ_HOST'
     },
     writeHost: {
-      default: 'localhost',
+      default: 'database-1.calaiaqq6gig.us-east-1.rds.amazonaws.com',
       env: 'DB_WRITE_HOST'
     },
     port: {
