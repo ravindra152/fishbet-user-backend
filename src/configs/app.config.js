@@ -148,23 +148,23 @@ const config = convict({
       env: 'DB_NAME'
     },
     user: {
-      default: 'postgres',
+      default: 'dbmasteruser',
       env: 'DB_USER'
     },
     password: {
-      default: 'FOGVideR5Px2uB7fmkuv',
+      default: 'at+Zt>R!=2nfw,<B>0KMnDQS_oVvFCXW',
       env: 'DB_PASSWORD'
     },
     readHost: {
-      default: 'database-1.calaiaqq6gig.us-east-1.rds.amazonaws.com',
+      default: 'ls-61f734c27797300ad187a0ad129f8fff3f376e6b.cb4cciwi4mtp.ap-south-1.rds.amazonaws.com',
       env: 'DB_READ_HOST'
     },
     writeHost: {
-      default: 'database-1.calaiaqq6gig.us-east-1.rds.amazonaws.com',
+      default: 'ls-61f734c27797300ad187a0ad129f8fff3f376e6b.cb4cciwi4mtp.ap-south-1.rds.amazonaws.com',
       env: 'DB_WRITE_HOST'
     },
     port: {
-      default: 5433,
+      default: 5432,
       env: 'DB_PORT'
     },
     sync: {
