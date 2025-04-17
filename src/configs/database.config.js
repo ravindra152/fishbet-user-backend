@@ -26,7 +26,11 @@ const dbSettings = {
   },
   dialect: 'postgres',
   dialectOptions: {
-    application_name: config.get('app.name')
+    application_name: config.get('app.name'),
+    ssl: process.env.DB_SSL_REQUIRE === 'true' ? {
+      require: true,
+      rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED === 'true' ? true : false,
+    } : false
   },
   migrationStorage: 'sequelize',
   migrationStorageTableName: 'sequelize_migration_meta',
