@@ -33,7 +33,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         purpose: {
             type: DataTypes.ENUM(Object.values(TRANSACTION_PURPOSE)),
-            allowNull: false
+            allowNull: false,
+            defaultValue:TRANSACTION_PURPOSE.WELCOME_BONUS
         },
         status: {
             type: DataTypes.ENUM(Object.values(TRANSACTION_STATUS)),

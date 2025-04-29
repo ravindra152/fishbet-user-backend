@@ -23,7 +23,7 @@ import { CreateVeriffSessionService } from '@src/services/veriff/createVeriffSes
 
 export default class UserController {
 
-  static async getUserDetails(req, res, next) {
+  static async getUserDetails (req, res, next) {
     try {
       const data = await GetUserDetailsHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -32,7 +32,7 @@ export default class UserController {
     }
   }
 
-  static async setDefaultWallet(req, res, next) {
+  static async setDefaultWallet (req, res, next) {
     try {
       const data = await SetDefaultWalletHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -41,7 +41,7 @@ export default class UserController {
     }
   }
 
-  static async updateUserDetails(req, res, next) {
+  static async updateUserDetails (req, res, next) {
     try {
       const data = await UpdateUserHandler.execute({ ...req.body, profileImage: req.file }, req.context)
       sendResponse({ req, res, next }, data)
@@ -60,7 +60,7 @@ export default class UserController {
   //   }
   // }
 
-  static async userLogin(req, res, next) {
+  static async userLogin (req, res, next) {
     try {
       const data = await UserLoginHandler.execute({ ...req.query, ...req.body }, req.context)
       sendResponse({ req, res, next }, data)
@@ -70,7 +70,7 @@ export default class UserController {
 
   }
 
-  static async userLogout(req, res, next) {
+  static async userLogout (req, res, next) {
     try {
       const data = await UserLogoutHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -82,7 +82,7 @@ export default class UserController {
 
 
 
-  static async userSignUp(req, res, next) {
+  static async userSignUp (req, res, next) {
     try {
       const data = await UserSignUpHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -92,7 +92,7 @@ export default class UserController {
   }
 
 
-  static async getWithdrawRequests(req, res, next) {
+  static async getWithdrawRequests (req, res, next) {
     try {
       const data = await GetWithdrawRequestsHandler.execute({ ...req.body, ...req.query })
       sendResponse({ req, res, next }, data)
@@ -102,7 +102,7 @@ export default class UserController {
   }
 
 
-  static async getUserTransactions(req, res, next) {
+  static async getUserTransactions (req, res, next) {
     try {
       const data = await GetUserTransactionsHandler.execute({ ...req.body, ...req.query })
       sendResponse({ req, res, next }, data)
@@ -112,7 +112,7 @@ export default class UserController {
   }
 
 
-  static async verifyEmail(req, res, next) {
+  static async verifyEmail (req, res, next) {
     try {
       const data = await VerifyEmailHandler.execute(req.query, req.context)
       if (successful && result.link) return res.redirect(result.link)
@@ -122,7 +122,7 @@ export default class UserController {
     }
   }
 
-  static async changePassword(req, res, next) {
+  static async changePassword (req, res, next) {
     try {
       const data = await ChangePasswordHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -140,7 +140,7 @@ export default class UserController {
   //   }
   // }
 
-  static async forgetPassword(req, res, next) {
+  static async forgetPassword (req, res, next) {
     try {
       const data = await ForgetPasswordHandler.execute({ ...req.body, ...req.query, origin: req.headers?.origin }, req.context)
       sendResponse({ req, res, next }, data)
@@ -149,7 +149,7 @@ export default class UserController {
     }
   }
 
-  static async verifyForgetPassword(req, res, next) {
+  static async verifyForgetPassword (req, res, next) {
     try {
       const data = await VerifyForgetPasswordHandler.execute(req.body)
       sendResponse({ req, res, next }, data)
@@ -158,7 +158,7 @@ export default class UserController {
     }
   }
 
-  static async updateSelfExclusion(req, res, next) {
+  static async updateSelfExclusion (req, res, next) {
     try {
       const data = await UpdateSelfExclusionHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -167,7 +167,7 @@ export default class UserController {
     }
   }
 
-  static async getWithdrawRequests(req, res, next) {
+  static async getWithdrawRequests (req, res, next) {
     try {
       const data = await GetAllWithdrawRequestsHandler.execute({ ...req.body, ...req.query })
       sendResponse({ req, res, next }, data)
@@ -176,15 +176,17 @@ export default class UserController {
     }
   }
 
-  static async getOtp(req, res, next) {
+  static async getOtp (req, res, next) {
+    console.log("req>>>>>>>>>>>>", req.body)
     try {
       const data = await GetOtpHandler.execute({ ...req.body, ...req.query })
+      console.log("data>>>>>>>>>>>>>", data)
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)
     }
   }
-  static async verifyOtp(req, res, next) {
+  static async verifyOtp (req, res, next) {
     try {
       const data = await VerifyOtpHandler.execute({ ...req.body, ...req.query })
       sendResponse({ req, res, next }, data)
@@ -194,7 +196,7 @@ export default class UserController {
   }
 
 
-  static async createVeriffSession(req, res, next) {
+  static async createVeriffSession (req, res, next) {
     try {
       const result = await CreateVeriffSessionService.execute({ ...req.query, ...req.body }, req.context)
       sendResponse({ req, res, next }, result)
@@ -203,7 +205,7 @@ export default class UserController {
     }
   }
 
-  static async veriffCallback(req, res, next) {
+  static async veriffCallback (req, res, next) {
     try {
       const result = await UpdateKycStatusService.execute({ ...req.body, ...req.query }, req.context)
       sendResponse({ req, res, next }, result)

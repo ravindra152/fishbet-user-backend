@@ -36,6 +36,7 @@ export class ClaimWelcomeBonusHandler extends BaseHandler {
         const scBonusCoins = activeBonus.scAmount
 
         await TransactionScGcHandler.execute({
+            transaction_id:null,
             userId: userId,
             coinData: [
                 { amount: gcBonusCoins, currencyCode: COINS.GOLD_COIN, },

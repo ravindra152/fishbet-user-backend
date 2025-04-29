@@ -239,11 +239,11 @@ const config = convict({
       env: 'MAILJET_SECRET_KEY'
     },
     senderName: {
-      default: 'GS Casino',
+      default: 'Fish Bet Games',
       env: 'EMAIL_SENDER_NAME'
     },
     senderEmail: {
-      default: 'GS Casino',
+      default: 'noreply@fishbet.us',
       env: 'EMAIL_SENDER_EMAIL'
     }
   },

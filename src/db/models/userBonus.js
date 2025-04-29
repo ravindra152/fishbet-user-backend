@@ -5,9 +5,9 @@ const { BONUS_STATUS } = require('@src/utils/constants/bonus.constants')
 module.exports = (sequelize, DataTypes) => {
   const UserBonus = sequelize.define('UserBonus', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     userId: {
       type: DataTypes.INTEGER,

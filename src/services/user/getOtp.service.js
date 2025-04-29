@@ -33,14 +33,29 @@ export class GetOtpHandler extends BaseHandler {
     }
     const otp = generateOtp();
 
+
+    // const emailSent = await sendMailjetEmail({
+    //   user: userObj,
+    //   emailTemplate: EMAIL_TEMPLATE_TYPES.EMAIL_VERIFICATION,
+    //   data: {
+    //     otp,
+    //     link: `OTP: ${otp}`,
+    //     subject: EMAIL_SUBJECTS[userObj.locale]?.verification || EMAIL_SUBJECTS.EN.verification,
+    //     body: `${EMAIL_TEMPLATE_TYPES.OTP_VERIFICATION}: ${otp}`
+    //   },
+    //   message: SUCCESS_MSG.EMAIL_SENT
+    // })
+
+    const data = {
+      otp,
+      link: `OTP: ${otp}`,
+      subject: EMAIL_SUBJECTS[userObj.locale]?.verification || EMAIL_SUBJECTS.EN.verification,
+      body: `${EMAIL_TEMPLATE_TYPES.OTP_VERIFICATION}: ${otp}`
+    }
     const emailSent = await sendMailjetEmail({
       user: userObj,
       emailTemplate: EMAIL_TEMPLATE_TYPES.EMAIL_VERIFICATION,
-      data: {
-        link: `OTP: ${otp}`,
-        subject: EMAIL_SUBJECTS[userObj.locale]?.verification || EMAIL_SUBJECTS.EN.verification,
-        body: `${EMAIL_TEMPLATE_TYPES.OTP_VERIFICATION}: ${otp}`
-      },
+      data,
       message: SUCCESS_MSG.EMAIL_SENT
     })
 

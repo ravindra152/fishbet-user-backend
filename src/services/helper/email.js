@@ -129,7 +129,6 @@ export const getDynamicData = async ({ userId, currentDataList, transaction = nu
     currentYear: (new Date()).getFullYear()
     // joiningAmount: userDetails.userWallet.nonCashAmount
   }
-
   return { ...dynamicData, ...currentDataList }
 }
 
@@ -163,8 +162,9 @@ export const createEmailWithDynamicValues = async ({ emailType, userId, serviceD
     ...await getDynamicData({ userId, dataList: templateDetails.dynamicData, currentDataList: dynamicData, transaction: transaction })
   }
 
-  const emailData = insertDynamicDataInTemplate({ template: templateDetails.templateCode[language] || templateDetails.templateCode.EN, dynamicData: newDynamicData })
 
+
+  const emailData = insertDynamicDataInTemplate({ template: templateDetails.templateCode[language] || templateDetails.templateCode.EN, dynamicData: newDynamicData })
   return emailData
 }
 
@@ -332,6 +332,7 @@ export async function sendEmailByMailjet({ user, data, emailTemplate, senderEmai
     })
     return response.response.status === 200
   } catch (error) {
+    console.log(error)
     return error
   }
 }
@@ -339,13 +340,13 @@ export async function sendEmailByMailjet({ user, data, emailTemplate, senderEmai
 
 export const sendMailjetEmail = async ({ user, emailTemplate, data, message }) => {
 
+
   const dynamicEmail = await createEmailWithDynamicValues({
     language: user.locale || 'EN',
     emailType: EMAIL_TEMPLATE_TYPES.VALUE_T0_INT[emailTemplate],
     userId: user.userId,
     serviceData: { ...data }
   })
-
   const emailSent = await sendEmailByMailjet({
     user,
     data,
