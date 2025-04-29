@@ -14,7 +14,7 @@ export class UpdateDocumentHandler extends BaseHandler {
    async run () {
     const { document, user, documentLabelId, level } = this.args
     // const transaction = this.context.sequelizeTransaction
-  
+
       const documentLabel = await db.DocumentLabel.findOne({
         where: { documentLabelId }
       })
@@ -51,7 +51,7 @@ export class UpdateDocumentHandler extends BaseHandler {
       //   transaction
       // })
 
-      // await sendDynamicMail({ user: user, subject: EMAIL_SUBJECTS[user.locale].kycReceived || EMAIL_SUBJECTS.EN.kycReceived, successMsg: SUCCESS_MSG.EMAIL_SENT, dynamicEmail })
+      await sendDynamicMail({ user: user, subject: EMAIL_SUBJECTS[user.locale].kycReceived || EMAIL_SUBJECTS.EN.kycReceived, successMsg: SUCCESS_MSG.EMAIL_SENT, dynamicEmail })
 
       // const userDetails = await db.User.findOne({
       //   where: { userId: user.userId},
@@ -66,6 +66,6 @@ export class UpdateDocumentHandler extends BaseHandler {
       // })
 
       return { documentData, success: true, message: SUCCESS_MSG.UPDATE_SUCCESS }
-   
+
   }
 }

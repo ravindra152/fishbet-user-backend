@@ -39,7 +39,7 @@ export const sendMail = async ({ user, credentials, subject, successMsg, dynamic
 export const sendDynamicMail = async ({ user, credentials, subject, successMsg, dynamicEmail, senderEmail, senderName }) => {
   const sendEmailObj = {
     from: {
-      Email: senderEmail || 'spatankar@grepruby.io',
+      Email: senderEmail || 'no-reply@fishbet.us',
       Name: senderName || 'GS Casino'
     },
     To: [
@@ -226,24 +226,24 @@ export const sendDynamicEmail = async ({ recieverEmail, subject, text, dynamicEm
   }
 }
 
-// export const userEmail = async ({ user, emailTemplate, data, credentials }) => {
-//   if (Object.keys(credentials).length === 2) {
-//     const dynamicEmail = await createEmailWithDynamicValues({
-//       language: user.locale || 'EN',
-//       emailType: EMAIL_TEMPLATE_TYPES.VALUE_T0_INT[emailTemplate],
-//       userId: user.userId,
-//       serviceData: { ...data }
-//     })
+export const userEmail = async ({ user, emailTemplate, data, credentials }) => {
+  if (Object.keys(credentials).length === 2) {
+    const dynamicEmail = await createEmailWithDynamicValues({
+      language: user.locale || 'EN',
+      emailType: EMAIL_TEMPLATE_TYPES.VALUE_T0_INT[emailTemplate],
+      userId: user.userId,
+      serviceData: { ...data }
+    })
 
-//     await sendDynamicMail({
-//       user,
-//       credentials,
-//       subject: data.subject,
-//       successMsg: SUCCESS_MSG.EMAIL_SENT,
-//       dynamicEmail
-//     })
-//   }
-// }
+    await sendDynamicMail({
+      user,
+      credentials,
+      subject: data.subject,
+      successMsg: SUCCESS_MSG.EMAIL_SENT,
+      dynamicEmail
+    })
+  }
+}
 
 export const sendEmail = async ({ user, emailTemplate, data, message }) => {
   const dynamicEmail = await createEmailWithDynamicValues({
