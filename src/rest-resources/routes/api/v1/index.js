@@ -21,6 +21,7 @@ import { bonusRouter } from './bonus.routes'
 import { notificationRouter } from './notification.routes'
 import { liveChatRouter } from './liveChat.router'
 import { postalCodeRouter } from './postalCode.routes'
+import {socialLinksRouter} from './socialLinks.router'
 
 const v1router = express.Router()
 v1router.use('/vip-tier', vipTierRouter, responseValidationMiddleware({}))
@@ -38,6 +39,7 @@ v1router.use('/faucet', faucetRouter, responseValidationMiddleware({}))
 v1router.use('/ticket', ticketRouter, responseValidationMiddleware({}))
 v1router.use('/live-chat', liveChatRouter, responseValidationMiddleware({}))
 v1router.use('/leader-board', leaderBoardRouter, responseValidationMiddleware({}))
+v1router.use('/get-social-links', socialLinksRouter, responseValidationMiddleware({}))
 v1router.use('/', siteRouter, responseValidationMiddleware({}))
 
 // v1router.use('/affiliate', requestValidationMiddleware({}), contextMiddleware(false), affiliateRouter, responseValidationMiddleware({}))
