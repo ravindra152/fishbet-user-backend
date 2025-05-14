@@ -92,6 +92,7 @@ export class WithdrawAmountService extends BaseHandler {
 
     // Make payout
     const { result: token } = await GetAuthenticationTokenService.execute();
+    console.log("token-----------------" , token)
     const response = await axios({
       method: 'POST',
       url: config.get('nowPayment.url') + '/v1/payout',

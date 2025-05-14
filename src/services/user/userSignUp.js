@@ -83,6 +83,7 @@ export class UserSignUpHandler extends BaseHandler {
 
     delete user.dataValues.password
     const accessToken = await createAccessToken(user)
+    console.log("token-----------------" , accessToken)
     user.dataValues.token = accessToken
 
     return { user }

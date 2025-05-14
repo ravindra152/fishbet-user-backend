@@ -7,7 +7,7 @@ import { getCache } from '@src/libs/redis'
 import { JWT_TOKEN_TYPES } from '@src/utils/constant'
 import Jwt from 'jsonwebtoken'
 
-export async function isUserAuthenticated(req, res, next) {
+export async function isUserAuthenticated (req, res, next) {
   try {
     const accessToken = req.headers.authorization?.split('Bearer ')[1]
     if (!accessToken) return next(new AppError(Errors.INVALID_TOKEN))
@@ -15,6 +15,7 @@ export async function isUserAuthenticated(req, res, next) {
     const decodedToken = Jwt.verify(accessToken, config.get('jwt.tokenSecret'))
     if (decodedToken.type !== JWT_TOKEN_TYPES.LOGIN) return next(new AppError(Errors.INVALID_TOKEN))
     const token = await getCache(`${decodedToken.userId}:ACCESS_TOKEN`)
+    console.log("token-----------------", token)
     // if (token !== accessToken) return next(new AppError(Errors.INVALID_TOKEN))
 
     const user = await db.User.findOne({
@@ -35,7 +36,7 @@ export async function isUserAuthenticated(req, res, next) {
 }
 
 
-export async function semiAuth(req, res, next) {
+export async function semiAuth (req, res, next) {
   try {
     const accessToken = req.headers.authorization?.split('Bearer ')[1]
     if (accessToken) {

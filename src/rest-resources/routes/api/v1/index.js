@@ -22,6 +22,8 @@ import { notificationRouter } from './notification.routes'
 import { liveChatRouter } from './liveChat.router'
 import { postalCodeRouter } from './postalCode.routes'
 import {socialLinksRouter} from './socialLinks.router'
+import {inovioPaymentRouter} from './inovioPayment.routes'
+import {verificationRouter} from './verification.route'
 
 const v1router = express.Router()
 v1router.use('/vip-tier', vipTierRouter, responseValidationMiddleware({}))
@@ -32,6 +34,7 @@ v1router.use('/casino', casinoRouter, responseValidationMiddleware({}))
 v1router.use('/banner', bannerRouter, responseValidationMiddleware({}))
 v1router.use('/callback/gsoft', gsoftRouter, responseValidationMiddleware({}))
 v1router.use('/payment', paymentRouter, responseValidationMiddleware({}))
+v1router.use('/inovio-payment', inovioPaymentRouter, responseValidationMiddleware({}))
 v1router.use('/postal-code', postalCodeRouter, responseValidationMiddleware({}))
 v1router.use('/package', packageRouter, responseValidationMiddleware({}))
 v1router.use('/spin-wheel-configuration', spinWheelRouter, responseValidationMiddleware({}))
@@ -40,6 +43,7 @@ v1router.use('/ticket', ticketRouter, responseValidationMiddleware({}))
 v1router.use('/live-chat', liveChatRouter, responseValidationMiddleware({}))
 v1router.use('/leader-board', leaderBoardRouter, responseValidationMiddleware({}))
 v1router.use('/get-social-links', socialLinksRouter, responseValidationMiddleware({}))
+v1router.use('/', verificationRouter, responseValidationMiddleware({}))
 v1router.use('/', siteRouter, responseValidationMiddleware({}))
 
 // v1router.use('/affiliate', requestValidationMiddleware({}), contextMiddleware(false), affiliateRouter, responseValidationMiddleware({}))
