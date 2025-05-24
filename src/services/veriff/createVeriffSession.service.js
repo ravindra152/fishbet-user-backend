@@ -1,15 +1,13 @@
 import config from '@src/configs/app.config'
-import db from "@src/db/models"
-import { AppError } from "@src/errors/app.error"
-import { Errors } from "@src/errors/errorCodes"
-import { VeriffAxios } from "@src/libs/axios/veriff.axios"
-import { BaseHandler } from "@src/libs/logicBase"
-import { VERIFF_STATUS } from "@src/utils/constant"
-
+import db from '@src/db/models'
+import { AppError } from '@src/errors/app.error'
+import { Errors } from '@src/errors/errorCodes'
+import { VeriffAxios } from '@src/libs/axios/veriff.axios'
+import { BaseHandler } from '@src/libs/logicBase'
+import { VERIFF_STATUS } from '@src/utils/constant'
 
 export class CreateVeriffSessionService extends BaseHandler {
-
-  async run() {
+  async run () {
     const transaction = this.dbTransaction
     const { userId } = this.args
     let data
@@ -38,7 +36,7 @@ export class CreateVeriffSessionService extends BaseHandler {
           // },
           address: {
             // fullAddress: `${userDetails.addressLine_1}${userDetails.addressLine_2 ? userDetails.addressLine_2 : ''}`,
-            fullAddress: userOtherDetails.address || "Lorem Ipsum 30, 12345 Tallinn, Estonia"
+            fullAddress: userOtherDetails.address || 'Lorem Ipsum 30, 12345 Tallinn, Estonia'
           },
           vendorData: userDetails.username
         }

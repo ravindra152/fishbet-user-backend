@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = (sequelize, DataTypes) => {
-  const SocialLinks  = sequelize.define('SocialLinks', {
+  const SocialLinks = sequelize.define('SocialLinks', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,

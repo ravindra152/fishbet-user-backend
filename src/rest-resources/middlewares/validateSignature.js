@@ -6,7 +6,7 @@ import { Errors } from '@src/errors/errorCodes'
 
 export const validateSignature = async (req, res, next) => {
   const token = CryptoJS.HmacMD5(req.body, config.get('microHandler.accessToken')).toString(encode)
-  console.log("token-----------------", token)
+  console.log('token-----------------', token)
 
   if (token !== req.headers['micro-service-request-sign']) {
     return next(Errors.INTERNAL_ERROR)

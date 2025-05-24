@@ -1,6 +1,6 @@
 import db from '@src/db/models'
-import { AppError } from "@src/errors/app.error"
-import { Errors } from "@src/errors/errorCodes"
+import { AppError } from '@src/errors/app.error'
+import { Errors } from '@src/errors/errorCodes'
 import { BaseHandler } from '@src/libs/logicBase'
 import { comparePassword, encryptPassword } from '@src/utils/common'
 import { EMAIL_SUBJECTS, EMAIL_TEMPLATE_TYPES } from '@src/utils/constant'
@@ -23,14 +23,12 @@ const schema = {
   required: ['newPassword', 'password', 'userId']
 }
 
-
-
 export class ChangePasswordHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     const { newPassword, password, userId } = this.args
     const transaction = this.dbTransaction
     const user = await db.User.findOne({
@@ -57,6 +55,5 @@ export class ChangePasswordHandler extends BaseHandler {
     })
 
     return { success: true, message: SUCCESS_MSG.UPDATE_SUCCESS }
-
   }
 }

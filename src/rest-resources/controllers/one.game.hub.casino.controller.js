@@ -12,34 +12,22 @@ export class OneGameHubCasinoController {
         case ONE_GAME_HUB_REQUEST_ACTIONS.BET: {
           const data = await BetOneGameHubCasinoHandler.execute({ ...req.body, ...req.query }, req.context)
 
-          if (data?.status)
-            res.status(data.status).json(data)
-          else
-            res.status(200).json(data);
+          if (data?.status) { res.status(data.status).json(data) } else { res.status(200).json(data) }
           break
         }
         case ONE_GAME_HUB_REQUEST_ACTIONS.WIN: {
           const data = await WinOneGameHubGameCasinoHandler.execute({ ...req.body, ...req.query }, req.context)
-          if (data?.status)
-            res.status(data.status).json(data)
-          else
-            res.status(200).json(data);
+          if (data?.status) { res.status(data.status).json(data) } else { res.status(200).json(data) }
           break
         }
         case ONE_GAME_HUB_REQUEST_ACTIONS.BALANCE: {
           const data = await GetBalanceOneGameHubCasinoHandler.execute({ ...req.body, ...req.query }, req.context)
-          if (data?.status)
-            res.status(data.status).json(data)
-          else
-            res.status(200).json(data);
+          if (data?.status) { res.status(data.status).json(data) } else { res.status(200).json(data) }
           break
         }
         case ONE_GAME_HUB_REQUEST_ACTIONS.CANCEL: {
           const data = await CancelBetOneGameHubCasinoHandler.execute({ ...req.body, ...req.query }, req.context)
-          if (data?.status)
-            res.status(data.status).json(data)
-          else
-            res.status(200).json(data);
+          if (data?.status) { res.status(data.status).json(data) } else { res.status(200).json(data) }
           break
         }
         default:

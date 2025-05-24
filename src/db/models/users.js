@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
     locale: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'EN',
+      defaultValue: 'EN'
     },
     phone: {
       type: DataTypes.STRING,
@@ -102,19 +102,18 @@ module.exports = function (sequelize, DataTypes) {
     User.hasMany(model.Wallet, { as: 'userWallet', foreignKey: 'userId', onDelete: 'cascade' })
     User.hasMany(model.CasinoFavoriteGame, { foreignKey: 'userId', onDelete: 'cascade' })
     User.hasMany(model.CasinoTransaction, { as: 'casinoTransactions', foreignKey: 'userId', onDelete: 'cascade' })
-    User.hasMany(model.UserAffiliations, { foreignKey: 'affiliateUserId' });
-    User.hasOne(model.UserAffiliations, { foreignKey: 'referredUserId' });
+    User.hasMany(model.UserAffiliations, { foreignKey: 'affiliateUserId' })
+    User.hasOne(model.UserAffiliations, { foreignKey: 'referredUserId' })
     User.belongsTo(model.User, { foreignKey: 'refParentId', as: 'referrer' })
-    User.hasMany(User, { foreignKey: 'refParentId', as: 'referredUsers' });
+    User.hasMany(User, { foreignKey: 'refParentId', as: 'referredUsers' })
     User.hasOne(model.UserDetails, { foreignKey: 'userId', as: 'userDetails', constraints: false, onDelete: 'cascade' })
     User.hasMany(model.UserBonus, { foreignKey: 'userId', as: 'bonus', constraints: false, onDelete: 'cascade' })
     User.hasMany(model.WithdrawalRequest, { foreignKey: 'userId' })
-    User.hasMany(model.BonusClaim, { foreignKey: 'userId', as: 'bonusClaims', onDelete: 'cascade' });
+    User.hasMany(model.BonusClaim, { foreignKey: 'userId', as: 'bonusClaims', onDelete: 'cascade' })
     User.hasOne(model.Limit, { foreignKey: 'userId', as: 'userLimits', constraints: false, onDelete: 'cascade' })
     User.hasMany(model.UserTierProgress, { foreignKey: 'userId', as: 'userTierProgresses' })
     User.hasMany(model.PostalCode, { foreignKey: 'userId', as: 'postalCodes', onDelete: 'cascade' })
     User.belongsTo(model.State, { foreignKey: 'stateCode' })
-
   }
 
   return User

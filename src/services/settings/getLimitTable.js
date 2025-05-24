@@ -11,20 +11,16 @@ const schema = {
   required: ['id']
 }
 
-
-
 export class GetLimitTableHandler extends BaseHandler {
   get constraints () {
     return constraints
   }
 
-   async run () {
+  async run () {
     const { id } = this.args
 
-  
-      const limitTable = await getLimitTable(id)
+    const limitTable = await getLimitTable(id)
 
-      return { limitTable, message: SUCCESS_MSG.GET_SUCCESS }
-   
+    return { limitTable, message: SUCCESS_MSG.GET_SUCCESS }
   }
 }

@@ -1,25 +1,25 @@
 export const claimChatRainSchema = {
-    body: {
-        type: 'object',
-        properties: {
-            chatRainId: { type: 'number' },
-        },
-        required: ['chatRainId']
+  body: {
+    type: 'object',
+    properties: {
+      chatRainId: { type: 'number' }
     },
-    response: {
-        200: {
-            type: 'object',
-            properties: {
-                data: {
-                    type: 'object',
-                    properties: {
-                        claimData: {},
-                        message: { type: 'string' }
-                    }
-                },
-                errors: { type: 'array' }
-            }
-        }
+    required: ['chatRainId']
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            claimData: {},
+            message: { type: 'string' }
+          }
+        },
+        errors: { type: 'array' }
+      }
     }
+  }
 
 }

@@ -1,4 +1,4 @@
-import { POSTAL_CODE } from "./constants"
+import { POSTAL_CODE } from './constants'
 
 export const BANNER_TYPE = {
   HOME: 'home',
@@ -15,24 +15,23 @@ export const CASINO_AGGREGATORS = {
 
 export const ONE_GAME_HUB_REQUEST_ACTIONS = {
   // Game Listing & Configuration
-  AVAILABLE_GAMES: "available_games",
-  AVAILABLE_CURRENCIES: "available_currencies",
+  AVAILABLE_GAMES: 'available_games',
+  AVAILABLE_CURRENCIES: 'available_currencies',
 
   // Game Session Launch
-  REAL_PLAY: "real_play",
-  DEMO_PLAY: "demo_play",
+  REAL_PLAY: 'real_play',
+  DEMO_PLAY: 'demo_play',
 
   // FreeRounds Management
-  FREEROUNDS_CREATE: "freerounds_create",
-  FREEROUNDS_CANCEL: "freerounds_cancel",
+  FREEROUNDS_CREATE: 'freerounds_create',
+  FREEROUNDS_CANCEL: 'freerounds_cancel',
 
   // Player Transactions
-  BALANCE: "balance",
-  BET: "bet",
-  WIN: "win",
-  CANCEL: "cancel"
-};
-
+  BALANCE: 'balance',
+  BET: 'bet',
+  WIN: 'win',
+  CANCEL: 'cancel'
+}
 
 export const COINS = {
   GOLD_COIN: 'GC',
@@ -57,21 +56,21 @@ export const TRANSACTION_PURPOSE = {
   BONUS_FORFEIT: 'bonus_forfeit',
   BONUS_WIN: 'bonus_win',
   BONUS_DROP: 'bonus_drop',
-  BONUS_TIER:'bonus_tier',
+  BONUS_TIER: 'bonus_tier',
   WELCOME_BONUS: 'welcome_bonus',
   POSTAL_CODE: 'postal_code',
   // Faucet transactions
   FAUCET_AWAIL: 'faucet_awail',
 
   // Spin Wheel transaction
-  WHEEL_REWARD: "wheel_reward",
+  WHEEL_REWARD: 'wheel_reward',
 
   // Chatrain transaction
   EMIT: 'emit_chatrain',
   CHATRAIN: 'chatrain',
   CLAIM: 'claim_chatrain',
 
-  //Tip transaction
+  // Tip transaction
   SEND_TIP: 'send_tip',
   TIP: 'tip',
   RECEIVE_TIP: 'receive_tip'
@@ -86,7 +85,7 @@ export const CASINO_TRANSACTION_PURPOSE = {
   JACKPOT_WIN: 'jackpot_win',
   PROMO_WIN: 'promo_win',
   BONUS_DROP: 'bonus_drop',
-  BONUS_TIER:'bonus_tier',
+  BONUS_TIER: 'bonus_tier',
   POSTAL_CODE: 'postal_code',
   GAME_ROLLBACK: 'game_rollback',
   CASINO_WIN_ROLLBACK: 'casino_win_rollback',
@@ -141,7 +140,7 @@ export const LEDGER_DIRECTIONS = {
   [TRANSACTION_PURPOSE.CHATRAIN]: LEDGER_TYPES.DEBIT,
   [TRANSACTION_PURPOSE.SEND_TIP]: LEDGER_TYPES.DEBIT,
   [TRANSACTION_PURPOSE.RECEIVE_TIP]: LEDGER_TYPES.CREDIT,
-  [TRANSACTION_PURPOSE.WELCOME_BONUS]: LEDGER_TYPES.CREDIT,
+  [TRANSACTION_PURPOSE.WELCOME_BONUS]: LEDGER_TYPES.CREDIT
 }
 
 export const WITHDRAWAL_STATUS = {

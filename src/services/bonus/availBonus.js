@@ -14,40 +14,38 @@ export class AvailBonusHandler extends BaseHandler {
     const { userId, bonusId } = this.args
     const transaction = this.context.sequelizeTransaction
 
-  
-      const bonusExists = await db.Bonus.findOne({
-        where: { id: bonusId, status: BONUS_STATUS.ACTIVE },
-        attributes: ['id', 'daysToClear']
-      })
-      if (!bonusExists) throw new AppError(Errors.BONUS_NOT_FOUND)
+    const bonusExists = await db.Bonus.findOne({
+      where: { id: bonusId, status: BONUS_STATUS.ACTIVE },
+      attributes: ['id', 'daysToClear']
+    })
+    if (!bonusExists) throw new AppError(Errors.BONUS_NOT_FOUND)
 
-      const userBonus = await db.UserBonus.findOne({
-        where: { userId, bonusId, bonusStatus: { [Op.in]: ['active', 'completed'] } },
-        attributes: ['id'],
-        transaction
-      })
-      if (userBonus) throw new AppError(Errors.BONUS_ACTIVE)
+    const userBonus = await db.UserBonus.findOne({
+      where: { userId, bonusId, bonusStatus: { [Op.in]: ['active', 'completed'] } },
+      attributes: ['id'],
+      transaction
+    })
+    if (userBonus) throw new AppError(Errors.BONUS_ACTIVE)
 
-      const activeBonus = await db.UserBonus.findOne({
-        where: {
-          userId, bonusStatus: { [Op.in]: ['active', 'completed'] }
-        },
-        attributes: ['id'],
-        transaction
-      })
-      if (activeBonus) throw new AppError(Errors.USER_BONUS)
-      const expiryDate = new Date()
-      expiryDate.setDate(expiryDate.getDate() + bonusExists.daysToClear)
-      const createBonus = await db.UserBonus.create({
-        bonusId: bonusExists.id,
-        userId,
-        status: USER_BONUS_STATUS_VALUES.ACTIVE,
-        awardedAt: new Date(),
-        expiryDate: expiryDate,
-        bonusAmount: 0
-      }, { transaction })
+    const activeBonus = await db.UserBonus.findOne({
+      where: {
+        userId, bonusStatus: { [Op.in]: ['active', 'completed'] }
+      },
+      attributes: ['id'],
+      transaction
+    })
+    if (activeBonus) throw new AppError(Errors.USER_BONUS)
+    const expiryDate = new Date()
+    expiryDate.setDate(expiryDate.getDate() + bonusExists.daysToClear)
+    const createBonus = await db.UserBonus.create({
+      bonusId: bonusExists.id,
+      userId,
+      status: USER_BONUS_STATUS_VALUES.ACTIVE,
+      awardedAt: new Date(),
+      expiryDate: expiryDate,
+      bonusAmount: 0
+    }, { transaction })
 
-      return { createBonus }
-   
+    return { createBonus }
   }
 }

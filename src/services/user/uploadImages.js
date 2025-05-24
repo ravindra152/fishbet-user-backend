@@ -13,16 +13,13 @@ const schema = {
   required: []
 }
 
-
-
 export class UploadImagesHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     const { id, file } = this.args
-
 
     const document = await s3FileUpload(file.buffer, {
       name: file.originalname,
@@ -42,6 +39,5 @@ export class UploadImagesHandler extends BaseHandler {
     })
 
     return { imageSignature: savedFile, message: SUCCESS_MSG.GET_SUCCESS }
-
   }
 }

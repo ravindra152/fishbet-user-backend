@@ -25,7 +25,7 @@ casinoRouter.route('/favorite')
 casinoRouter.route('/transactions').get(isUserAuthenticated, requestValidationMiddleware(getCasinoTransactionsSchema), CasinoController.getCasinoTransactions)
 casinoRouter.route('/play-game').get(semiAuth, CasinoController.genericGamelaunch) // according to specific sub category
 
-// Casino Callbacks 
+// Casino Callbacks
 casinoRouter.use('/alea', aleaRouter)
 casinoRouter.use('/one-game-hub', oneGameHubRouter)
 

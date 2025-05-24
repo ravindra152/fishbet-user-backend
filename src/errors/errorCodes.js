@@ -30,11 +30,11 @@ export const Errors = {
     httpStatusCode: 422
   },
   VERIFF_REQUEST_VALIDATION_ERROR: {
-    "name": "RequestValidationError",
-    "message": "Request Validation Error",
-    "explanation": "First Name, Last Name, Date of Birth, and Address are required for Veriff verification.",
-    "code": 1002,
-    "httpStatusCode": 400
+    name: 'RequestValidationError',
+    message: 'Request Validation Error',
+    explanation: 'First Name, Last Name, Date of Birth, and Address are required for Veriff verification.',
+    code: 1002,
+    httpStatusCode: 400
   },
   REQUEST_VALIDATION_ERROR: {
     name: 'RequestValidationError',
@@ -163,7 +163,7 @@ export const Errors = {
     code: 3005,
     httpStatusCode: 400
   },
-  USER_ACCOUNT_INACTIVE:{
+  USER_ACCOUNT_INACTIVE: {
     name: 'UserAccountInactive',
     message: 'User account is inactive',
     explanation: 'Your account is currently inactive. To reactivate it, please contact support.',
@@ -1260,5 +1260,5 @@ export const Errors = {
     explanation: 'Player do not have enough redeemable balance.',
     code: 3002,
     httpStatusCode: 400
-  },
+  }
 }

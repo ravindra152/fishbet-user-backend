@@ -4,7 +4,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class UpdateSelfExclusionHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { userId, selfExclusion, isSelfExclusionPermanent, selfExclusionType } = this.args
     const transaction = this.context.sequelizeTransaction
     const selfExclusionUpdatedAt = dayjs()
@@ -15,7 +15,7 @@ export class UpdateSelfExclusionHandler extends BaseHandler {
         userId,
         selfExclusionEndAt: formattedSelfExclusion,
         isSelfExclusionPermanent: isSelfExclusionPermanent,
-        selfExclusionStartedAt: selfExclusionUpdatedAt,
+        selfExclusionStartedAt: selfExclusionUpdatedAt
       }, { transaction })
     return { userLimits, message: SUCCESS_MSG.UPDATE_SUCCESS }
   }

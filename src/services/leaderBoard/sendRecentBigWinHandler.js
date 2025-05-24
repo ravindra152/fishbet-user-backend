@@ -1,16 +1,15 @@
 import db from '@src/db/models'
 import { BaseHandler } from '@src/libs/logicBase'
-import WalletEmitter from '@src/socket-resources/emmitter/wallet.emmitter';
-
+import WalletEmitter from '@src/socket-resources/emmitter/wallet.emmitter'
 
 export class SendRecentBigWinHandler extends BaseHandler {
-  async run() {
+  async run () {
     const {
       userId,
       roundId,
       amount,
       gameId
-    } = this.args;
+    } = this.args
 
     // Query to fetch the transaction details based on userId and gameRoundId
     const transactionDetails = await db.sequelize.query(`
@@ -41,7 +40,7 @@ export class SendRecentBigWinHandler extends BaseHandler {
     `, {
       replacements: { userId, gameRoundId: roundId },
       type: db.Sequelize.QueryTypes.SELECT
-    });
+    })
 
     // If the transaction details are found and there is a win difference
     if (transactionDetails.length === 1) {
@@ -51,22 +50,22 @@ export class SendRecentBigWinHandler extends BaseHandler {
         thumbnail_url,
         game_name,
         total_bet_amount
-      } = transactionDetails[0];
+      } = transactionDetails[0]
 
       // If the win amount exceeds the bet amount, trigger the event
       if ((amount - total_bet_amount) > 0) {
         WalletEmitter.emitRecentBigWinData({
-          "game_round_id": roundId,
-          "user_id": userId,
-          "username": username,
-          "profileimage": profileImage,
-          "thumbnail_url": thumbnail_url,
-          "game_name": game_name,
-          "gameid": gameId,
-          "total_bet_amount": Number(total_bet_amount),
-          "total_win_amount": Number(amount),
-          "win_difference": Number(amount) - Number(total_bet_amount),
-        });
+          game_round_id: roundId,
+          user_id: userId,
+          username: username,
+          profileimage: profileImage,
+          thumbnail_url: thumbnail_url,
+          game_name: game_name,
+          gameid: gameId,
+          total_bet_amount: Number(total_bet_amount),
+          total_win_amount: Number(amount),
+          win_difference: Number(amount) - Number(total_bet_amount)
+        })
       }
     }
   }

@@ -1,13 +1,10 @@
-import { Errors } from "@src/errors/errorCodes"
-import { AppError } from "@src/errors/app.error"
+import { Errors } from '@src/errors/errorCodes'
+import { AppError } from '@src/errors/app.error'
 import db from '@src/db/models'
 import { BaseHandler } from '@src/libs/logicBase'
 
 export class GetGameProvidersHandler extends BaseHandler {
-
-  async run() {
-
-
+  async run () {
     const casinoProvider = await db.CasinoGame.findAndCountAll({
       where: { isActive: true },
       attributes: [],
@@ -25,6 +22,5 @@ export class GetGameProvidersHandler extends BaseHandler {
     if (!casinoProvider) throw new AppError(Errors.CATEGORY_GAME_NOT_FOUND)
 
     return casinoProvider
-
   }
 }

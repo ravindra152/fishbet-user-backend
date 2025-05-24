@@ -22,7 +22,7 @@ export const TYPE = {
 export const VERIFF_STATUS = {
   REQUESTED: 'requested',
   APPROVED: 'approved',
-  DECLINED: 'declined',
+  DECLINED: 'declined'
 }
 
 // Document constants start
@@ -32,7 +32,6 @@ export const DOCUMENT_STATUS_TYPES = {
   REJECTED: 'rejected',
   REQUESTED: 'requested'
 }
-
 
 export const DOCUMENT_TYPES = {
   VERIFF: 'veriff',
@@ -48,7 +47,6 @@ export const EMAIL_TEMPLATE_PRIMARY_STATUS = {
   }
 }
 
-
 export const TRANSACTION_STATUS = {
   PENDING: 'pending',
   SUCCESS: 'successful',
@@ -59,7 +57,6 @@ export const TRANSACTION_STATUS = {
   REJECTED: 'rejected',
   REQUESTED: 'requested'
 }
-
 
 export const PAYMENT_STATUS = {
   SUCCESS: 'SUCCESSFUL',
@@ -484,7 +481,6 @@ export const RECEIPT_MESSAGES = {
   }
 }
 
-
 export const NUTECH_API_HEADER = {
   Accept: 'application/json',
   'Content-Type': 'application/json'
@@ -539,12 +535,10 @@ export const EVOLUTION = {
   // }
 }
 
-
 export const JWT_TOKEN_TYPES = {
   LOGIN: 'login',
   FORGOT_PASSWORD: 'forgot_password'
 }
-
 
 export const GLOBAL_SETTING = {
   FAUCET_SETTING: 'FAUCET_SETTING',

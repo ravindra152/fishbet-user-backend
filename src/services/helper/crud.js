@@ -34,7 +34,7 @@ export const createNewEntity = async ({ model, data = {}, include, transaction }
 }
 
 export const updateEntity = async ({ model, values, data, transaction }) => {
-   let query = { where: values }
+  let query = { where: values }
   if (transaction) query = { ...query, transaction }
   const dataValues = await model.update(data, query)
   return dataValues

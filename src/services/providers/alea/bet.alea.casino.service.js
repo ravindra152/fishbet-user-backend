@@ -8,9 +8,8 @@ import { ALEA_ERROR_TYPES } from '@src/utils/constants/casinoProviders/alea.cons
 import { CASINO_TRANSACTION_PURPOSE, COINS } from '@src/utils/constants/public.constants'
 import { Op } from 'sequelize'
 
-
 export class BetAleaCasinoHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { id, player, casinoSessionId, round, amount, currency } = this.args
     const transaction = this.context.sequelizeTransaction
 
@@ -31,24 +30,24 @@ export class BetAleaCasinoHandler extends BaseHandler {
       return ALEA_ERROR_TYPES.INVALID_CASINO_PLAYER_ID
     }
 
-    if (currency !== coin)
-      return ALEA_ERROR_TYPES.INVALID_CURRENCY
+    if (currency !== coin) { return ALEA_ERROR_TYPES.INVALID_CURRENCY }
 
     // Determine the relevant currency codes based on the coin type
     const currencyCodes =
       coin === COINS.GOLD_COIN
         ? [COINS.GOLD_COIN]
         : [
-          COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-          COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-          COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-        ]
+            COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+            COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+            COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+          ]
 
     // Fetch wallets for the user with the specified currency codes
     const wallets = await db.Wallet.findAll({
       attributes: ['id', 'balance'],
       where: {
-        userId, currencyCode: {
+        userId,
+        currencyCode: {
           [Op.in]: currencyCodes
         }
       }
@@ -93,7 +92,6 @@ export class BetAleaCasinoHandler extends BaseHandler {
         isAlreadyProcessed: true
       }
     }
-
 
     // if (!userId) {
     //   return ALEA_ERROR_TYPES.SESSION_EXPIRED

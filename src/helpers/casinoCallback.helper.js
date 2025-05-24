@@ -3,8 +3,7 @@ import _ from 'lodash'
 
 export const sendCasinoCallbackResponse = ({ req, res, next }, data) => {
   res.payload = data
-  if(data?.statusCode)
-    res.status(data.statusCode).json({...data})
+  if (data?.statusCode) { res.status(data.statusCode).json({ ...data }) }
   res.status(200).json({ ...data })
 }
 

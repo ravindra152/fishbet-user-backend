@@ -12,7 +12,7 @@ import { verifySignature } from '@src/services/helper/casino'
 import { Op } from 'sequelize'
 
 export class WinAleaCasinoHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { amount, currency, id, casinoSessionId, round } = this.args
 
     const transaction = this.dbTransaction
@@ -20,10 +20,10 @@ export class WinAleaCasinoHandler extends BaseHandler {
     const walletFilterCoins = isGameCoin
       ? [COINS.GOLD_COIN]
       : [
-        COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-        COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-        COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-      ]
+          COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+          COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+          COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+        ]
 
     try {
       if (+amount < 0) return ALEA_ERROR_TYPES.UNKNOWN_ERROR
@@ -82,7 +82,8 @@ export class WinAleaCasinoHandler extends BaseHandler {
         const userWallet = await db.Wallet.findAll({
           attributes: ['id', 'balance'],
           where: {
-            userId, currencyCode: {
+            userId,
+            currencyCode: {
               [Op.in]: walletFilterCoins
             }
           },
@@ -104,14 +105,12 @@ export class WinAleaCasinoHandler extends BaseHandler {
           bonusAmount: 0.0,
           isAlreadyProcessed: true
         }
-      }
-
-      else {
+      } else {
         if (checkTransaction.transactionId === id) {
           const userWallet = await db.Wallet.findOne({
             where: {
               userId,
-              currencyCode: { [Op.in]: walletFilterCoins },
+              currencyCode: { [Op.in]: walletFilterCoins }
             },
             lock: true,
             transaction
@@ -143,9 +142,7 @@ export class WinAleaCasinoHandler extends BaseHandler {
       }, this.context)
 
       if (coin !== COINS.GOLD_COIN && amount > 0) {
-
         SendRecentBigWinHandler.execute({ userId, roundId: round.id, amount, gameId })
-
       }
 
       return {
@@ -155,7 +152,6 @@ export class WinAleaCasinoHandler extends BaseHandler {
         realAmount: amount,
         bonusAmount: 0.0
       }
-
     } catch (error) {
       console.log('Error in Alea Play Win Transaction', error)
       const transactionStatuses = ['commit', 'rollback']

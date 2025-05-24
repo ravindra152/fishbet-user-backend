@@ -1,7 +1,7 @@
+import { WITHDRAWAL_STATUS } from '@src/utils/constants/public.constants'
 'use strict'
 
 const { DataTypes } = require('sequelize')
-import { WITHDRAWAL_STATUS } from '@src/utils/constants/public.constants'
 
 module.exports = (sequelize) => {
   const WithdrawalRequest = sequelize.define(
@@ -68,7 +68,7 @@ module.exports = (sequelize) => {
 
   WithdrawalRequest.associate = (models) => {
     WithdrawalRequest.belongsTo(models.User, { foreignKey: 'userId' })
-    WithdrawalRequest.hasMany(models.Transaction, { foreignKey: 'withdrawalId', onDelete: 'cascade', })
+    WithdrawalRequest.hasMany(models.Transaction, { foreignKey: 'withdrawalId', onDelete: 'cascade' })
   }
 
   return WithdrawalRequest

@@ -12,4 +12,4 @@ export const verificationSchema = {
     },
     required: ['firstName', 'lastName', 'userName', 'dateOfBirth', 'city', 'state', 'image']
   }
-};
+}

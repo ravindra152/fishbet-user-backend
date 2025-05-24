@@ -1,11 +1,10 @@
-import db from "@src/db/models";
-import { BaseHandler } from "@src/libs/logicBase";
-import { pageValidation } from "@src/utils/common";
-import { SUCCESS_MSG } from "@src/utils/success";
-
+import db from '@src/db/models'
+import { BaseHandler } from '@src/libs/logicBase'
+import { pageValidation } from '@src/utils/common'
+import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetTicketHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { userId, limit, pageNo } = this.args
 
     const { page, size } = pageValidation(pageNo, limit)

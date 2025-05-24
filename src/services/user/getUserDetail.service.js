@@ -2,16 +2,16 @@ import db from '@src/db/models'
 import { AppError } from '@src/errors/app.error'
 import { Errors } from '@src/errors/errorCodes'
 import { BaseHandler } from '@src/libs/logicBase'
-import { CASINO_TRANSACTION_PURPOSE, COINS } from "@src/utils/constants/public.constants";
+import { CASINO_TRANSACTION_PURPOSE, COINS } from '@src/utils/constants/public.constants'
 
 export class GetUserDetailsHandler extends BaseHandler {
-  async run() {
+  async run () {
     const userId = this.args.userId
     const { currencyCode = 'BSC' } = this.args
 
     const user = await db.User.findOne({
       where: { userId },
-      attributes: ['userId', 'username', 'email', 'firstName', 'lastName', 'createdAt', 'dateOfBirth', 'profileImage', 'veriffStatus','isActive'],
+      attributes: ['userId', 'username', 'email','phone', 'firstName', 'lastName', 'createdAt', 'dateOfBirth', 'profileImage', 'veriffStatus', 'isActive'],
       include: [
         {
           model: db.Wallet,
@@ -86,7 +86,7 @@ export class GetUserDetailsHandler extends BaseHandler {
 
     let whereCondition = {}
     if (currencyCode === COINS.GOLD_COIN) {
-      whereCondition = { currencyCode: COINS.GOLD_COIN };
+      whereCondition = { currencyCode: COINS.GOLD_COIN }
     } else if (currencyCode === COINS.SWEEP_COIN.BONUS_SWEEP_COIN) {
       whereCondition = {
         currencyCode: {
@@ -97,9 +97,8 @@ export class GetUserDetailsHandler extends BaseHandler {
               COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN
             ]
         }
-      };
+      }
     } else {
-
       whereCondition = {
         currencyCode: {
           [db.Sequelize.Op.in]:
@@ -109,7 +108,7 @@ export class GetUserDetailsHandler extends BaseHandler {
               COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN
             ]
         }
-      };
+      }
     }
 
     const transactionAmounts = await db.CasinoTransaction.findAll({
@@ -121,7 +120,7 @@ export class GetUserDetailsHandler extends BaseHandler {
       include: [
         {
           model: db.TransactionLedger,
-          as: 'casinoLedger',
+          as: 'casinoLedger'
         }
       ],
       where: {
@@ -130,21 +129,20 @@ export class GetUserDetailsHandler extends BaseHandler {
           CASINO_TRANSACTION_PURPOSE.CASINO_BET,
           CASINO_TRANSACTION_PURPOSE.CASINO_WIN
         ],
-        '$casinoLedger.currency_code$': whereCondition.currencyCode,
-      },
-      //group: ['CasinoTransaction.id', 'CasinoTransaction.action_type', 'casinoLedger.ledger_id', 'casinoLedger.currency_code'],
-    });
+        '$casinoLedger.currency_code$': whereCondition.currencyCode
+      }
+      // group: ['CasinoTransaction.id', 'CasinoTransaction.action_type', 'casinoLedger.ledger_id', 'casinoLedger.currency_code'],
+    })
 
     const totalBetAmount = transactionAmounts
       .filter(tx => tx.dataValues.actionType === CASINO_TRANSACTION_PURPOSE.CASINO_BET)
-      .reduce((acc, tx) => acc + parseFloat(tx.dataValues.totalAmount || 0), 0);
+      .reduce((acc, tx) => acc + parseFloat(tx.dataValues.totalAmount || 0), 0)
 
     const totalWinAmount = transactionAmounts
       .filter(tx => tx.dataValues.actionType === CASINO_TRANSACTION_PURPOSE.CASINO_WIN)
-      .reduce((acc, tx) => acc + parseFloat(tx.dataValues.totalAmount || 0), 0);
+      .reduce((acc, tx) => acc + parseFloat(tx.dataValues.totalAmount || 0), 0)
 
-    const losses = Math.max(totalBetAmount - totalWinAmount, 0);
-
+    const losses = Math.max(totalBetAmount - totalWinAmount, 0)
 
     if (userTierProgress.length === 0) {
       userTierProgress.push({

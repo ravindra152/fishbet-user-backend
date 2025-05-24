@@ -7,15 +7,13 @@ export class RemoveFavoriteGameHandler extends BaseHandler {
   async run () {
     const { casinoGameId, userId } = this.args
 
-  
-      const checkFavoriteGameExists = await db.CasinoFavoriteGame.findOne({
-        where: { casinoGameId, userId },
-        attributes: ['id']
-      })
-      if (!checkFavoriteGameExists) throw new AppError(Errors.FAVORITE_GAME_NOT_FOUND)
+    const checkFavoriteGameExists = await db.CasinoFavoriteGame.findOne({
+      where: { casinoGameId, userId },
+      attributes: ['id']
+    })
+    if (!checkFavoriteGameExists) throw new AppError(Errors.FAVORITE_GAME_NOT_FOUND)
 
-      await db.CasinoFavoriteGame.destroy({ where: { casinoGameId, userId } })
-      return { success: true }
-   
+    await db.CasinoFavoriteGame.destroy({ where: { casinoGameId, userId } })
+    return { success: true }
   }
 }

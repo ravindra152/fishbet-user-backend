@@ -5,7 +5,7 @@ import { pageValidation } from '@src/utils/common'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetAllBonusHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { limit, pageNo, bonusType } = this.args
 
     let query = {}

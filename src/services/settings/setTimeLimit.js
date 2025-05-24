@@ -1,5 +1,5 @@
-import { Errors } from "@src/errors/errorCodes"
-import { AppError } from "@src/errors/app.error"
+import { Errors } from '@src/errors/errorCodes'
+import { AppError } from '@src/errors/app.error'
 import ajv from '@src/libs/ajv'
 import db from '@src/db/models'
 import { getOne } from '../helper/crud'
@@ -19,44 +19,40 @@ const schema = {
   required: ['id', 'password', 'user', 'timeLimit', 'reset']
 }
 
-
-
 export class SetTimeLimitHandler extends BaseHandler {
   get constraints () {
     return constraints
   }
 
-   async run () {
+  async run () {
     const { id, user, timeLimit, password, reset } = this.args
 
-  
-      if (!(await comparePassword(password, user.password))) throw new AppError(Errors.INCORRECT_PASSWORD)
+    if (!(await comparePassword(password, user.password))) throw new AppError(Errors.INCORRECT_PASSWORD)
 
-      const userLimits = await getOne({ model: db.Limit, data: { userId: id } })
+    const userLimits = await getOne({ model: db.Limit, data: { userId: id } })
 
-      if (userLimits.timeLimit && new Date(userLimits.timeLimitExpiry) >= new Date()) {
-        throw new AppError(Errors.INVALID_ACTION)
-      }
-      if (reset) {
-        await userLimits.set({ timeLimit: null, timeLimitExpiry: null, timeLimitUpdatedAt: new Date() }).save()
-        return { reset: true, limit: userLimits }
-      }
+    if (userLimits.timeLimit && new Date(userLimits.timeLimitExpiry) >= new Date()) {
+      throw new AppError(Errors.INVALID_ACTION)
+    }
+    if (reset) {
+      await userLimits.set({ timeLimit: null, timeLimitExpiry: null, timeLimitUpdatedAt: new Date() }).save()
+      return { reset: true, limit: userLimits }
+    }
 
-      if (timeLimit > 24 || timeLimit < 1) throw new AppError(Errors.SESSION_TIME_LIMIT)
+    if (timeLimit > 24 || timeLimit < 1) throw new AppError(Errors.SESSION_TIME_LIMIT)
 
-      const now = new Date()
-      now.setDate(now.getDate() + 1)
+    const now = new Date()
+    now.setDate(now.getDate() + 1)
 
-      await userLimits.set({ timeLimit, timeLimitExpiry: now, timeLimitUpdatedAt: new Date() }).save()
+    await userLimits.set({ timeLimit, timeLimitExpiry: now, timeLimitUpdatedAt: new Date() }).save()
 
-      const accessToken = await signAccessToken({
-        id,
-        email: user.email,
-        name: user.firstName + ' ' + user.lastName,
-        sessionTime: timeLimit
-      })
+    const accessToken = await signAccessToken({
+      id,
+      email: user.email,
+      name: user.firstName + ' ' + user.lastName,
+      sessionTime: timeLimit
+    })
 
-      return { limit: userLimits, accessToken, message: SUCCESS_MSG.UPDATE_SUCCESS }
-   
+    return { limit: userLimits, accessToken, message: SUCCESS_MSG.UPDATE_SUCCESS }
   }
 }

@@ -105,7 +105,7 @@ export const getDynamicData = async ({ userId, currentDataList, transaction = nu
 
   const dynamicData = {
     siteName: siteDetail.name,
-    siteLogo: (siteDetail.logo || ""),
+    siteLogo: (siteDetail.logo || ''),
     siteUrl: siteDetail.url,
     playerEmail: userDetails.email,
     playerFullName: userDetails.username,
@@ -162,8 +162,6 @@ export const createEmailWithDynamicValues = async ({ emailType, userId, serviceD
     ...await getDynamicData({ userId, dataList: templateDetails.dynamicData, currentDataList: dynamicData, transaction: transaction })
   }
 
-
-
   const emailData = insertDynamicDataInTemplate({ template: templateDetails.templateCode[language] || templateDetails.templateCode.EN, dynamicData: newDynamicData })
   return emailData
 }
@@ -207,8 +205,8 @@ export const sendDynamicEmail = async ({ recieverEmail, subject, text, dynamicEm
   const DOMAIN = config.get('mailGun.domain')
   const senderEmail = config.get('mailGun.senderEmail')
 
-  const mailgun = new Mailgun(formData);
-  const client = mailgun.client({ username: 'api', key: API_KEY });
+  const mailgun = new Mailgun(formData)
+  const client = mailgun.client({ username: 'api', key: API_KEY })
 
   const messageData = {
     from: senderEmail,
@@ -265,12 +263,11 @@ export const sendEmail = async ({ user, emailTemplate, data, message }) => {
 }
 
 export const generateOtp = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  return Math.floor(100000 + Math.random() * 900000).toString()
 }
 
-export async function sendEmailByMailjetResetPassword({ user, data, dynamicEmail, senderEmail, senderName }) {
+export async function sendEmailByMailjetResetPassword ({ user, data, dynamicEmail, senderEmail, senderName }) {
   try {
-
     const Mailjet = new mailjet({
       apiKey: config.get('email.mailjetApiKey'),
       apiSecret: config.get('email.mailjetSecretKey'),
@@ -292,7 +289,7 @@ export async function sendEmailByMailjetResetPassword({ user, data, dynamicEmail
           }],
           Subject: data.subject,
           HTMLPart: dynamicEmail, // `<p>Click <a href="${data.link}">here</a> to reset your password.</p>`,
-          TextPart: data.body,
+          TextPart: data.body
         }
       ]
     })
@@ -303,8 +300,7 @@ export async function sendEmailByMailjetResetPassword({ user, data, dynamicEmail
   }
 }
 
-
-export async function sendEmailByMailjet({ user, data, emailTemplate, senderEmail, senderName }) {
+export async function sendEmailByMailjet ({ user, data, emailTemplate, senderEmail, senderName }) {
   try {
     const Mailjet = new mailjet({
       apiKey: config.get('email.mailjetApiKey'),
@@ -326,7 +322,7 @@ export async function sendEmailByMailjet({ user, data, emailTemplate, senderEmai
           }],
           Subject: data.subject,
           HTMLPart: emailTemplate,
-          TextPart: data.body,
+          TextPart: data.body
         }
       ]
     })
@@ -337,10 +333,7 @@ export async function sendEmailByMailjet({ user, data, emailTemplate, senderEmai
   }
 }
 
-
 export const sendMailjetEmail = async ({ user, emailTemplate, data, message }) => {
-
-
   const dynamicEmail = await createEmailWithDynamicValues({
     language: user.locale || 'EN',
     emailType: EMAIL_TEMPLATE_TYPES.VALUE_T0_INT[emailTemplate],
@@ -352,15 +345,13 @@ export const sendMailjetEmail = async ({ user, emailTemplate, data, message }) =
     data,
     emailTemplate: dynamicEmail,
     senderName: config.get('email.senderName'),
-    senderEmail: config.get('email.senderEmail'),
+    senderEmail: config.get('email.senderEmail')
   })
 
   return emailSent
 }
 
-
 export const sendMailjetEmailResetPassword = async ({ user, emailTemplate, data, message }) => {
-
   const dynamicEmail = await createEmailWithDynamicValues({
     language: user.locale || 'EN',
     emailType: EMAIL_TEMPLATE_TYPES.VALUE_T0_INT[emailTemplate],
@@ -372,7 +363,7 @@ export const sendMailjetEmailResetPassword = async ({ user, emailTemplate, data,
     data,
     dynamicEmail: dynamicEmail,
     senderName: config.get('email.senderName'),
-    senderEmail: config.get('email.senderEmail'),
+    senderEmail: config.get('email.senderEmail')
   })
 
   return emailSent

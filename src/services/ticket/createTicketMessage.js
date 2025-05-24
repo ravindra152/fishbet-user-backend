@@ -1,9 +1,9 @@
-import db from "@src/db/models";
-import { BaseHandler } from "@src/libs/logicBase";
-import { SUCCESS_MSG } from "@src/utils/success";
+import db from '@src/db/models'
+import { BaseHandler } from '@src/libs/logicBase'
+import { SUCCESS_MSG } from '@src/utils/success'
 
 export class CreateTicketMessageHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { ticketId, userId, message } = this.args
 
     const transaction = this.dbTransaction

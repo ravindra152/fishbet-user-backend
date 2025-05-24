@@ -40,7 +40,6 @@ export class CasinoController {
     }
   }
 
-
   static async getGameProvider (req, res, next) {
     try {
       const data = await GetGameProvidersHandler.execute({ ...req.query, ...req.body, userId: userId(req) })
@@ -70,7 +69,7 @@ export class CasinoController {
 
   static async getFavoriteGame (req, res, next) {
     try {
-      const data = await GetFavoriteGamesHandler.execute({ ...req.body, ...req.query, })
+      const data = await GetFavoriteGamesHandler.execute({ ...req.body, ...req.query })
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)
@@ -95,7 +94,6 @@ export class CasinoController {
     }
   }
 
-
   static async genericGamelaunch (req, res, next) {
     try {
       const data = await GenericGameLaunchHandler.execute({ ...req.query, ...req.body, ipAddress: getRequestIP(req) })
@@ -114,7 +112,6 @@ export class CasinoController {
     }
   }
 }
-
 
 export class GsoftCasinoController {
   static async startGame (req, res, next) {
@@ -157,7 +154,6 @@ export class GsoftCasinoController {
     }
   }
 }
-
 
 export class iconic21CasinoController {
   static async startGame (req, res, next) {

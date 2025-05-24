@@ -7,7 +7,7 @@ export const NOWPAYMENT_WEBHOOK_STATUS = {
   FINISHED: 'finished',
   FAILED: 'failed',
   EXPIRED: 'expired'
-};
+}
 
 // export const NOWPAYMENT_WEBHOOK_MAPPING = {
 //   'waiting': 0,
@@ -21,17 +21,15 @@ export const NOWPAYMENT_WEBHOOK_STATUS = {
 // };
 
 export const NOWPAYMENT_WEBHOOK_MAPPING = {
-  'waiting': 'pending',
-  'confirming': 'pending',
-  'confirmed': 'successful',
-  'sending': 'pending',
-  'partially_paid': 'successful',
-  'finished': 'successful',
-  'failed': 'failed',
-  'expired': 'pending'
-};
-
-
+  waiting: 'pending',
+  confirming: 'pending',
+  confirmed: 'successful',
+  sending: 'pending',
+  partially_paid: 'successful',
+  finished: 'successful',
+  failed: 'failed',
+  expired: 'pending'
+}
 
 export const NOWPAYMENT_WEBHOOK_REDEEM_STATUS = {
   WAITING: 'WAITING',
@@ -45,4 +43,4 @@ export const NOWPAYMENT_WEBHOOK_REDEEM_STATUS = {
   PROCESSING: 'PROCESSING',
   REJECTED: 'REJECTED',
   CREATING: 'CREATING'
-};
+}

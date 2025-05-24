@@ -4,14 +4,12 @@ import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetCmsInfoHandler extends BaseHandler {
   async run () {
-  
-      const cmsDetails = await db.CmsPage.findAll({
-        where: { isActive: true },
-        attributes: ['cmsPageId', 'title', 'slug']
+    const cmsDetails = await db.CmsPage.findAll({
+      where: { isActive: true },
+      attributes: ['cmsPageId', 'title', 'slug']
 
-      })
+    })
 
-      return { cmsDetails, message: SUCCESS_MSG.GET_SUCCESS }
-   
+    return { cmsDetails, message: SUCCESS_MSG.GET_SUCCESS }
   }
 }

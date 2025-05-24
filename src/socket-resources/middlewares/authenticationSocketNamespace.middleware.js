@@ -5,7 +5,7 @@ import Logger from '@src/libs/logger'
 import jwt from 'jsonwebtoken'
 import { error } from 'winston'
 
-export default async function authenticationSocketNamespaceMiddleWare(socket, next) {
+export default async function authenticationSocketNamespaceMiddleWare (socket, next) {
   try {
     const accessToken = socket.handshake.headers.accessToken
     if (!accessToken) {

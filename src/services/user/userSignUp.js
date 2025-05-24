@@ -11,7 +11,7 @@ import { AddUserTierProgressHandler } from '../userTierProgress'
 import { TierHandlerHandler } from '../vipTier'
 
 export class UserSignUpHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { firstName, lastName, language, username, password, referralCode } = this.args
     let refParentId
     const transaction = this.context.sequelizeTransaction
@@ -62,7 +62,6 @@ export class UserSignUpHandler extends BaseHandler {
         transaction
       })
 
-
     // if (referralCode && refParentId) await ReferralBonusHandler.execute({ user, transaction })
     if (referralCode && refParentId) await CreateAffiliateuserHandler.execute({ referredUserId: user.userId, affiliateUserId: refParentId }, this.context)
 
@@ -74,16 +73,15 @@ export class UserSignUpHandler extends BaseHandler {
         userId: refParentId,
         referralsCount: USER_VIP_TIER_PROGRESS_KEYS.referralsCount
       }, this.context)
-
     }
 
     await db.Limit.create({
-      userId: user.userId,
+      userId: user.userId
     }, { transaction })
 
     delete user.dataValues.password
     const accessToken = await createAccessToken(user)
-    console.log("token-----------------" , accessToken)
+    console.log('token-----------------', accessToken)
     user.dataValues.token = accessToken
 
     return { user }

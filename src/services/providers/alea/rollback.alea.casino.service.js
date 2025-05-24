@@ -9,15 +9,13 @@ import { CASINO_TRANSACTION_STATUS } from '@src/utils/constants/constants'
 import { CASINO_TRANSACTION_PURPOSE, COINS, LEDGER_DIRECTIONS, LEDGER_TRANSACTION_TYPES, LEDGER_TYPES } from '@src/utils/constants/public.constants'
 import { Op } from 'sequelize'
 
-
 export class RollBackAleaCasinoHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { id, casinoSessionId, currency, transaction } = this.args
     const dbTransaction = this.dbTransaction
     // const casinoTransactionModel = db.CasinoTransaction
 
     try {
-
       // checking signature
       if (!verifySignature(this.args)) {
         return ALEA_ERROR_TYPES.INVALID_SIGNATURE
@@ -46,16 +44,17 @@ export class RollBackAleaCasinoHandler extends BaseHandler {
       const walletFilterCoins = isGameCoin
         ? [COINS.GOLD_COIN]
         : [
-          COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-          COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-          COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-        ]
+            COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+            COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+            COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+          ]
 
       // Fetch wallets for the user with the specified currency codes
       const wallets = await db.Wallet.findAll({
         attributes: ['id', 'balance'],
         where: {
-          userId, currencyCode: {
+          userId,
+          currencyCode: {
             [Op.in]: walletFilterCoins
           }
         },
@@ -110,7 +109,7 @@ export class RollBackAleaCasinoHandler extends BaseHandler {
             transactionId: `${transaction.id}:denied`,
             moreDetails: this.args,
             actionType: CASINO_TRANSACTION_PURPOSE.GAME_ROLLBACK,
-            status: CASINO_TRANSACTION_STATUS.SUCCESS,
+            status: CASINO_TRANSACTION_STATUS.SUCCESS
           },
           transaction: dbTransaction
         })
@@ -161,7 +160,8 @@ export class RollBackAleaCasinoHandler extends BaseHandler {
       const updatedWallets = await db.Wallet.findAll({
         attributes: ['id', 'balance'],
         where: {
-          userId, currencyCode: {
+          userId,
+          currencyCode: {
             [Op.in]: walletFilterCoins
           }
         },

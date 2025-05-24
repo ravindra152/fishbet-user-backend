@@ -5,10 +5,8 @@ import { COINS } from '@src/utils/constants/public.constants'
 import { Op } from 'sequelize'
 import { ONE_GAME_HUB_CURRENCY_MAPPER, OneGameHubError } from '@src/utils/constants/casinoProviders/oneGameHub.constants'
 
-
 export class GetBalanceOneGameHubCasinoHandler extends BaseHandler {
-  async run() {
-
+  async run () {
     try {
       const { currency, player_id } = this.args
 
@@ -26,16 +24,17 @@ export class GetBalanceOneGameHubCasinoHandler extends BaseHandler {
         coin === COINS.GOLD_COIN
           ? [COINS.GOLD_COIN]
           : [
-            COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-            COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-            COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-          ]
+              COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+              COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+              COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+            ]
 
       // Fetch wallets for the user with the specified currency codes
       const wallets = await db.Wallet.findAll({
         attributes: ['id', 'balance'],
         where: {
-          userId, currencyCode: {
+          userId,
+          currencyCode: {
             [Op.in]: currencyCodes
           }
         },
@@ -48,7 +47,7 @@ export class GetBalanceOneGameHubCasinoHandler extends BaseHandler {
         0
       )
 
-      await transaction.commit();
+      await transaction.commit()
 
       // Return the calculated balance
       return {
@@ -59,7 +58,7 @@ export class GetBalanceOneGameHubCasinoHandler extends BaseHandler {
     } catch (error) {
       console.error('Error in one game hub Balance call service:', {
         errorMessage: error.message,
-        stack: error.stack,
+        stack: error.stack
       })
       return OneGameHubError.unknownError
     }

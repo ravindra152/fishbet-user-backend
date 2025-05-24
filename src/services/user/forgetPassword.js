@@ -1,5 +1,5 @@
-import { Errors } from "@src/errors/errorCodes"
-import { AppError } from "@src/errors/app.error"
+import { Errors } from '@src/errors/errorCodes'
+import { AppError } from '@src/errors/app.error'
 import { Op } from 'sequelize'
 import Jwt from 'jsonwebtoken'
 import { serverDayjs } from '@src/libs/dayjs'
@@ -21,17 +21,14 @@ const schema = {
   required: ['email']
 }
 
-
-
 export class ForgetPasswordHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     let { email, origin } = this.args
     const transaction = this.context.sequelizeTransaction
-
 
     const checkUserExist = await getOne({
       model: db.User,
@@ -48,7 +45,7 @@ export class ForgetPasswordHandler extends BaseHandler {
     }, config.get('jwt.resetPasswordKey'), { expiresIn: config.get('jwt.tokenExpiry') })
 
     if (!origin) origin = config.get('app.userFrontendUrl')
-      
+
     const forgetPasswordEmailSent = await sendMailjetEmailResetPassword({
       user: checkUserExist,
       emailTemplate: EMAIL_TEMPLATE_TYPES.RESET_PASSWORD,
@@ -56,7 +53,7 @@ export class ForgetPasswordHandler extends BaseHandler {
         link: `${origin}/reset-password?newPasswordKey=${newPasswordKey}`,
         subject: EMAIL_SUBJECTS[checkUserExist.locale].reset || EMAIL_SUBJECTS.EN.reset
       },
-      message: SUCCESS_MSG.RESET_PASSWORD_EMAIL,
+      message: SUCCESS_MSG.RESET_PASSWORD_EMAIL
     })
 
     if (forgetPasswordEmailSent === true) {
@@ -64,12 +61,11 @@ export class ForgetPasswordHandler extends BaseHandler {
         { newPasswordKey, newPasswordRequested: serverDayjs() },
         {
           where: { userId: checkUserExist.userId },
-          transaction,
+          transaction
         }
-      );
+      )
     }
 
     return { forgetPasswordEmailSent, message: SUCCESS_MSG.CREATE_SUCCESS }
-
   }
 }

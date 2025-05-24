@@ -6,21 +6,19 @@ export class SendPromotionsHandler extends BaseHandler {
   async run () {
     // const { image, content } = this.args
 
-  
-      // const users = await db.User.findAll({ attributes: ['telegramId'] })
-      // for (const user of users) {
-      //     await bot.telegram.sendPhoto(user.telegramId, image, { caption: content })
-      // }
+    // const users = await db.User.findAll({ attributes: ['telegramId'] })
+    // for (const user of users) {
+    //     await bot.telegram.sendPhoto(user.telegramId, image, { caption: content })
+    // }
 
-      const users = await db.User.findAll({ attributes: ['telegramId'] })
-      const sendMessages = users.map((user) => {
-        return {} // edited
-        // return bot.telegram.sendPhoto(user.telegramId, image, { caption: content, parse_mode: 'HTML' })
-      })
+    const users = await db.User.findAll({ attributes: ['telegramId'] })
+    const sendMessages = users.map((user) => {
+      return {} // edited
+      // return bot.telegram.sendPhoto(user.telegramId, image, { caption: content, parse_mode: 'HTML' })
+    })
 
-      await Promise.all(sendMessages)
+    await Promise.all(sendMessages)
 
-      return { success: true }
-   
+    return { success: true }
   }
 }

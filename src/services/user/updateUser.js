@@ -7,10 +7,8 @@ import { S3_FILE_PREFIX } from '@src/utils/constants/constants'
 import { s3FileUpload } from '@src/utils/s3.utils'
 
 export class UpdateUserHandler extends BaseHandler {
-
-  async run() {
-
-    const { userId, dateOfBirth, firstName, lastName, phone, gender, stateCode } = this.args
+  async run () {
+    const { userId, dateOfBirth, firstName, lastName, phone, gender, stateCode, verificationData } = this.args
     const profileImage = this.args.profileImage
     const transaction = this.context.sequelizeTransaction
 
@@ -33,7 +31,9 @@ export class UpdateUserHandler extends BaseHandler {
         filePathInS3Bucket: S3_FILE_PREFIX.profileImage
       })
       userObj.profileImage = imageLocation.location
-
+    }
+    if (verificationData) {
+      userObj
     }
     await user.set({ ...userObj }).save({ transaction })
     return { success: true }

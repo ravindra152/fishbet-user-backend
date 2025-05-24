@@ -12,48 +12,44 @@ const schema = {
   required: ['user']
 }
 
-
-
 export class GetLoyaltyDetailsHandler extends BaseHandler {
   get constraints () {
     return constraints
   }
 
-   async run () {
+  async run () {
     const { user } = this.args
 
-  
-      const loyalty = (await db.GlobalSetting.findOne({
-        attributes: ['value'],
-        where: { key: 'LOYALTY_LEVEL' },
-        raw: true
-      })).value
+    const loyalty = (await db.GlobalSetting.findOne({
+      attributes: ['value'],
+      where: { key: 'LOYALTY_LEVEL' },
+      raw: true
+    })).value
 
-      const currency = (await db.Currency.findOne({
-        attributes: ['loyaltyPoint'],
-        where: { code: user.currencyCode }
-      })).loyaltyPoint
+    const currency = (await db.Currency.findOne({
+      attributes: ['loyaltyPoint'],
+      where: { code: user.currencyCode }
+    })).loyaltyPoint
 
-      const loyaltyDetails = {
-        currentPoint: user.loyaltyPoints
-      }
+    const loyaltyDetails = {
+      currentPoint: user.loyaltyPoints
+    }
 
-      loyaltyDetails.pointPerUnit = currency
+    loyaltyDetails.pointPerUnit = currency
 
-      const { startPoint, endPoint, maxLevel, level } = getLevelDetails({ loyaltyLevels: loyalty, currentPoint: loyaltyDetails.currentPoint })
+    const { startPoint, endPoint, maxLevel, level } = getLevelDetails({ loyaltyLevels: loyalty, currentPoint: loyaltyDetails.currentPoint })
 
-      if (isNaN(level) || level === undefined || level === null) {
-        loyaltyDetails.level = user.level
-      } else {
-        loyaltyDetails.level = level
-        if (user.level !== level) await user.set({ level }).save()
-      }
+    if (isNaN(level) || level === undefined || level === null) {
+      loyaltyDetails.level = user.level
+    } else {
+      loyaltyDetails.level = level
+      if (user.level !== level) await user.set({ level }).save()
+    }
 
-      loyaltyDetails.startPoint = startPoint
-      loyaltyDetails.endPoint = endPoint
-      loyaltyDetails.maxLevel = maxLevel
+    loyaltyDetails.startPoint = startPoint
+    loyaltyDetails.endPoint = endPoint
+    loyaltyDetails.maxLevel = maxLevel
 
-      return { loyaltyDetails, message: SUCCESS_MSG.GET_SUCCESS }
-   
+    return { loyaltyDetails, message: SUCCESS_MSG.GET_SUCCESS }
   }
 }

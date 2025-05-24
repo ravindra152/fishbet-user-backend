@@ -24,11 +24,11 @@ const AGGREGATOR_IDENTIFIERS_SERVICE_MAP = {
 }
 
 export class InitGameHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     const ipAddress = this.args.ipAddress
     const gameId = this.args.gameId
     const userId = this.args.userId

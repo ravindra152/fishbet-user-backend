@@ -2,7 +2,7 @@ export const getOtpSchema = {
   query: {
     type: 'object',
     properties: {
-      userEmail: { type: 'string' },
+      userEmail: { type: 'string' }
     },
     required: ['userEmail']
   }

@@ -15,7 +15,7 @@ import Flatted from 'flatted'
  * Also it will always send response in { data: {}, errors: [] } form
  * It will call the acknowledgeCallback with payload if acknowledgeCallback is present otherwise complete the call
  */
-export default function responseValidationSocketMiddleware(context, event, acknowledgeCallback, payload) {
+export default function responseValidationSocketMiddleware (context, event, acknowledgeCallback, payload) {
   if (!acknowledgeCallback) {
     return
   }

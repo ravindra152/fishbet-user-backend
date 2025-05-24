@@ -6,8 +6,7 @@ import { ClaimWelcomeBonusHandler } from '@src/services/bonus/welcomeBonus/claim
 import db from '@src/db/models'
 
 export class VerifyOtpHandler extends BaseHandler {
-  async run() {
-
+  async run () {
     const { userId, otp } = this.args
     const transaction = this.context.sequelizeTransaction
     const user = await db.User.findOne({
@@ -15,22 +14,19 @@ export class VerifyOtpHandler extends BaseHandler {
       transaction
     })
 
-
     if (user.isEmailVerified) {
       throw new AppError(Errors.EMAIL_ALREADY_VERIFIED)
     }
     `${user.userId}:${otp}`
     const userEmail = await getCache(`${userId}:${otp}`)
 
-    if (!userEmail)
-      throw new AppError(Errors.INVALID_OTP)
+    if (!userEmail) { throw new AppError(Errors.INVALID_OTP) }
 
     await deleteCache(`${userId}:${otp}`)
     user.isEmailVerified = true
     user.email = userEmail
     await user.save({ transaction })
     await ClaimWelcomeBonusHandler.execute({ userId }, this.context)
-
 
     return { success: true }
   }

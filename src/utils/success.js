@@ -32,5 +32,5 @@ export const SUCCESS_MSG = {
   REPORT_UPDATE_SUCCESS: 'Report updated successfully',
   MESSAGE_SEND_SUCCESS: 'Message send successfully',
   JOINED_SUCCESS: 'Joined successfully',
-  TIP_SUCCESS:'Tip send successfully'
+  TIP_SUCCESS: 'Tip send successfully'
 }

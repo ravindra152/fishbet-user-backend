@@ -11,7 +11,7 @@ import socketEmitter from '@src/libs/socketEmitter'
  * @class WalletEmitter
  */
 export default class WalletEmitter {
-  static async emitUserWalletBalance(socketObj, playerId) {
+  static async emitUserWalletBalance (socketObj, playerId) {
     try {
       socketObj = Flatted.parse(Flatted.stringify(socketObj))
       const room = SOCKET_ROOMS.USER_WALLET + ':' + +playerId
@@ -22,7 +22,7 @@ export default class WalletEmitter {
     }
   }
 
-  static async emitLeaderBoardData(socketObj, playerId) {
+  static async emitLeaderBoardData (socketObj, playerId) {
     try {
       socketObj = Flatted.parse(Flatted.stringify(socketObj))
       const room = SOCKET_ROOMS.LEADER_BOARD
@@ -33,8 +33,7 @@ export default class WalletEmitter {
     }
   }
 
-
-  static async emitRecentBigWinData(socketObj, playerId) {
+  static async emitRecentBigWinData (socketObj, playerId) {
     try {
       socketObj = Flatted.parse(Flatted.stringify(socketObj))
       const room = SOCKET_ROOMS.RECENT_BIG_WIN
@@ -44,5 +43,4 @@ export default class WalletEmitter {
       Logger.info('Actual Error', { exception: error })
     }
   }
-
 }

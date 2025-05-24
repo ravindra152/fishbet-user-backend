@@ -1,33 +1,33 @@
-import { ALEA_ERROR_TYPES } from '@src/utils/constants/casinoProviders/alea.constants';
-import config from 'config';
-import crypto from 'crypto';
+import { ALEA_ERROR_TYPES } from '@src/utils/constants/casinoProviders/alea.constants'
+import config from 'config'
+import crypto from 'crypto'
 
 export const verifySignatureMiddleware = (req, res, next) => {
   try {
-    const { signature, ...request } = req.body;
+    const { signature, ...request } = req.body
 
     if (!signature) return ALEA_ERROR_TYPES.INVALID_SIGNATURE
 
-    let str;
+    let str
 
     if (request.type === 'BALANCE') {
-      const { casinoSessionId, currency, gameId, integratorId, softwareId } = request;
-      str = `${casinoSessionId}${currency}${gameId}${integratorId}${softwareId}${config.get('alea.secret_key')}`;
+      const { casinoSessionId, currency, gameId, integratorId, softwareId } = request
+      str = `${casinoSessionId}${currency}${gameId}${integratorId}${softwareId}${config.get('alea.secret_key')}`
     } else {
-      const { stringData } = request;
+      const { stringData } = request
       if (!stringData) return ALEA_ERROR_TYPES.INVALID_SIGNATURE
-      str = `${stringData}${config.get('alea.secret_key')}`;
+      str = `${stringData}${config.get('alea.secret_key')}`
     }
 
     const computedSignature = `SHA-512=${crypto
       .createHash('sha512')
       .update(str)
-      .digest('hex')}`;
+      .digest('hex')}`
 
     if (computedSignature !== signature) return ALEA_ERROR_TYPES.INVALID_SIGNATURE
 
-    next();
+    next()
   } catch (error) {
     return ALEA_ERROR_TYPES.INVALID_SIGNATURE
   }
-};
+}

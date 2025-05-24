@@ -3,7 +3,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { pageValidation } from '@src/utils/common'
 
 export class GetBannersHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { limit, pageNo, key } = this.args
 
     const { page, size } = pageValidation(pageNo, limit)
@@ -16,6 +16,5 @@ export class GetBannersHandler extends BaseHandler {
     })
 
     return { banners }
-
   }
 }

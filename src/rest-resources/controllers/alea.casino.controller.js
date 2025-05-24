@@ -8,7 +8,7 @@ import { WinAleaCasinoHandler } from '@src/services/providers/alea/win.alea.casi
 import { ALEA_ERROR_TYPES, ALEA_PLAY_CASINO_TYPES } from '@src/utils/constants/casinoProviders/alea.constants'
 
 export class AleaCasinoController {
-  static async aleaCallbacks(req, res, next) {
+  static async aleaCallbacks (req, res, next) {
     const stringData = req.rawBody?.toString('utf-8').replace(/\s/g, '')
 
     try {
@@ -46,7 +46,7 @@ export class AleaCasinoController {
     }
   }
 
-  static async aleaBalanceCallback(req, res, next) {
+  static async aleaBalanceCallback (req, res, next) {
     try {
       const data = await GetBalanceAleaCasinoHandler.execute({ playerId: req.params.userId, ...req.query, signature: req.headers.digest, type: 'BALANCE' }, req.context)
       sendCasinoCallbackResponse({ req, res, next }, data)
@@ -59,7 +59,7 @@ export class AleaCasinoController {
     }
   }
 
-  static async aleaSessionCallback(req, res, next) {
+  static async aleaSessionCallback (req, res, next) {
     try {
       const data = await GetSessionAleaCasinoHandler.execute({ casinoSessionId: req.params.casinoSessionId, ...req.query, signature: req.headers.digest, type: 'SESSION' }, req.context)
       sendCasinoCallbackResponse({ req, res, next }, data)

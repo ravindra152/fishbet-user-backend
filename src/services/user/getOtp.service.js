@@ -7,10 +7,9 @@ import { SUCCESS_MSG } from '@src/utils/success'
 import { getCache, setCache } from '@src/libs/redis'
 import db from '@src/db/models'
 
-
 export class GetOtpHandler extends BaseHandler {
-  async run() {
-    const userObj = {};
+  async run () {
+    const userObj = {}
     const { userId, userEmail, username } = this.args
     userObj.userId = userId
     userObj.email = userEmail
@@ -18,7 +17,7 @@ export class GetOtpHandler extends BaseHandler {
 
     const user = await db.User.findOne({
       where: { userId },
-      attributes: ['isEmailVerified'],
+      attributes: ['isEmailVerified']
     })
 
     if (user.isEmailVerified) {
@@ -26,13 +25,12 @@ export class GetOtpHandler extends BaseHandler {
     }
     const userWithEmail = await db.User.findOne({
       where: { email: userEmail },
-      attributes: ['isEmailVerified', 'userId'],
+      attributes: ['isEmailVerified', 'userId']
     })
     if (userWithEmail) {
       throw new AppError(Errors.USER_ALREADY_EXIST_WITH_EMAIL)
     }
-    const otp = generateOtp();
-
+    const otp = generateOtp()
 
     // const emailSent = await sendMailjetEmail({
     //   user: userObj,
@@ -59,10 +57,8 @@ export class GetOtpHandler extends BaseHandler {
       message: SUCCESS_MSG.EMAIL_SENT
     })
 
-    if (!emailSent)
-      throw new AppError(Errors.INTERNAL_SERVER_ERROR)
+    if (!emailSent) { throw new AppError(Errors.INTERNAL_SERVER_ERROR) }
     await setCache(`${userObj.userId}:${otp}`, userObj.email, 300)
     return { message: 'success', emailSent }
-
   }
 }

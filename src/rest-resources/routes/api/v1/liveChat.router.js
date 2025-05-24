@@ -20,65 +20,64 @@ import express from 'express'
 const args = { mergeParams: true }
 const liveChatRouter = express.Router(args)
 
-
 // liveChatRouter.route('/send-message')
 //     .post(contextMiddleware(true), isUserAuthenticated,
 //         requestValidationMiddleware(), LiveChatController.sendMessage)
 
 liveChatRouter.route('/send-tip')
-    .post(contextMiddleware(true), isUserAuthenticated,
-        requestValidationMiddleware(sendTipSchema), LiveChatController.sendTip)
+  .post(contextMiddleware(true), isUserAuthenticated,
+    requestValidationMiddleware(sendTipSchema), LiveChatController.sendTip)
 
 liveChatRouter.route('/join-chat-group')
-    .post(contextMiddleware(true), isUserAuthenticated,
-        requestValidationMiddleware(joinChatGroupSchema), LiveChatController.joinChatGroup)
+  .post(contextMiddleware(true), isUserAuthenticated,
+    requestValidationMiddleware(joinChatGroupSchema), LiveChatController.joinChatGroup)
 
 liveChatRouter.route('/get-chat-group')
-    .get(contextMiddleware(false), isUserAuthenticated,
-        requestValidationMiddleware(getChatGroupSchema), LiveChatController.getChatGroup)
+  .get(contextMiddleware(false), isUserAuthenticated,
+    requestValidationMiddleware(getChatGroupSchema), LiveChatController.getChatGroup)
 
 liveChatRouter.route('/get-chat')
-    .get(contextMiddleware(false), isUserAuthenticated,
-        requestValidationMiddleware(getGroupChatSchema), LiveChatController.getGroupChat)
+  .get(contextMiddleware(false), isUserAuthenticated,
+    requestValidationMiddleware(getGroupChatSchema), LiveChatController.getGroupChat)
 
 liveChatRouter.route('/share-event')
-    .post(contextMiddleware(true), isUserAuthenticated,
-        requestValidationMiddleware(shareEventSchema), LiveChatController.shareEvent)
+  .post(contextMiddleware(true), isUserAuthenticated,
+    requestValidationMiddleware(shareEventSchema), LiveChatController.shareEvent)
 
 liveChatRouter.route('/theme')
-    .get(contextMiddleware(false), isUserAuthenticated,
-        requestValidationMiddleware(getThemeSchema), LiveChatController.getTheme)
+  .get(contextMiddleware(false), isUserAuthenticated,
+    requestValidationMiddleware(getThemeSchema), LiveChatController.getTheme)
 
 liveChatRouter.route('/claim-chat-rain')
-    .post(contextMiddleware(true), isUserAuthenticated,
-        requestValidationMiddleware(claimChatRainSchema), LiveChatController.claimChatRain)
+  .post(contextMiddleware(true), isUserAuthenticated,
+    requestValidationMiddleware(claimChatRainSchema), LiveChatController.claimChatRain)
 
 liveChatRouter.route('/emit-chat-rain')
-    .post(contextMiddleware(true), isUserAuthenticated,
-        requestValidationMiddleware(emitChatRainSchema), LiveChatController.createChatRain)
+  .post(contextMiddleware(true), isUserAuthenticated,
+    requestValidationMiddleware(emitChatRainSchema), LiveChatController.createChatRain)
 
 liveChatRouter.route('/get-chat-rain')
-    .get(contextMiddleware(false), isUserAuthenticated,
-        requestValidationMiddleware(getChatRainSchema), LiveChatController.getChatRain)
+  .get(contextMiddleware(false), isUserAuthenticated,
+    requestValidationMiddleware(getChatRainSchema), LiveChatController.getChatRain)
 
 liveChatRouter.route('/get-reported-users')
-    .get(contextMiddleware(false), isUserAuthenticated,
-        requestValidationMiddleware(getReportedUserSchema), LiveChatController.getBlockedUser)
+  .get(contextMiddleware(false), isUserAuthenticated,
+    requestValidationMiddleware(getReportedUserSchema), LiveChatController.getBlockedUser)
 
 liveChatRouter.route('/block-reported-user')
-    .post(contextMiddleware(true), isUserAuthenticated,
-        requestValidationMiddleware(blockReportedUserSchema), LiveChatController.blockUser)
+  .post(contextMiddleware(true), isUserAuthenticated,
+    requestValidationMiddleware(blockReportedUserSchema), LiveChatController.blockUser)
 
 liveChatRouter.route('/unblock-reported-user')
-    .post(contextMiddleware(true), isUserAuthenticated,
-        requestValidationMiddleware(unblockReportedUserSchema), LiveChatController.unblockUser)
+  .post(contextMiddleware(true), isUserAuthenticated,
+    requestValidationMiddleware(unblockReportedUserSchema), LiveChatController.unblockUser)
 
 liveChatRouter.route('/get-chat-rule')
-    .get(contextMiddleware(false), isUserAuthenticated,
-        requestValidationMiddleware(getChatRuleSchema), LiveChatController.getChatRule)
+  .get(contextMiddleware(false), isUserAuthenticated,
+    requestValidationMiddleware(getChatRuleSchema), LiveChatController.getChatRule)
 
 liveChatRouter.route('/user-info')
-    .get(contextMiddleware(false), isUserAuthenticated,
-        requestValidationMiddleware(getUserInfoSchema), LiveChatController.getUserInfo)
+  .get(contextMiddleware(false), isUserAuthenticated,
+    requestValidationMiddleware(getUserInfoSchema), LiveChatController.getUserInfo)
 
 export { liveChatRouter }

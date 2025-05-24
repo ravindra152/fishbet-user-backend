@@ -1,27 +1,25 @@
-import db from "@src/db/models"
-import { AppError } from "@src/errors/app.error"
-import { createSignature } from "@src/helpers/veriff.helpers"
-import { VeriffAxios } from "@src/libs/axios/veriff.axios"
-import { BaseHandler } from "@src/libs/logicBase"
-import { sendMailjetEmail } from "@src/services/helper/email"
-import { DOCUMENT_STATUS_TYPES, DOCUMENT_TYPES, EMAIL_SUBJECTS, EMAIL_TEMPLATE_TYPES, VERIFF_STATUS } from "@src/utils/constant"
+import db from '@src/db/models'
+import { AppError } from '@src/errors/app.error'
+import { createSignature } from '@src/helpers/veriff.helpers'
+import { VeriffAxios } from '@src/libs/axios/veriff.axios'
+import { BaseHandler } from '@src/libs/logicBase'
+import { sendMailjetEmail } from '@src/services/helper/email'
+import { DOCUMENT_STATUS_TYPES, DOCUMENT_TYPES, EMAIL_SUBJECTS, EMAIL_TEMPLATE_TYPES, VERIFF_STATUS } from '@src/utils/constant'
 
 // const constraints = ajv.compile({ type: 'object' })
 
 export class UpdateKycStatusService extends BaseHandler {
-
-  async run() {
-
+  async run () {
     const transaction = this.dbTransaction
 
     const { ...payload } = this.args
     let newDocumentsList, query
     const veriffId = payload?.verification?.id || payload?.id || payload?.sessionId
-
+    const userId = payload?.userId;
+    console.log(payload);
     try {
-
       const userOtherDetails = await db.UserDetails.findOne({
-        where: { veriffApplicantId: veriffId, },
+        where: { userId: userId },
         attributes: ['userId', 'veriffApplicantId'],
         transaction
       })
@@ -30,11 +28,13 @@ export class UpdateKycStatusService extends BaseHandler {
         attributes: ['userId', 'veriffStatus', 'email', 'username', 'firstName', 'lastName', 'other'],
         transaction
       })
-      if (payload?.action === 'submitted') { // condition of event webhook
-        const data = await VeriffAxios.getVeriffDocuments(veriffId)
-        newDocumentsList = data?.result?.images
-      }
-      if (newDocumentsList && userOtherDetails?.veriffApplicantId) {
+
+      console.log("-------------------------->>>>",userDetails)
+      /* if (payload?.action === 'submitted') { // condition of event webhook
+          const data = await VeriffAxios.getVeriffDocuments(veriffId)
+          newDocumentsList = data?.result?.images
+      } */
+      /* if (newDocumentsList && userOtherDetails?.veriffApplicantId) {
         const uniqueDocs = {}
 
         for (const document of newDocumentsList) {
@@ -52,12 +52,15 @@ export class UpdateKycStatusService extends BaseHandler {
           }
         }
         query = { veriffApplicantId: veriffId, veriffStatus: DOCUMENT_STATUS_TYPES.REQUESTED }
-      }
+      } */
+     console.log("==========================>")
       if (veriffId && payload.status) { // condition of decision webhook
+
         let veriffStatus
         if (userOtherDetails?.veriffApplicantId) {
-          veriffStatus = payload.data?.verification?.decision || payload?.verification?.status
+          veriffStatus = payload?.verification?.decision || payload?.verification?.status
         }
+        console.log("?????===?????",payload.status,veriffStatus)
         query = { veriffStatus: veriffStatus }
         if (veriffStatus === VERIFF_STATUS.APPROVED) {
           await db.UserDocument.update({
@@ -67,7 +70,7 @@ export class UpdateKycStatusService extends BaseHandler {
             transaction
           })
           await db.User.update({
-            veriffStatus: VERIFF_STATUS.APPROVED,
+            veriffStatus: VERIFF_STATUS.APPROVED
             // other : {
             //   ...userDetails.other ,
             //   additionalVerification: ADDITIONAL_VERIFICATION_LEVELS.NOT_REQUIRED
@@ -94,22 +97,20 @@ export class UpdateKycStatusService extends BaseHandler {
           //   },
           //   // message: SUCCESS_MSG.EMAIL_SENT
           // })
-
-        } else if (veriffStatus === VERIFF_STATUS.DECLINED) {
-          await db.UserDocument.update({
+        } else if (veriffStatus === VERIFF_STATUS.DECLINED || veriffStatus ==='rejected') {
+          /* await db.UserDocument.update({
             status: DOCUMENT_STATUS_TYPES.REJECTED,
-            reason: payload?.verification?.reason
+            reason: payload?.verification?.reason,
           }, {
-            where: { userId: userDetails.userId, veriffApplicantId: veriffId },
+            where: { userId: userDetails.userId, },
             transaction
-          })
+          }) */
           await db.User.update({
             veriffStatus: VERIFF_STATUS.DECLINED
           }, {
-            where: { id: userDetails?.userId },
+            where: { userId: userDetails?.userId },
             transaction
           })
-
           // sending rejection mail
           // await sendMailjetEmail({
           //   userDetails,
@@ -120,6 +121,8 @@ export class UpdateKycStatusService extends BaseHandler {
           //   },
           //   // message: SUCCESS_MSG.EMAIL_SENT
           // })
+        }else{
+          console.log("Not match")
         }
       }
 
@@ -131,7 +134,7 @@ export class UpdateKycStatusService extends BaseHandler {
             veriffReason: payload?.verification?.reason
           }
         }, {
-          where: { userId: userDetails.userId },
+          where: { userId: userId },
           transaction
         })
       }

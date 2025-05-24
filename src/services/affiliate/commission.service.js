@@ -1,6 +1,6 @@
-import db from '@src/db/models';
+import db from '@src/db/models'
 // import ajv from '@src/libs/ajv';
-import { BaseHandler } from '@src/libs/logicBase';
+import { BaseHandler } from '@src/libs/logicBase'
 
 // const constraints = ajv.compile({
 //   type: 'object',
@@ -15,18 +15,17 @@ export class CreateAffiliateuserHandler extends BaseHandler {
   // get constraints() {
   //   return constraints;
   // }
-  async run() {
-    const { referredUserId, affiliateUserId } = this.args;
+  async run () {
+    const { referredUserId, affiliateUserId } = this.args
     const transaction = this.dbTransaction
     try {
       await db.UserAffiliations.create({
         affiliateUserId,
-        referredUserId,
+        referredUserId
       }, { transaction })
       return
     } catch (error) {
-      throw error;
+      throw error
     }
   }
-
 }

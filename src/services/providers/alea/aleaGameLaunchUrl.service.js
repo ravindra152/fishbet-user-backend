@@ -27,16 +27,16 @@ This service is used to accept game launch in real mode
 @extends {BaseHandler}
 */
 export class AleaGameLaunchHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     const { gameId, isMobile, userId, isDemo, coin, providerCasinoGameId } = this.args
     const environment_id = (coin !== COINS.GOLD_COIN) ? aleaCasinoConfig.ppEnvironmentId : aleaCasinoConfig.environmentId
     const sessionId = `${ALEA_SESSION_PREFIX}${userId}_${dayjs().valueOf()}`
     await setCache(sessionId, JSON.stringify({ userId, coin, gameId, providerCasinoGameId }), 1800)
-    const gameUrl = `https://play.aleaplay.com/api/v1/games/${providerCasinoGameId}?casinoSessionId=${sessionId}&environmentId=${environment_id}&locale=en&device=${isMobile ? 'MOBILE' : 'DESKTOP'}&gameMode=${isDemo === 'true' ? 'DEMO' : 'REAL'}&lobbyUrl=${encodeURIComponent(config.get('app.userFrontendUrl'))}`;
+    const gameUrl = `https://play.aleaplay.com/api/v1/games/${providerCasinoGameId}?casinoSessionId=${sessionId}&environmentId=${environment_id}&locale=en&device=${isMobile ? 'MOBILE' : 'DESKTOP'}&gameMode=${isDemo === 'true' ? 'DEMO' : 'REAL'}&lobbyUrl=${encodeURIComponent(config.get('app.userFrontendUrl'))}`
     return gameUrl
   }
 }

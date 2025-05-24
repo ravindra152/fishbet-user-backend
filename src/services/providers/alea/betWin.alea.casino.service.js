@@ -12,7 +12,7 @@ import { Op } from 'sequelize'
 // import { CreateCasinoTransactionHandler } from '../../common/createCasinoTransaction.service'
 
 export class BetAndWinAleaCasinoHandler extends BaseHandler {
-  async run() {
+  async run () {
     const id = this.args.id
     const casinoSessionId = this.args.casinoSessionId
     const bet = this.args.bet
@@ -24,10 +24,10 @@ export class BetAndWinAleaCasinoHandler extends BaseHandler {
     const walletFilterCoins = isGameCoin
       ? [COINS.GOLD_COIN]
       : [
-        COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-        COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-        COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-      ]
+          COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+          COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+          COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+        ]
 
     const transaction = this.dbTransaction
     const betAmount = bet.amount
@@ -63,7 +63,8 @@ export class BetAndWinAleaCasinoHandler extends BaseHandler {
       const wallets = await db.Wallet.findAll({
         attributes: ['id', 'balance'],
         where: {
-          userId, currencyCode: {
+          userId,
+          currencyCode: {
             [Op.in]: walletFilterCoins
           }
         }
@@ -78,7 +79,7 @@ export class BetAndWinAleaCasinoHandler extends BaseHandler {
       const checkTransaction = await db.CasinoTransaction.findOne({
         attributes: ['transactionId', 'gameRoundId'],
         where: {
-          transactionId: `${id}:bet`,
+          transactionId: `${id}:bet`
           // { roundId: round.id }
         },
         transaction
@@ -119,7 +120,6 @@ export class BetAndWinAleaCasinoHandler extends BaseHandler {
         status: TRANSACTION_STATUS.SUCCESS,
         metaData: this.args
       }, this.context)
-
 
       const winResult = await CreateCasinoTransactionHandler.execute({
         userId,

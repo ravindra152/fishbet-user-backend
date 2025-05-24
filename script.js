@@ -5,26 +5,25 @@ const _ = require('lodash')
 const servicesPath = 'src/services/'
 const serviceFolders = fs.readdirSync(servicesPath)
 
-
 function replaceErrorType (filePath) {
   let fileContent = fs.readFileSync(filePath).toString()
   if (fileContent.includes('return this.addError(')) {
     const regex = /return this\.addError\(([^)]+)\)/g
-    const errorStringsItr = fileContent.matchAll(regex);
+    const errorStringsItr = fileContent.matchAll(regex)
     // const errorStringsItr = fileContent.matchAll('return this.addError([^\n]+)')
     for (const errorString of errorStringsItr) {
       const errorThrowString = errorString[0]
       const errMessage = errorString[1]
       const baseErrorType = errMessage.replace(/'/g, '').replace(/ErrorType$/, '') // Remove "ErrorType" suffix
         .replace(/([a-z0-9])([A-Z])/g, '$1_$2') // Add underscores before capital letters
-        .toUpperCase(); // Convert to uppercase
+        .toUpperCase() // Convert to uppercase
 
       // Log the result in the correct format, ensuring no quotes around the constant
-      if (!fileContent.includes(`import { AppError } from "@src/errors/app.error"`)) {
-        fileContent = `import { AppError } from "@src/errors/app.error"\n` + fileContent;
+      if (!fileContent.includes('import { AppError } from "@src/errors/app.error"')) {
+        fileContent = 'import { AppError } from "@src/errors/app.error"\n' + fileContent
       }
-      if (!fileContent.includes(`import { Errors } from "@src/errors/errorCodes"\n`)) {
-        fileContent = `import { Errors } from "@src/errors/errorCodes"\n` + fileContent;
+      if (!fileContent.includes('import { Errors } from "@src/errors/errorCodes"\n')) {
+        fileContent = 'import { Errors } from "@src/errors/errorCodes"\n' + fileContent
       }
       fileContent = fileContent.replaceAll(errorThrowString, `throw new AppError(Errors.${baseErrorType.replace(/'/g, '')})`)
     }
@@ -67,7 +66,6 @@ function replaceImport (content) {
 //   fs.writeFileSync(filePath, fileContent)
 // }
 
-
 console.log(async () => [a, b, c])
 const { StatusCodes } = require('http-status-codes')
 
@@ -82,7 +80,7 @@ function convertErrorTypeToConstant (errorType) {
   const constantName = errorType.name
     .replace(/ErrorType$/, '') // Remove "ErrorType" suffix
     .replace(/([a-z0-9])([A-Z])/g, '$1_$2') // Add underscores before capital letters
-    .toUpperCase(); // Convert to uppercase
+    .toUpperCase() // Convert to uppercase
 
   customErros[constantName] = {
     name: errorType.name,
@@ -91,7 +89,6 @@ function convertErrorTypeToConstant (errorType) {
     code: errorType.errorCode,
     httpStatusCode: errorType.statusCode
   }
-  return
 }
 const customErros = {}
 for (const [key, errorType] of Object.entries(errors)) {
@@ -99,6 +96,5 @@ for (const [key, errorType] of Object.entries(errors)) {
 }
 console.log(customErros)
 // const jsObjectString = const customErrors = ${JSON.stringify(customErros, null, 2)};;
-
 
 // fs.writeFileSync('./customErrors.js', jsObjectString);

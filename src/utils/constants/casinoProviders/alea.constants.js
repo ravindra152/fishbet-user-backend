@@ -132,9 +132,9 @@ export const ALEA_ERROR_TYPES = {
   },
   INVALID_CASINO_PLAYER_ID: {
     statusCode: 500,
-    status: "ERROR",
-    code: "INVALID_REQUEST",
-    message: "Request Made with invalid casninoPlayerId"
+    status: 'ERROR',
+    code: 'INVALID_REQUEST',
+    message: 'Request Made with invalid casninoPlayerId'
   },
   GAME_SESSION_EXPIRE: {
     statusCode: 400,
@@ -143,7 +143,6 @@ export const ALEA_ERROR_TYPES = {
     message: 'Game Session Expired'
   }
 }
-
 
 export const ALEA_SESSION_PREFIX = 'alea-'
 export const ONE_GAME_HUB_SESSION_PREFIX = 'onegh-'

@@ -3,7 +3,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { serverDayjs } from '@src/libs/dayjs'
 
 export class GetRecentBigWinsHandler extends BaseHandler {
-  async run() {
+  async run () {
     const {
       pageNo = 1,
       limit = 10 // Default limit is 10

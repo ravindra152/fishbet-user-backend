@@ -20,7 +20,7 @@ const bucketName = config.get('aws.bucket')
  * @param {string} key - The key of the file in S3.
  * @returns {Promise<boolean>} - Returns true if the file exists, false otherwise.
  */
-export async function checkFileExists(key) {
+export async function checkFileExists (key) {
   try {
     const command = new HeadObjectCommand({
       Bucket: bucketName,
@@ -40,7 +40,7 @@ export async function checkFileExists(key) {
  * Delete a file from S3.
  * @param {string} key - The key of the file to delete.
  */
-export async function deleteFileFromS3(key) {
+export async function deleteFileFromS3 (key) {
   const command = new DeleteObjectCommand({
     Bucket: bucketName,
     Key: key
@@ -54,7 +54,7 @@ export async function deleteFileFromS3(key) {
  * @param {FileOpts} fileOpts - File options including name and path.
  * @returns {Promise<object>} - Returns the data of the uploaded file.
  */
-export async function s3FileUpload(file, fileOpts) {
+export async function s3FileUpload (file, fileOpts) {
   try {
     // const [extension1, extension2] = fileOpts.mimetype.split('/')
     // fileOpts.name = `${fileOpts.name.toLowerCase().replaceAll(' ', '_')}_${Date.now()}.${extension2 ?? extension1}`
@@ -67,7 +67,7 @@ export async function s3FileUpload(file, fileOpts) {
       Key: s3Key,
       Body: file,
       ContentType: fileOpts.mimetype,
-      ACL: 'public-read', // Uncomment and set ACL if needed
+      ACL: 'public-read' // Uncomment and set ACL if needed
     })
     const data = await s3Client.send(command)
     return { data, location: `https://${bucketName}.s3.${config.get('aws.region')}.amazonaws.com/${s3Key}` } // Return the data of the uploaded file

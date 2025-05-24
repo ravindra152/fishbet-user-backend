@@ -5,7 +5,7 @@ import { TRANSACTION_PURPOSE } from '@src/utils/constants/public.constants'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetSpinWheelListHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { userId } = this.args
     // Fetch the user's last spin wheel transaction
     const lastWheelRewardAwail = await db.Transaction.findOne({
@@ -22,11 +22,10 @@ export class GetSpinWheelListHandler extends BaseHandler {
         return {
           isAvailable: false,
           timeRemainingForNextSpin: msInOneDay - timeDifference,
-          message: SUCCESS_MSG.GET_SUCCESS,
+          message: SUCCESS_MSG.GET_SUCCESS
         }
       }
     }
-
 
     const wheelConfiguration = await db.WheelDivisionConfiguration.findAll({
       attributes: ['sc', 'gc', 'isAllow'],

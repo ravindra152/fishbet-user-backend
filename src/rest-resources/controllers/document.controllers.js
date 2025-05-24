@@ -5,7 +5,7 @@ import { validateFile } from '@src/utils/common'
 import { OK } from '@src/utils/constant'
 
 export default class DocumentController {
-  static async getDocumentLabels(req, res, next) {
+  static async getDocumentLabels (req, res, next) {
     try {
       const data = await GetDocumentLabelHandler.execute(req.body)
       sendResponse({ req, res, next }, data)
@@ -14,7 +14,7 @@ export default class DocumentController {
     }
   }
 
-  static async getUserDocument(req, res, next) {
+  static async getUserDocument (req, res, next) {
     try {
       const data = await GetUserDocumentHandler.execute(req.body)
       sendResponse({ req, res, next }, data)
@@ -23,7 +23,7 @@ export default class DocumentController {
     }
   }
 
-  static async updateUserDocument(req, res, next) {
+  static async updateUserDocument (req, res, next) {
     try {
       const fileCheckResponse = validateFile(res, req.file)
 
@@ -37,5 +37,4 @@ export default class DocumentController {
       next(error)
     }
   }
-
 }

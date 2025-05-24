@@ -42,7 +42,7 @@ const config = convict({
     origin: {
       default: '',
       env: 'ALLOWED_ORIGIN'
-    },
+    }
   },
   alea: {
     casino_id: {

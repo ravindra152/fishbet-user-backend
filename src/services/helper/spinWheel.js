@@ -1,4 +1,4 @@
-import { Logger } from "@src/libs/logger"
+import { Logger } from '@src/libs/logger'
 
 export const generateSpinWheelIndex = async (objects) => {
   try {

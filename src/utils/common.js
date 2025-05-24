@@ -20,8 +20,8 @@ import { ERROR_MSG } from './errors'
 
 export const comparePassword = async (password, userPassword) => {
   if (!password) return false
-  const decodedPassword = Buffer.from(password, 'base64').toString('ascii');
-  const result = await bcrypt.compare(decodedPassword, userPassword);
+  const decodedPassword = Buffer.from(password, 'base64').toString('ascii')
+  const result = await bcrypt.compare(decodedPassword, userPassword)
   return result
 }
 

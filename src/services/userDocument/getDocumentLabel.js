@@ -9,29 +9,27 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { STATUS_VALUE } from '@src/utils/constant'
 
 export class GetDocumentLabelHandler extends BaseHandler {
-   async run () {
+  async run () {
     const { user } = this.args
 
-  
-      let query = { isRequired: true }
+    let query = { isRequired: true }
 
-      if (user.documentLabels) {
-        if (user.kycStatus === STATUS_VALUE.RE_REQUESTED) {
-          query = { documentLabelId: { [Op.in]: user.documentLabels } }
-        } else {
-          query = { [Op.or]: { ...query, documentLabelId: { [Op.in]: user.documentLabels } } }
-        }
+    if (user.documentLabels) {
+      if (user.kycStatus === STATUS_VALUE.RE_REQUESTED) {
+        query = { documentLabelId: { [Op.in]: user.documentLabels } }
+      } else {
+        query = { [Op.or]: { ...query, documentLabelId: { [Op.in]: user.documentLabels } } }
       }
+    }
 
-      const documentLabel = await getAll({
-        model: db.DocumentLabel,
-        data: query,
-        attributes: ['documentLabelId', 'name']
-      })
+    const documentLabel = await getAll({
+      model: db.DocumentLabel,
+      data: query,
+      attributes: ['documentLabelId', 'name']
+    })
 
-      if (!documentLabel) throw new AppError(Errors.DOCUMENT_LABELS_NOT_FOUND)
+    if (!documentLabel) throw new AppError(Errors.DOCUMENT_LABELS_NOT_FOUND)
 
-      return { documentLabel, message: SUCCESS_MSG.GET_SUCCESS }
-   
+    return { documentLabel, message: SUCCESS_MSG.GET_SUCCESS }
   }
 }

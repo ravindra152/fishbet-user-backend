@@ -53,8 +53,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId'
     })
     CasinoTransaction.hasMany(models.TransactionLedger, {
-      foreignKey: 'transactionId', as: 'casinoLedger', onDelete: 'cascade', scope: {
-        transaction_type: 'casino',
+      foreignKey: 'transactionId',
+      as: 'casinoLedger',
+      onDelete: 'cascade',
+      scope: {
+        transaction_type: 'casino'
       }
     })
     CasinoTransaction.belongsTo(models.CasinoGame, {

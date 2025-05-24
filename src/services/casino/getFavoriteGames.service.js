@@ -6,7 +6,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { filterByGameName, pageValidation } from '@src/utils/common' // getLocation,
 
 export class GetFavoriteGamesHandler extends BaseHandler {
-  async run() {
+  async run () {
     // const { id, limit, pageNo, search, userId } = this.args
     const { limit, pageNo, search, userId } = this.args
     console.log(this.args)
@@ -52,6 +52,5 @@ export class GetFavoriteGamesHandler extends BaseHandler {
     if (!favoriteGames) throw new AppError(Errors.FAVORITE_GAMES_NOT_FOUND)
 
     return { favoriteGames }
-
   }
 }

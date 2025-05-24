@@ -7,17 +7,17 @@ import { Op } from 'sequelize'
 
 const schema = {
   type: 'object',
-  required: ['ipAddress'],
+  required: ['ipAddress']
 }
 
 const constraints = ajv.compile(schema)
 
 export class GetCasinoGamesHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     const {
       limit,
       pageNo,
@@ -26,39 +26,39 @@ export class GetCasinoGamesHandler extends BaseHandler {
       providerId,
       deviceType,
       userId,
-      ipAddress,
+      ipAddress
     } = this.args
 
     // Validate pagination
     const { page, size } = pageValidation(pageNo, limit)
 
     // Base query
-    let queryCategoy = { isActive: true };
-    let queryGames = { isActive: true };
-    let include = [];
+    let queryCategoy = { isActive: true }
+    let queryGames = { isActive: true }
+    const include = []
 
     // Category filter
     if (categoryId && categoryId !== 'all') {
-      queryCategoy = { ...queryCategoy, id: categoryId };
+      queryCategoy = { ...queryCategoy, id: categoryId }
     }
 
     // Search by name
     if (search) {
-      queryGames = filterByGameName(queryGames, search);
+      queryGames = filterByGameName(queryGames, search)
     }
 
     // Provider filter
     if (providerId) {
       if (Array.isArray(providerId)) {
-        queryGames.casinoProviderId = { [Op.in]: providerId };
+        queryGames.casinoProviderId = { [Op.in]: providerId }
       } else {
-        queryGames.casinoProviderId = providerId;
+        queryGames.casinoProviderId = providerId
       }
     }
 
     // Device type filter
     if (deviceType) {
-      queryGames = { ...queryGames, devices: { [Op.contains]: [deviceType] } };
+      queryGames = { ...queryGames, devices: { [Op.contains]: [deviceType] } }
     }
 
     // // Check location restrictions
@@ -90,7 +90,7 @@ export class GetCasinoGamesHandler extends BaseHandler {
         as: 'CasinoFavoriteGames',
         where: { userId },
         attributes: [[db.sequelize.literal('"CasinoFavoriteGames"."id" IS NOT NULL'), 'isFavorite']],
-        required: false,
+        required: false
       })
     }
 
@@ -107,9 +107,9 @@ export class GetCasinoGamesHandler extends BaseHandler {
           include,
           attributes: casinoGameAttributes,
           limit: size,
-          offset: (page - 1) * size,
-        },
-      ],
+          offset: (page - 1) * size
+        }
+      ]
     })
     const casinoGames = casinoGamesData.rows.map((category) => {
       category.CasinoGames = category.CasinoGames.map((game) => {
@@ -125,7 +125,7 @@ export class GetCasinoGamesHandler extends BaseHandler {
       casinoGames,
       count: casinoGamesData.count,
       categoryId: casinoGamesData.rows?.[0]?.categoryId || null,
-      message: SUCCESS_MSG.GET_SUCCESS,
+      message: SUCCESS_MSG.GET_SUCCESS
     }
 
     return response

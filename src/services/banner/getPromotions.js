@@ -4,7 +4,7 @@ import { pageValidation } from '@src/utils/common'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetPromotionsHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { limit, pageNo, category } = this.args
 
     const { page, size } = pageValidation(pageNo, limit)
@@ -21,6 +21,5 @@ export class GetPromotionsHandler extends BaseHandler {
     })
 
     return { promotions, message: SUCCESS_MSG.GET_SUCCESS }
-
   }
 }

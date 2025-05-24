@@ -6,10 +6,9 @@ import { SUCCESS_MSG } from '@src/utils/success'
 import { CreateLedgerHandlerHandler } from './createLedgerHandler'
 
 export class CreateWithdrawRequestHandler extends BaseHandler {
-  async run() {
-    let { amount, userId, currency, address } = this.args
+  async run () {
+    const { amount, userId, currency, address } = this.args
     const transaction = this.dbTransaction
-
 
     // Create Withdrawal Request with Transaction ID
     const withdrawalRequest = await db.WithdrawalRequest.create(
@@ -27,7 +26,7 @@ export class CreateWithdrawRequestHandler extends BaseHandler {
       userId,
       direction: LEDGER_DIRECTIONS[TRANSACTION_PURPOSE.REDEEM],
       amount,
-      currencyCode: COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
+      currencyCode: COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
     }, this.context)
     return {
       success: true,

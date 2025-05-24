@@ -1,7 +1,7 @@
 import config from '@src/configs/app.config'
 import db from '@src/db/models'
-import { AppError } from "@src/errors/app.error"
-import { Errors } from "@src/errors/errorCodes"
+import { AppError } from '@src/errors/app.error'
+import { Errors } from '@src/errors/errorCodes'
 import Logger from '@src/libs/logger'
 import { BaseHandler } from '@src/libs/logicBase'
 import { calculateHash } from '@src/utils/common'
@@ -9,9 +9,8 @@ import axios from 'axios'
 import qs from 'qs'
 
 export class PragmaticCreatePlayerHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { userId } = this.args
-
 
     const user = await db.User.findOne({
       where: { userId },
@@ -51,9 +50,10 @@ export class PragmaticCreatePlayerHandler extends BaseHandler {
     await user.save()
 
     return {}
-  } catch(error) {
+  }
+
+  catch (error) {
     Logger.error('Internal Server error', { exception: error })
     this.addError('InternalServerErrorType')
   }
 }
-

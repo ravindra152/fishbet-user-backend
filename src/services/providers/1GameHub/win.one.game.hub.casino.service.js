@@ -10,10 +10,8 @@ import db from '@src/db/models'
 import { Op } from 'sequelize'
 import querystring from 'querystring'
 
-
 export class WinOneGameHubGameCasinoHandler extends BaseHandler {
-  async run() {
-
+  async run () {
     const { transaction_id, currency, game_id, player_id, amount, round_id, ext_round_id, ext_round_finished, freerounds_id, extra } = this.args
     const transaction = this.dbTransaction
 
@@ -29,10 +27,10 @@ export class WinOneGameHubGameCasinoHandler extends BaseHandler {
     const walletFilterCoins = isGameCoin
       ? [COINS.GOLD_COIN]
       : [
-        COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-        COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-        COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-      ]
+          COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+          COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+          COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+        ]
 
     try {
       if (+amount < 0) return OneGameHubError.unknownError
@@ -40,7 +38,7 @@ export class WinOneGameHubGameCasinoHandler extends BaseHandler {
       const checkTransaction = await db.CasinoTransaction.findOne({
         where: {
           userId,
-          gameRoundId: round_id,
+          gameRoundId: round_id
         },
         attributes: ['transactionId'],
         transaction
@@ -54,32 +52,31 @@ export class WinOneGameHubGameCasinoHandler extends BaseHandler {
         where: {
           actionType: CASINO_TRANSACTION_PURPOSE.CASINO_BET,
           status: { [Op.ne]: TRANSACTION_STATUS.CANCELLED }, // Exclude cancelled transactions
-          gameRoundId: round_id,
+          gameRoundId: round_id
         },
         attributes: ['transactionId'],
         transaction
-      });
+      })
 
-      if (!isRoundCancelled)
-        return OneGameHubError.unknownError
+      if (!isRoundCancelled) { return OneGameHubError.unknownError }
 
       const checkWinTransaction = await db.CasinoTransaction.findOne({
         where: {
           transactionId: {
             [db.Sequelize.Op.in]: [`${transaction_id}:win`, `${transaction_id}:cancel`]
           },
-          gameRoundId: round_id, // round.id
+          gameRoundId: round_id // round.id
         },
         attributes: ['transactionId'],
         transaction
-      });
+      })
 
       if (checkWinTransaction) {
-
         const userWallet = await db.Wallet.findAll({
           attributes: ['id', 'balance'],
           where: {
-            userId, currencyCode: {
+            userId,
+            currencyCode: {
               [Op.in]: walletFilterCoins
             }
           },
@@ -98,13 +95,12 @@ export class WinOneGameHubGameCasinoHandler extends BaseHandler {
           currency: currency
         }
       } else {
-
         // issue_1 this part will never exicute because transactionId = "4345:bet" and transaction_id = "4345"
         if (checkTransaction.transactionId === transaction_id) {
           const userWallet = await db.Wallet.findOne({
             where: {
               userId,
-              currencyCode: { [Op.in]: walletFilterCoins },
+              currencyCode: { [Op.in]: walletFilterCoins }
             },
             lock: true,
             transaction
@@ -126,33 +122,29 @@ export class WinOneGameHubGameCasinoHandler extends BaseHandler {
         casinoGameId: gameId,
         currency: coin,
         transactionId: `${transaction_id}:win`,
-        gameRoundId: round_id,//round.id,
-        roundStatus: ext_round_finished == 0 ? false : true,
+        gameRoundId: round_id, // round.id,
+        roundStatus: ext_round_finished != 0,
         actionType: CASINO_TRANSACTION_PURPOSE.CASINO_WIN,
         status: TRANSACTION_STATUS.SUCCESS,
         metaData: this.args
       }, this.context)
 
       if (coin !== COINS.GOLD_COIN && amount > 0) {
-
         SendRecentBigWinHandler.execute({ userId, roundId: round_id, amount, gameId })
-
       }
-      await transaction.commit();
+      await transaction.commit()
 
       return {
         status: 200,
         balance: result.updatedBalance, // issue_1 here updated balance will never able to calculate properly
         currency: currency
       }
-
     } catch (error) {
-      console.error("Cancel Bet Error:", error);
+      console.error('Cancel Bet Error:', error)
       if (transaction) {
-        await transaction.rollback();
+        await transaction.rollback()
       }
-      return OneGameHubError.unknownError;
+      return OneGameHubError.unknownError
     }
-
   }
 }

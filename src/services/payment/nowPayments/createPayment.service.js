@@ -8,21 +8,24 @@ import { BaseHandler } from '@src/libs/logicBase'
 import axios from 'axios'
 import { GetCurrencyConversionService } from './getConversion.service'
 
-
 export class CreatePaymentService extends BaseHandler {
   async run () {
     try {
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
       const { packageId, currency, userId } = this.args
+      console.log("------------------------------>>>>CreatePaymentService", packageId)
+      console.log("------------------------------>>>>CreatePaymentService", currency)
+      console.log("------------------------------>>>>CreatePaymentService", userId)
+
       const packageDetails = await db.Package.findOne({
         where: { id: packageId, isActive: true },
         attributes: ['id', 'amount']
       })
+      console.log("------------------------------>>>>packageDetails", packageDetails)
       if (!packageDetails) throw new AppError(Errors.PACKAGE_NOT_FOUND)
 
-      const orderId = 'ORION-' + userId + '-' + packageDetails.id + '-' + dayjs().valueOf() + '-' + Math.random().toString().substring(2, 8)
+      const orderId = 'ORION-' + userId + '-' + packageDetails.dataValues.id + '-' + dayjs().valueOf() + '-' + Math.random().toString().substring(2, 8)
       const options = {
-        price_amount: packageDetails.amount,
+        price_amount: packageDetails.dataValues.amount,
         price_currency: 'usd',
         pay_currency: currency,
         ipn_callback_url: config.get('app.userBackendUrl') + '/api/v1/payment/get-payment-status',
@@ -32,10 +35,7 @@ export class CreatePaymentService extends BaseHandler {
         is_fee_paid_by_user: true
         // payin_extra_id: userId
       }
-
-      console.log('config nowPayment URL:>>>>>>>>>>>', config.get('nowPayment.url'))
-      console.log('config apiKey:>>>>>>>>>>>', config.get('nowPayment.apiKey'))
-
+      console.log("------------------------------>>>>options", options)
 
       const response = await axios({
         method: 'POST',
@@ -46,6 +46,15 @@ export class CreatePaymentService extends BaseHandler {
         },
         data: options
       })
+
+      console.log("------------------------------>>>>end")
+
+      console.log('config nowPayment URL:>>>>>>>>>>>', config.get('nowPayment.url'))
+      console.log('config apiKey:>>>>>>>>>>>', config.get('nowPayment.apiKey'))
+
+
+      console.log("------------------------------>>>>response", response)
+
       if (!response) throw new AppError(Errors.PAYMENT_PROVIDER_INACTIVE)
       const data = response.data
       // await db.UserDepositAddress.create({
@@ -53,7 +62,9 @@ export class CreatePaymentService extends BaseHandler {
       //   address: data.pay_address,
       //   currencyCode: currency
       // })
-      const estimatedAmount = await GetCurrencyConversionService.execute({ amount: packageDetails.amount, convertFrom: 'usd', convertTo: currency })
+      const estimatedAmount = await GetCurrencyConversionService.execute({ amount: packageDetails.dataValues.amount, convertFrom: 'usd', convertTo: currency })
+      console.log("------------------------------>>>>estimatedAmount", estimatedAmount)
+
       return { estimatedAmount, address: data.pay_address }
     } catch (error) {
       Logger.info('Error in payment', { exception: error })

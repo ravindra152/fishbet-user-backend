@@ -9,8 +9,7 @@ import { createInovioPaymentSchema } from '@src/json-schemas/inovioPayment/creat
 
 const inovioPaymentRouter = express.Router()
 
-//Nowpayments
+// Nowpayments
 inovioPaymentRouter.route('/create-payment').post(requestValidationMiddleware(), requestValidationMiddleware(createInovioPaymentSchema), isUserAuthenticated, contextMiddleware(true), PaymentController.createPayment)
-
 
 export { inovioPaymentRouter }

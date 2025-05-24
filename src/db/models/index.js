@@ -9,7 +9,6 @@ const basename = _basename(__filename)
 const env = config.get('env')
 const dbConfig = require('@src/configs/database.config')[env]
 
-
 const db = {}
 let sequelize
 if (databaseOptions) {

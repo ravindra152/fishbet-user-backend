@@ -1,6 +1,6 @@
 export const getUserDetailsSchema = {
   body: {
-    type: 'object',
+    type: 'object'
     // properties: { userId: { type: 'number' } },
     // required: ['userId']
   }

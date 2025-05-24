@@ -12,19 +12,15 @@ const schema = {
   required: ['id']
 }
 
-
-
 export class GetWalletAmountHandler extends BaseHandler {
   get constraints () {
     return constraints
   }
 
-   async run () {
+  async run () {
     const { id } = this.args
 
-  
-      const amount = await getOne({ model: db.Wallet, data: { ownerId: id }, as: 'userWallet', attributes: ['amount'] })
-      return { amount, message: SUCCESS_MSG.GET_SUCCESS }
-   
+    const amount = await getOne({ model: db.Wallet, data: { ownerId: id }, as: 'userWallet', attributes: ['amount'] })
+    return { amount, message: SUCCESS_MSG.GET_SUCCESS }
   }
 }

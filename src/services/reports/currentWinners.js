@@ -12,13 +12,12 @@ const schema = {
 }
 
 export class GetCurrentWinnerHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     let { limit } = this.args
-
 
     let query = { status: TRANSACTION_STATUS_CASINO.COMPLETED }
 
@@ -65,6 +64,5 @@ export class GetCurrentWinnerHandler extends BaseHandler {
     })
 
     return { currentWinners: await topPlayerResponse(currentWinners, true) }
-
   }
 }

@@ -17,8 +17,8 @@ app.use(helmet())
 app.use(
   bodyParser.json({
     verify: (req, res, buf) => {
-      req.rawBody = buf.toString(); // Save raw body as string
-    },
+      req.rawBody = buf.toString() // Save raw body as string
+    }
   })
 )
 
@@ -36,7 +36,6 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
-
 
 app.use(routes)
 

@@ -1,5 +1,5 @@
-import { Errors } from "@src/errors/errorCodes"
-import { AppError } from "@src/errors/app.error"
+import { Errors } from '@src/errors/errorCodes'
+import { AppError } from '@src/errors/app.error'
 import db from '@src/db/models'
 import ajv from '@src/libs/ajv'
 import { updateEntity } from '../helper/crud'
@@ -21,68 +21,64 @@ const schema = {
   required: ['id', 'password', 'user', 'type', 'portal']
 }
 
-
-
 export class SetDisableUntilHandler extends BaseHandler {
   get constraints () {
     return constraints
   }
 
-   async run () {
+  async run () {
     let { id, user, type, days, password, portal } = this.args
     const disableUntil = user.selfExclusion
     let timeStamp, isSelfExclusionPermanent
 
-  
-      if (!(await comparePassword(password, user.password))) throw new AppError(Errors.INCORRECT_PASSWORD)
+    if (!(await comparePassword(password, user.password))) throw new AppError(Errors.INCORRECT_PASSWORD)
 
-      if (disableUntil && new Date(disableUntil) >= new Date()) throw new AppError(Errors.USER_DISABLE_UNTIL_ERROR_TYPE)
+    if (disableUntil && new Date(disableUntil) >= new Date()) throw new AppError(Errors.USER_DISABLE_UNTIL_ERROR_TYPE)
 
-      if (!type) type = BREAK_TYPE.TAKE_A_BREAK
+    if (!type) type = BREAK_TYPE.TAKE_A_BREAK
 
-      if (type === BREAK_TYPE.TAKE_A_BREAK) {
-        if (days <= 0 || days > 30) throw new AppError(Errors.TAKE_ABREAK_DAY)
+    if (type === BREAK_TYPE.TAKE_A_BREAK) {
+      if (days <= 0 || days > 30) throw new AppError(Errors.TAKE_ABREAK_DAY)
 
+      const now = new Date()
+      now.setDate(now.getDate() + days)
+      timeStamp = now
+    } else if (type === BREAK_TYPE.SELF_EXCLUSION) {
+      if (days === -1) {
+        timeStamp = null
+        isSelfExclusionPermanent = true
+      } else {
         const now = new Date()
         now.setDate(now.getDate() + days)
         timeStamp = now
-      } else if (type === BREAK_TYPE.SELF_EXCLUSION) {
-        if (days === -1) {
-          timeStamp = null
-          isSelfExclusionPermanent = true
-        } else {
-          const now = new Date()
-          now.setDate(now.getDate() + days)
-          timeStamp = now
-          isSelfExclusionPermanent = false
-        }
+        isSelfExclusionPermanent = false
       }
+    }
 
-      let updateDisableUntil
+    let updateDisableUntil
 
-      if (type === BREAK_TYPE.TAKE_A_BREAK) {
-        updateDisableUntil = await updateEntity({
-          model: db.User,
-          data: { selfExclusion: timeStamp, selfExclusionUpdatedAt: new Date() },
-          values: { userId: id }
-        })
-      } else if (type === BREAK_TYPE.SELF_EXCLUSION && portal === SELF_EXCLUSION_TYPE.CURRENT) {
-        updateDisableUntil = await updateEntity({
-          model: db.Limit,
-          data: { selfExclusion: timeStamp, isSelfExclusionPermanent, selfExclusionType: portal, selfExclusionUpdatedAt: new Date() },
-          values: { userId: id }
-        })
-      } else if (type === BREAK_TYPE.SELF_EXCLUSION && portal === SELF_EXCLUSION_TYPE.ALL) {
-        const allPortalUserIds = await getAllPortalUserIds(user.email, days)
+    if (type === BREAK_TYPE.TAKE_A_BREAK) {
+      updateDisableUntil = await updateEntity({
+        model: db.User,
+        data: { selfExclusion: timeStamp, selfExclusionUpdatedAt: new Date() },
+        values: { userId: id }
+      })
+    } else if (type === BREAK_TYPE.SELF_EXCLUSION && portal === SELF_EXCLUSION_TYPE.CURRENT) {
+      updateDisableUntil = await updateEntity({
+        model: db.Limit,
+        data: { selfExclusion: timeStamp, isSelfExclusionPermanent, selfExclusionType: portal, selfExclusionUpdatedAt: new Date() },
+        values: { userId: id }
+      })
+    } else if (type === BREAK_TYPE.SELF_EXCLUSION && portal === SELF_EXCLUSION_TYPE.ALL) {
+      const allPortalUserIds = await getAllPortalUserIds(user.email, days)
 
-        updateDisableUntil = await updateEntity({
-          model: db.Limit,
-          data: { selfExclusion: timeStamp, isSelfExclusionPermanent, selfExclusionType: portal, selfExclusionUpdatedAt: new Date() },
-          values: { userId: allPortalUserIds }
-        })
-      }
+      updateDisableUntil = await updateEntity({
+        model: db.Limit,
+        data: { selfExclusion: timeStamp, isSelfExclusionPermanent, selfExclusionType: portal, selfExclusionUpdatedAt: new Date() },
+        values: { userId: allPortalUserIds }
+      })
+    }
 
-      return { updateDisableUntil, message: SUCCESS_MSG.UPDATE_SUCCESS }
-   
+    return { updateDisableUntil, message: SUCCESS_MSG.UPDATE_SUCCESS }
   }
 }

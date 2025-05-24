@@ -19,9 +19,8 @@ import { CreateVerificationModalService } from '@src/services/verification/userV
 import axios from 'axios'
 
 export default class VerificationController {
-
   static async createVerificationRecord (req, res, next) {
-    console.log("...req.body------------------------", req.body)
+    console.log('...req.body------------------------', req.body)
     try {
       const result = await CreateVerificationModalService.execute({ ...req.body }, req.context)
       sendResponse({ req, res, next }, result)
@@ -29,18 +28,17 @@ export default class VerificationController {
       next(error)
     }
   }
+
   static async checkVerification (req, res, next) {
-    console.log("...req.body------------------------", req.body)
-    var {phone_number} = req.body
+    console.log('...req.body------------------------', req.body)
+    const { phone_number } = req.body
     try {
       const response = await axios.post('https://api.bluassure.com/verify/phone', {
-        phone: phone_number,
-      });
-      console.log(response,">>>>>>>>>>>>>>>>>>>>>>>");
-
+        phone: phone_number
+      })
+      console.log(response, '>>>>>>>>>>>>>>>>>>>>>>>')
     } catch (error) {
       next(error)
     }
   }
-
 }

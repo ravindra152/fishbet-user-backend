@@ -3,13 +3,12 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { LEDGER_DIRECTIONS, LEDGER_TRANSACTION_TYPES } from '@src/utils/constants/public.constants'
 import { CreateLedgerHandlerHandler } from './createLedgerHandler'
 
-
 export class TransactionHandlerHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     const {
       adminId, userId, amount, currencyCode, status, purpose, paymentTransactionId,
       paymentProvider, moreDetails
@@ -40,4 +39,3 @@ export class TransactionHandlerHandler extends BaseHandler {
     return { transaction: { ...bankingTransaction, ledger } }
   }
 }
-

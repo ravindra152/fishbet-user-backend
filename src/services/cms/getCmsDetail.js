@@ -7,9 +7,8 @@ import { SUCCESS_MSG } from '@src/utils/success'
 import { getDynamicDataValue, insertDynamicDataInCmsTemplate } from '../helper/email'
 
 export class GetCmsPageHandler extends BaseHandler {
-  async run() {
+  async run () {
     let { cmsPageId, cmsSlug, language } = this.args
-
 
     let query
     if (cmsPageId) query = { cmsPageId }
@@ -25,6 +24,5 @@ export class GetCmsPageHandler extends BaseHandler {
     cmsDetails.content = await insertDynamicDataInCmsTemplate({ template: cmsDetails.content[language], dynamicData: await getDynamicDataValue() })
 
     return { cmsDetails, message: SUCCESS_MSG.GET_SUCCESS }
-
   }
 }

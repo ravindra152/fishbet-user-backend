@@ -78,19 +78,19 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     }
   },
-    {
-      sequelize,
-      tableName: 'casino_games',
-      schema: 'public',
-      indexes: [
-        {
-          unique: true,
-          fields: ['casino_game_id', 'casino_provider_id']
-        }
-      ],
-      timestamps: true,
-      underscored: true
-    })
+  {
+    sequelize,
+    tableName: 'casino_games',
+    schema: 'public',
+    indexes: [
+      {
+        unique: true,
+        fields: ['casino_game_id', 'casino_provider_id']
+      }
+    ],
+    timestamps: true,
+    underscored: true
+  })
 
   CasinoGame.associate = function (models) {
     CasinoGame.belongsTo(models.CasinoCategory, {

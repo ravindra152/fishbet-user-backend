@@ -5,7 +5,7 @@ import { config } from 'dotenv'
 import { LoadAleaGamesHandler } from './loadAleaGames.service'
 
 export class AleaGetPagesHandler extends BaseHandler {
-  async run() {
+  async run () {
     const languages = this.args.languages
     const env = config.env !== 'production' ? 'gamesAvailable' : 'gamesReady'
     const queryPageDetails = JSON.stringify({

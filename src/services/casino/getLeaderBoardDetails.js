@@ -23,41 +23,38 @@ const schema = {
   }
 }
 
-
-
 export class GetLeaderBoardDetails extends BaseHandler {
   get constraints () {
     return constraints
   }
 
-   async run () {
+  async run () {
     const { limit, pageNo, actionType, search } = this.args
     let query, gameName
     if (actionType) query = { actionType: actionType }
     if (search) gameName = { name: { [Op.iLike]: `%${search}%` } }
-  
-      const { page, size } = pageValidation(pageNo, limit)
-      const leaderBoardData = await db.CasinoTransaction.findAndCountAll({
-        where: query || {},
-        order: [['createdAt', 'DESC']],
-        limit: size,
-        offset: ((page - 1) * size),
-        attributes: ['userId', 'casinoGameId', 'amount', 'currencyCode', 'createdAt', 'actionType'],
-        include: [
-          {
-            model: db.User,
-            attributes: ['email', 'profileImage', 'isGhostMode',[db.Sequelize.literal('CASE WHEN is_ghost_mode = false THEN username ELSE NULL END'), 'username']] ,
-            required: false
-          },
-          {
-            model: db.CasinoGame,
-            where: gameName,
-            attributes: ['name'],
-          }
-        ]
-      })
 
-      return { leaderBoardData, message: SUCCESS_MSG.GET_SUCCESS }
-   
+    const { page, size } = pageValidation(pageNo, limit)
+    const leaderBoardData = await db.CasinoTransaction.findAndCountAll({
+      where: query || {},
+      order: [['createdAt', 'DESC']],
+      limit: size,
+      offset: ((page - 1) * size),
+      attributes: ['userId', 'casinoGameId', 'amount', 'currencyCode', 'createdAt', 'actionType'],
+      include: [
+        {
+          model: db.User,
+          attributes: ['email', 'profileImage', 'isGhostMode', [db.Sequelize.literal('CASE WHEN is_ghost_mode = false THEN username ELSE NULL END'), 'username']],
+          required: false
+        },
+        {
+          model: db.CasinoGame,
+          where: gameName,
+          attributes: ['name']
+        }
+      ]
+    })
+
+    return { leaderBoardData, message: SUCCESS_MSG.GET_SUCCESS }
   }
 }

@@ -9,11 +9,11 @@ import { CASINO_TRANSACTION_PURPOSE, COINS, LEDGER_DIRECTIONS, LEDGER_TRANSACTIO
 import { Op } from 'sequelize'
 
 export class CreateCasinoTransactionHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return transactionSchema
   }
 
-  async run() {
+  async run () {
     const {
       userId,
       amount,
@@ -24,7 +24,7 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
       roundStatus,
       actionType,
       status,
-      metaData,
+      metaData
     } = this.args
     const transaction = this.dbTransaction
     const { CasinoTransaction, Wallet } = db
@@ -33,18 +33,18 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
     const walletFilterCoins = isGameCoin
       ? [COINS.GOLD_COIN]
       : [
-        COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-        COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-        COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-      ]
+          COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+          COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+          COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+        ]
     // Fetch wallets
     const wallets = await Wallet.findAll({
       where: {
         userId,
-        currencyCode: { [Op.in]: walletFilterCoins },
+        currencyCode: { [Op.in]: walletFilterCoins }
       },
       lock: true,
-      transaction,
+      transaction
     })
 
     // Calculate total balance
@@ -67,7 +67,7 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
         roundStatus,
         actionType,
         metaData,
-        status,
+        status
       },
       { transaction }
     )
@@ -77,21 +77,21 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
         await AddUserTierProgressHandler.execute({
           userId: userId,
           // wageringThreshold: amount,
-          casinoGameId: casinoGameId,
+          casinoGameId: casinoGameId
         }, this.context)
       }
       await this.handleGameCoinTransaction({
         amount,
         wallet: wallets[0],
         actionType,
-        casinoTransaction,
+        casinoTransaction
       })
     } else {
       if (actionType === CASINO_TRANSACTION_PURPOSE.CASINO_BET) {
         await AddUserTierProgressHandler.execute({
           userId: userId,
           wageringThreshold: amount,
-          casinoGameId: casinoGameId,
+          casinoGameId: casinoGameId
         }, this.context)
       }
       await this.handleSweepCoinTransaction({
@@ -99,7 +99,7 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
         amount,
         actionType,
         currency,
-        casinoTransaction,
+        casinoTransaction
       })
     }
 
@@ -113,7 +113,7 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
     return { casinoTransaction, updatedBalance }
   }
 
-  async handleGameCoinTransaction({ amount, wallet, casinoTransaction, actionType }) {
+  async handleGameCoinTransaction ({ amount, wallet, casinoTransaction, actionType }) {
     await CreateLedgerHandlerHandler.execute(
       {
         amount,
@@ -122,20 +122,20 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
         userId: this.args.userId,
         transactionId: casinoTransaction.id,
         currencyCode: wallet.currencyCode,
-        transactionType: LEDGER_TRANSACTION_TYPES.CASINO,
+        transactionType: LEDGER_TRANSACTION_TYPES.CASINO
       },
       this.context
     )
   }
 
-  async handleSweepCoinTransaction({ wallets, amount, actionType, currency, casinoTransaction }) {
+  async handleSweepCoinTransaction ({ wallets, amount, actionType, currency, casinoTransaction }) {
     let remainingAmount = amount
 
     if (actionType === CASINO_TRANSACTION_PURPOSE.CASINO_BET) {
       const walletOrder = [
         COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
         COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-        COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
+        COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
       ]
 
       for (const currencyCode of walletOrder) {
@@ -151,7 +151,7 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
                 userId: this.args.userId,
                 direction: LEDGER_DIRECTIONS[actionType],
                 transactionId: casinoTransaction.id,
-                currencyCode: wallet.currencyCode,
+                currencyCode: wallet.currencyCode
               },
               this.context
             )
@@ -176,7 +176,7 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
             userId: this.args.userId,
             direction: LEDGER_DIRECTIONS[actionType],
             transactionId: casinoTransaction.id,
-            currencyCode: targetWallet.currencyCode,
+            currencyCode: targetWallet.currencyCode
           },
           this.context
         )
@@ -184,7 +184,7 @@ export class CreateCasinoTransactionHandler extends BaseHandler {
     }
   }
 
-  getTargetWalletCode(currency) {
+  getTargetWalletCode (currency) {
     switch (currency) {
       case COINS.SWEEP_COIN.BONUS_SWEEP_COIN:
         return COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN

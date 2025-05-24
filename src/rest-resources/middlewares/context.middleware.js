@@ -25,7 +25,7 @@ const errorStatusCodes = ['4', '5']
  *
  * It will also start the transaction and at the end of the response it will commit it or rollback as per the data based on automaticTransaction
  */
-export default function contextMiddleware(automaticTransaction = false) {
+export default function contextMiddleware (automaticTransaction = false) {
   return async (req, res, next) => {
     const context = {}
     context.req = req

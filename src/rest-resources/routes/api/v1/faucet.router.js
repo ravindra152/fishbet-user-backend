@@ -10,7 +10,7 @@ const args = { mergeParams: true }
 const faucetRouter = express.Router(args)
 
 faucetRouter.route('/')
-  .get(contextMiddleware(false), requestValidationMiddleware(getFaucetSchema),isUserAuthenticated, FaucetController.getFaucets)
-  .post(contextMiddleware(true), requestValidationMiddleware(awailFaucetSchema),isUserAuthenticated, FaucetController.awailFaucets)
+  .get(contextMiddleware(false), requestValidationMiddleware(getFaucetSchema), isUserAuthenticated, FaucetController.getFaucets)
+  .post(contextMiddleware(true), requestValidationMiddleware(awailFaucetSchema), isUserAuthenticated, FaucetController.awailFaucets)
 
 export { faucetRouter }

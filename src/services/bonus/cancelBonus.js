@@ -6,10 +6,9 @@ import { USER_BONUS_STATUS_VALUES } from '@src/utils/constants/bonus.constants'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class CancelBonusHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { userId, userBonusId } = this.args
     const transaction = this.context.sequelizeTransaction
-
 
     const userBonusExists = await db.UserBonus.findOne({
       where: { userId, id: userBonusId },
@@ -21,6 +20,5 @@ export class CancelBonusHandler extends BaseHandler {
     await userBonusExists.set({ bonusStatus: USER_BONUS_STATUS_VALUES.FORFEITED }).save({ transaction })
 
     return { success: true, message: SUCCESS_MSG.CANCEL_SUCCESS }
-
   }
 }

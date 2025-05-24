@@ -19,5 +19,4 @@ ticketRouter.route('/message')
   .get(contextMiddleware(false), requestValidationMiddleware(getTicketMessagesSchema), isUserAuthenticated, TicketController.getTicketMessages)
   .post(contextMiddleware(true), requestValidationMiddleware(createTicketMessageSchema), isUserAuthenticated, TicketController.createTicketMessage)
 
-
 export { ticketRouter }

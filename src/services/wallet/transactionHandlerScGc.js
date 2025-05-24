@@ -5,13 +5,12 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { LEDGER_DIRECTIONS, LEDGER_TRANSACTION_TYPES } from '@src/utils/constants/public.constants'
 import { CreateLedgerHandlerHandler } from './createLedgerHandler'
 
-
 export class TransactionScGcHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     const {
       adminId, userId, coinData = [], status, purpose, paymentProvider, moreDetails
     } = this.args
@@ -41,8 +40,6 @@ export class TransactionScGcHandler extends BaseHandler {
           }, this.context)
         )
       )
-
-
 
       return { transaction: { ...bankingTransaction, ledger } }
     } catch (error) {

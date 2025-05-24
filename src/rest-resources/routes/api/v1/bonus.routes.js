@@ -14,9 +14,8 @@ const bonusRouter = express.Router(args)
 bonusRouter.route('/drop-bonus').get(contextMiddleware(false), isUserAuthenticated, requestValidationMiddleware(getDropBonusSchema), BonusController.GetDropBonus)
 bonusRouter.route('/claim-bonus-drop').post(contextMiddleware(true), isUserAuthenticated, requestValidationMiddleware(claimBonusDropSchema), BonusController.claimDropbonus)
 
-//welcome Bonus
+// welcome Bonus
 bonusRouter.route('/get-welcome-bonus').get(contextMiddleware(false), isUserAuthenticated, requestValidationMiddleware({}), BonusController.getWelcomebonus)
 bonusRouter.route('/claim-welcome-bonus').post(contextMiddleware(true), isUserAuthenticated, requestValidationMiddleware(claimWelcomeBonusSchema), BonusController.claimWelcomebonus)
-
 
 export { bonusRouter }

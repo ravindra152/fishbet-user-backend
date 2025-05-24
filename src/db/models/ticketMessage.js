@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     ticketId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     senderId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     message: {
       type: DataTypes.TEXT,
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     isAdminResponse: {
       type: DataTypes.BOOLEAN,
       allowNull: false
-    },
+    }
   }, {
     sequelize,
     tableName: 'ticket_messages',

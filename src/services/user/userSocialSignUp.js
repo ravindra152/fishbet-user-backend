@@ -1,7 +1,7 @@
 import config from '@src/configs/app.config'
 import db from '@src/db/models'
-import { AppError } from "@src/errors/app.error"
-import { Errors } from "@src/errors/errorCodes"
+import { AppError } from '@src/errors/app.error'
+import { Errors } from '@src/errors/errorCodes'
 import { BaseHandler } from '@src/libs/logicBase'
 import { encryptPassword } from '@src/utils/common'
 import { SUCCESS_MSG } from '@src/utils/success'
@@ -9,21 +9,18 @@ import jwt from 'jsonwebtoken'
 import { PragmaticCreatePlayerHandler } from '../casino'
 import { createNewEntity, getAll, getOne, updateEntity } from '../helper/crud'
 
-
-
 export class UserSocialSignUpHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
+  async run () {
     let kycStatus
     let {
       firstName, lastName, email, password, phone, phoneCode, gender, dateOfBirth,
       username, countryCode, signInType
     } = this.args
     const transaction = await db.sequelize.transaction()
-
 
     email = email.toLowerCase()
 
@@ -143,4 +140,3 @@ export class UserSocialSignUpHandler extends BaseHandler {
     return { createUser, message: SUCCESS_MSG.CREATE_SUCCESS }
   }
 }
-

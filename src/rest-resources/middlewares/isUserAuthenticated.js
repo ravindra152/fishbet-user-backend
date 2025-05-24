@@ -15,7 +15,7 @@ export async function isUserAuthenticated (req, res, next) {
     const decodedToken = Jwt.verify(accessToken, config.get('jwt.tokenSecret'))
     if (decodedToken.type !== JWT_TOKEN_TYPES.LOGIN) return next(new AppError(Errors.INVALID_TOKEN))
     const token = await getCache(`${decodedToken.userId}:ACCESS_TOKEN`)
-    console.log("token-----------------", token)
+    console.log('token-----------------', token)
     // if (token !== accessToken) return next(new AppError(Errors.INVALID_TOKEN))
 
     const user = await db.User.findOne({
@@ -35,7 +35,6 @@ export async function isUserAuthenticated (req, res, next) {
   }
 }
 
-
 export async function semiAuth (req, res, next) {
   try {
     const accessToken = req.headers.authorization?.split('Bearer ')[1]
@@ -44,10 +43,10 @@ export async function semiAuth (req, res, next) {
         if (err) {
           throw err
         }
-        next();
-      });
+        next()
+      })
     } else {
-      next();
+      next()
     }
   } catch (error) {
     next(new AppError(Errors.INVALID_TOKEN))

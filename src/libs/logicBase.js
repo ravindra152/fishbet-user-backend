@@ -11,16 +11,15 @@ import { Logger } from './logger'
  * @property {Object} transaction - Database transaction instance.
  */
 export class BaseHandler {
-  constructor(args = {}, context = {}) {
+  constructor (args = {}, context = {}) {
     this.args = args
     this.context = context
     this.dbTransaction = context.sequelizeTransaction
   }
 
-  static async execute(args = {}, context = {}) {
+  static async execute (args = {}, context = {}) {
     const startTime = dayjs()
     const handlerName = this.name.toUpperCase()
-
 
     const instance = new this(args, context)
 
@@ -36,11 +35,11 @@ export class BaseHandler {
     }
   }
 
-  async run() {
+  async run () {
     throw new Error('The run() method must be implemented in subclass')
   }
 
-  async handleError(error) {
+  async handleError (error) {
     const handlerName = this.constructor.name.toUpperCase()
     Logger.error({ error }, `------------------------ ${handlerName} - Execution failed ------------------------`)
 
@@ -60,7 +59,7 @@ export class BaseHandler {
       ...Errors.INTERNAL_ERROR,
       message: error.message || error.description,
       stack: error.stack,
-      handler: handlerName,
+      handler: handlerName
     })
   }
 }

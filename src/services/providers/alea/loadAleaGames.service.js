@@ -44,7 +44,7 @@ export class LoadAleaGamesHandler extends BaseHandler {
      * @param {Language[]} languages
      * @param {string} defaultName
      */
-  getNames(languages, defaultName) {
+  getNames (languages, defaultName) {
     return languages.reduce((prev, language) => {
       prev[language.code] = defaultName
       return prev
@@ -58,7 +58,7 @@ export class LoadAleaGamesHandler extends BaseHandler {
      * @param {import ('sequelize').Transaction} transaction
      * @returns {{ id: string }}
      */
-  async createAggregator(uniqueId, name, languages, transaction) {
+  async createAggregator (uniqueId, name, languages, transaction) {
     const aggregatorNames = this.getNames(languages, name)
     const [aggregator] = await this.context.sequelize.models.casinoAggregator.findOrCreate({
       defaults: { name: aggregatorNames, uniqueId },
@@ -78,7 +78,7 @@ export class LoadAleaGamesHandler extends BaseHandler {
      * @param {import ('sequelize').Transaction} transaction
      * @returns {Object.<string, string>}
      */
-  async createProviders(aggregatorId, providers, languages, transaction) {
+  async createProviders (aggregatorId, providers, languages, transaction) {
     // Create a map to filter out duplicates based on provider.software.id
     const uniqueProvidersMap = new Map()
 
@@ -114,7 +114,7 @@ export class LoadAleaGamesHandler extends BaseHandler {
      * @param {import ('sequelize').Transaction} transaction
      * @returns {Object.<string, string>}
      */
-  async createCategories(categories, languages, transaction) {
+  async createCategories (categories, languages, transaction) {
     const updatedCategories = await this.context.sequelize.models.casinoCategory.bulkCreate(categories.map(category => {
       return {
         uniqueId: category.id,
@@ -141,7 +141,7 @@ export class LoadAleaGamesHandler extends BaseHandler {
      * @param {import ('sequelize').Transaction} transaction
      * @returns {Boolean}
      */
-  async createGames(categoryIdsMap, providerIdsMap, games, languages, transaction) {
+  async createGames (categoryIdsMap, providerIdsMap, games, languages, transaction) {
     await this.context.sequelize.models.casinoGame.bulkCreate(games.reduce((prev, game) => {
       const providerId = providerIdsMap[game.software.id]
       if (!providerId) return prev

@@ -79,7 +79,7 @@ export const CUSTOMER_IO_TRANSACTION_ID = {
   SIGNUP_SUCCESS: 'signup_success'
 }
 export const GLOBAL_SETTING = {
-  BANNER_DOWNLOAD: "banner_download"
+  BANNER_DOWNLOAD: 'banner_download'
 }
 
 export const TRANSACTION_STATUS = {
@@ -1864,7 +1864,6 @@ export const CALL_BACK_STATUS = {
     OPERATION_IN_PROCESS: 'OPERATION_IN_PROCESS'
   }
 }
-
 
 const ASSETS = 'assets'
 

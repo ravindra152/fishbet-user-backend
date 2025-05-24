@@ -1,32 +1,32 @@
-import db from "@src/db/models";
+import db from '@src/db/models'
 // import { AMOUNT_TYPE, PAYMENT_PROVIDER, TRANSACTION_STATUS, TRANSACTION_TYPE } from '@src/utils/constant'
-import { dayjs } from '@src/libs/dayjs';
-import { BaseHandler } from "@src/libs/logicBase";
-import { calculatePurchasedCoins } from "@src/services/helper/payment";
-import { CreateLedgerHandlerHandler } from "@src/services/wallet";
-import { ClaimDepositBonusHandler } from "@src/services/bonus/depositBonus/claimDepositBonus.handler";
+import { dayjs } from '@src/libs/dayjs'
+import { BaseHandler } from '@src/libs/logicBase'
+import { calculatePurchasedCoins } from '@src/services/helper/payment'
+import { CreateLedgerHandlerHandler } from '@src/services/wallet'
+import { ClaimDepositBonusHandler } from '@src/services/bonus/depositBonus/claimDepositBonus.handler'
 import { AddUserTierProgressHandler } from '@src/services/userTierProgress'
 
 import {
   PAYMENT_PROVIDER,
   TRANSACTION_STATUS
-} from "@src/utils/constant";
+} from '@src/utils/constant'
 import {
   NOWPAYMENT_WEBHOOK_MAPPING,
   NOWPAYMENT_WEBHOOK_REDEEM_STATUS,
-  NOWPAYMENT_WEBHOOK_STATUS,
-} from "@src/utils/constants/payment.constants";
+  NOWPAYMENT_WEBHOOK_STATUS
+} from '@src/utils/constants/payment.constants'
 import {
   COINS,
   LEDGER_DIRECTIONS,
   LEDGER_TRANSACTION_TYPES,
   TRANSACTION_PURPOSE,
   WITHDRAWAL_STATUS
-} from "@src/utils/constants/public.constants";
-import { GetCurrencyConversionService } from "./getConversion.service";
+} from '@src/utils/constants/public.constants'
+import { GetCurrencyConversionService } from './getConversion.service'
 
 export class GetPaymentIPNService extends BaseHandler {
-  async run() {
+  async run () {
     const {
       id,
       payment_status,
@@ -40,9 +40,9 @@ export class GetPaymentIPNService extends BaseHandler {
       actually_paid_at_fiat,
       actually_paid,
       status,
-      amount,
-    } = this.args;
-    const transaction = this.context.sequelizeTransaction;
+      amount
+    } = this.args
+    const transaction = this.context.sequelizeTransaction
     // purchase/payment case
     if (order_id || payment_id) {
       if (
@@ -50,44 +50,42 @@ export class GetPaymentIPNService extends BaseHandler {
         payment_status === NOWPAYMENT_WEBHOOK_STATUS.CONFIRMING ||
         payment_status === NOWPAYMENT_WEBHOOK_STATUS.SENDING
       ) {
-        return { success: true, message: "Status Ignored" };
+        return { success: true, message: 'Status Ignored' }
       }
 
-      const userId = order_id.split("-")[1];
-      const packageId = order_id.split("-")[2];
+      const userId = order_id.split('-')[1]
+      const packageId = order_id.split('-')[2]
 
       const user = await db.User.findOne({
         where: { userId },
-        transaction,
-      });
-      if (!user) return { success: false, message: "User Not Exists" };
+        transaction
+      })
+      if (!user) return { success: false, message: 'User Not Exists' }
 
       let checkTransaction = await db.Transaction.findOne({
         where: {
           paymentProviderId: payment_id.toString(),
-          userId: userId,
+          userId: userId
           // actioneeId: userId,
           // actioneeType: WALLET_OWNER_TYPES.USER,
         },
         attributes: [
-          "transactionId",
-          "paymentProviderId",
-          "status",
-          "userId",
+          'transactionId',
+          'paymentProviderId',
+          'status',
+          'userId'
           // "actioneeType",
         ],
-        transaction,
-      });
+        transaction
+      })
       if (
         checkTransaction &&
         (checkTransaction.dataValues.status).trim().toLowerCase() === TRANSACTION_STATUS.SUCCESS.trim().toLowerCase()
       ) {
-
-        return { status: 200, message: "Transaction already processed." };
+        return { status: 200, message: 'Transaction already processed.' }
       }
 
       if (!checkTransaction) {
-
         checkTransaction = await db.Transaction.create(
           {
             userId: userId,
@@ -97,27 +95,25 @@ export class GetPaymentIPNService extends BaseHandler {
             paymentProviderId: payment_id.toString(),
             status: NOWPAYMENT_WEBHOOK_MAPPING[payment_status],
             paymentProvider: PAYMENT_PROVIDER.NOWPAYMENT,
-            moreDetails: { ...this.args },
+            moreDetails: { ...this.args }
           },
           { transaction }
-        );
-
+        )
       } else {
-        checkTransaction.status = NOWPAYMENT_WEBHOOK_MAPPING[payment_status];
-        await checkTransaction.save({ transaction });
-
+        checkTransaction.status = NOWPAYMENT_WEBHOOK_MAPPING[payment_status]
+        await checkTransaction.save({ transaction })
       }
       if (
         payment_status === NOWPAYMENT_WEBHOOK_STATUS.PARTIALLY_PAID ||
         payment_status === NOWPAYMENT_WEBHOOK_STATUS.FINISHED ||
         payment_status === NOWPAYMENT_WEBHOOK_STATUS.CONFIRMED
       ) {
-        checkTransaction.status = TRANSACTION_STATUS.SUCCESS;
+        checkTransaction.status = TRANSACTION_STATUS.SUCCESS
 
         const packageDetails = await db.Package.findOne({
           where: { id: packageId },
-          transaction,
-        });
+          transaction
+        })
 
         const estimatedAmount = await GetCurrencyConversionService.execute({ amount: actually_paid, convertFrom: pay_currency, convertTo: 'usd' })
         const { gcCoins, scCoins } = calculatePurchasedCoins({
@@ -129,15 +125,15 @@ export class GetPaymentIPNService extends BaseHandler {
           //     ? actually_paid_at_fiat
           //     : price_amount,
           amountPaid: estimatedAmount
-        });
+        })
         // calling service for purchase bonus if any available
         await ClaimDepositBonusHandler.execute(
           {
-            scCoins: scCoins, gcCoins: gcCoins, userId,
+            scCoins: scCoins, gcCoins: gcCoins, userId
             // purchaseAmount: estimatedAmount
           },
           this.context
-        );
+        )
 
         // }
 
@@ -148,11 +144,11 @@ export class GetPaymentIPNService extends BaseHandler {
             userId: userId,
             direction: LEDGER_DIRECTIONS[TRANSACTION_PURPOSE.PURCHASE],
             currencyCode: COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-            amount: scCoins,
+            amount: scCoins
           },
 
           this.context
-        );
+        )
 
         await AddUserTierProgressHandler.execute({
           userId: userId,
@@ -166,16 +162,15 @@ export class GetPaymentIPNService extends BaseHandler {
             userId: userId,
             direction: LEDGER_DIRECTIONS[TRANSACTION_PURPOSE.PURCHASE],
             currencyCode: COINS.GOLD_COIN,
-            amount: gcCoins,
+            amount: gcCoins
           },
           this.context
-        );
+        )
 
-
-        await checkTransaction.save({ transaction });
+        await checkTransaction.save({ transaction })
       } else {
-        checkTransaction.status = NOWPAYMENT_WEBHOOK_MAPPING[payment_status];
-        checkTransaction.save({ transaction });
+        checkTransaction.status = NOWPAYMENT_WEBHOOK_MAPPING[payment_status]
+        checkTransaction.save({ transaction })
       }
     } else if (id) {
       // Redeem case
@@ -187,24 +182,23 @@ export class GetPaymentIPNService extends BaseHandler {
         status.toLowerCase() === NOWPAYMENT_WEBHOOK_REDEEM_STATUS.CREATING.toLowerCase() ||
         status.toLowerCase() === NOWPAYMENT_WEBHOOK_REDEEM_STATUS.EXPIRED.toLowerCase()
       ) {
-        return { success: true, message: "Status Ignored" };
+        return { success: true, message: 'Status Ignored' }
       }
 
       const paymentTransaction = await db.Transaction.findOne({
         where: { paymentProviderId: id.toString() },
-        transaction,
-      });
+        transaction
+      })
       if (!paymentTransaction) {
-        return { status: 200, message: "Withdraw ID do not exists." };
+        return { status: 200, message: 'Withdraw ID do not exists.' }
       }
-      const userId = paymentTransaction.userId;
+      const userId = paymentTransaction.userId
 
       if (
         status.trim().toLowerCase() === NOWPAYMENT_WEBHOOK_REDEEM_STATUS.FAILED.trim().toLowerCase() ||
         status.trim().toLowerCase() === NOWPAYMENT_WEBHOOK_REDEEM_STATUS.REJECTED.trim().toLowerCase()
 
       ) {
-
         await CreateLedgerHandlerHandler.execute(
           {
             transactionId: paymentTransaction.transactionId,
@@ -212,15 +206,15 @@ export class GetPaymentIPNService extends BaseHandler {
             userId: userId,
             direction: LEDGER_DIRECTIONS[TRANSACTION_PURPOSE.REDEEM_REFUND],
             currencyCode: COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-            amount,
+            amount
           },
           this.context
-        );
+        )
       }
 
       if (status.toLowerCase() === NOWPAYMENT_WEBHOOK_REDEEM_STATUS.FINISHED.toLowerCase()) {
         paymentTransaction.status = TRANSACTION_STATUS.SUCCESS
-        await paymentTransaction.save({ transaction });
+        await paymentTransaction.save({ transaction })
         await db.WithdrawalRequest.update({ status: WITHDRAWAL_STATUS.SUCCESS, confirmedAt: dayjs() }, {
           where:
           {
@@ -230,14 +224,11 @@ export class GetPaymentIPNService extends BaseHandler {
           transaction
         })
       } else {
-
         paymentTransaction.status = TRANSACTION_STATUS.FAILED
-        await paymentTransaction.save({ transaction });
-
+        await paymentTransaction.save({ transaction })
       }
-
     }
 
-    return { success: true };
+    return { success: true }
   }
 }

@@ -5,7 +5,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { getRequestIP } from '@src/utils/common'
 
 export class TierHandlerHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { userId, level } = this.args
     const transaction = this.dbTransaction
 
@@ -34,7 +34,7 @@ export class TierHandlerHandler extends BaseHandler {
       where: { level: vipTier.level + 1 },
       attributes: ['vipTierId', 'level'],
       transaction
-    });
+    })
 
     if (!userDetails) {
       // If user details do not exist, create a new entry

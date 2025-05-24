@@ -3,7 +3,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { dayjs } from '@src/libs/dayjs'
 
 export class GetCasinoTransactionHandler extends BaseHandler {
-  async run() {
+  async run () {
     const {
       pageNo = 1,
       limit = 10,

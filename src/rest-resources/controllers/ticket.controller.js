@@ -4,15 +4,16 @@ import { CreateTicketMessageHandler, CreateTicketHandler, GetTicketMessagesHandl
 export default class TicketController {
   static async getTickets (req, res, next) {
     try {
-      const data = await GetTicketHandler.execute({...req.query,...req.body},req.context)
+      const data = await GetTicketHandler.execute({ ...req.query, ...req.body }, req.context)
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)
     }
   }
+
   static async createTicket (req, res, next) {
     try {
-      const data = await CreateTicketHandler.execute(req.body,req.context)
+      const data = await CreateTicketHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)
@@ -21,7 +22,7 @@ export default class TicketController {
 
   static async getTicketMessages (req, res, next) {
     try {
-      const data = await GetTicketMessagesHandler.execute({...req.query,...req.body},req.context)
+      const data = await GetTicketMessagesHandler.execute({ ...req.query, ...req.body }, req.context)
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)
@@ -30,7 +31,7 @@ export default class TicketController {
 
   static async createTicketMessage (req, res, next) {
     try {
-      const data = await CreateTicketMessageHandler.execute(req.body,req.context)
+      const data = await CreateTicketMessageHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)

@@ -7,11 +7,10 @@ import { COINS } from '@src/utils/constants/public.constants'
 import { Op } from 'sequelize'
 
 export class GetBalanceAleaCasinoHandler extends BaseHandler {
-  async run() {
-    const { casinoSessionId } = this.args;
+  async run () {
+    const { casinoSessionId } = this.args
 
     try {
-
       // checking signature
       if (!verifySignature(this.args)) {
         return ALEA_ERROR_TYPES.INVALID_SIGNATURE
@@ -37,16 +36,17 @@ export class GetBalanceAleaCasinoHandler extends BaseHandler {
         coin === COINS.GOLD_COIN
           ? [COINS.GOLD_COIN]
           : [
-            COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
-            COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
-            COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN,
-          ]
+              COINS.SWEEP_COIN.BONUS_SWEEP_COIN,
+              COINS.SWEEP_COIN.PURCHASE_SWEEP_COIN,
+              COINS.SWEEP_COIN.REDEEMABLE_SWEEP_COIN
+            ]
 
       // Fetch wallets for the user with the specified currency codes
       const wallets = await db.Wallet.findAll({
         attributes: ['id', 'balance'],
         where: {
-          userId, currencyCode: {
+          userId,
+          currencyCode: {
             [Op.in]: currencyCodes
           }
         }
@@ -61,13 +61,13 @@ export class GetBalanceAleaCasinoHandler extends BaseHandler {
       // Return the calculated balance
       return {
         realBalance,
-        bonusBalance: 0.0, // Assuming no bonus balance logic here
+        bonusBalance: 0.0 // Assuming no bonus balance logic here
       }
     } catch (error) {
       console.error('Error in Alea Balance call service:', {
         casinoSessionId,
         errorMessage: error.message,
-        stack: error.stack,
+        stack: error.stack
       })
       return ALEA_ERROR_TYPES.INTERNAL_ERROR
     }

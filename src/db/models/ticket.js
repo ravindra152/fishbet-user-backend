@@ -1,6 +1,6 @@
 'use strict'
 
-const { TICKET_STATUSES } = require("@src/utils/constants/public.constants")
+const { TICKET_STATUSES } = require('@src/utils/constants/public.constants')
 
 module.exports = (sequelize, DataTypes) => {
   const Ticket = sequelize.define('Ticket', {
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     subject: {
       type: DataTypes.TEXT,
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM(Object.values(TICKET_STATUSES)),
       allowNull: false,
       defaultValue: TICKET_STATUSES.OPEN
-    },
+    }
     // prioriy: {
     //   type: DataTypes.TEXT,
     //   allowNull: true
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
   Ticket.associate = (models) => {
     Ticket.belongsTo(models.User, { foreignKey: 'userId' })
     Ticket.hasMany(models.TicketMessage, {
-        foreignKey: 'ticketId', as: 'ticketMessage', onDelete: 'cascade',
+      foreignKey: 'ticketId', as: 'ticketMessage', onDelete: 'cascade'
     })
   }
 

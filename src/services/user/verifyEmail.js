@@ -14,7 +14,7 @@ import { sendEmail } from '../helper/email'
 import { EMAIL_SUBJECTS, EMAIL_TEMPLATE_TYPES } from '@src/utils/constant'
 
 export class VerifyEmailHandler extends BaseHandler {
-   async run () {
+  async run () {
     const { emailToken } = this.args
     let emailTokenData
     const transaction = this.context.sequelizeTransaction

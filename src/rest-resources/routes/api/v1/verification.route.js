@@ -7,7 +7,6 @@
 
 // export default router
 
-
 // import express from 'express'
 // import VerificationController from '@src/rest-resources/controllers/verification.controller'
 
@@ -17,7 +16,6 @@
 // router.post('/verification/session', VerificationController.createVerificationRecord)
 
 // export default router
-
 
 import VerificationController from '@src/rest-resources/controllers/verification.controller'
 import express from 'express'
@@ -31,6 +29,5 @@ const verificationRouter = express.Router(args)
 
 verificationRouter.route('/verification/session').post(requestValidationMiddleware(), requestValidationMiddleware(verificationSchema), isUserAuthenticated, contextMiddleware(true), VerificationController.createVerificationRecord)
 verificationRouter.route('/verification/check').post(requestValidationMiddleware(), requestValidationMiddleware(verificationSchema), isUserAuthenticated, contextMiddleware(true), VerificationController.checkVerification)
-
 
 export { verificationRouter }

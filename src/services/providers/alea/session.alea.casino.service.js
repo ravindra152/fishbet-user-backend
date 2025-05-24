@@ -5,7 +5,7 @@ import { verifySignature } from '@src/services/helper/casino'
 import { ALEA_ERROR_TYPES } from '@src/utils/constants/casinoProviders/alea.constants'
 
 export class GetSessionAleaCasinoHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { casinoSessionId, signature } = this.args
 
     try {

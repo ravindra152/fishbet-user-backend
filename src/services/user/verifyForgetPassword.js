@@ -1,21 +1,20 @@
 import config from '@src/configs/app.config'
 import db from '@src/db/models'
-import { AppError } from "@src/errors/app.error"
-import { Errors } from "@src/errors/errorCodes"
+import { AppError } from '@src/errors/app.error'
+import { Errors } from '@src/errors/errorCodes'
 import { BaseHandler } from '@src/libs/logicBase'
-import { encryptPassword } from '@src/utils/common'
-import { comparePassword } from '@src/utils/common'
+import { encryptPassword, comparePassword } from '@src/utils/common'
+
 import { SUCCESS_MSG } from '@src/utils/success'
 import Jwt from 'jsonwebtoken'
 
-
 export class VerifyForgetPasswordHandler extends BaseHandler {
-  get constraints() {
+  get constraints () {
     return constraints
   }
 
-  async run() {
-    let { newPasswordKey, password } = this.args
+  async run () {
+    const { newPasswordKey, password } = this.args
     const transaction = this.context.sequelizeTransaction
 
     let newPasswordKeyData
@@ -56,8 +55,7 @@ export class VerifyForgetPasswordHandler extends BaseHandler {
         { where: { userId: userData.userId }, transaction }
       )
     ])
-    
-    return { success: true, message: SUCCESS_MSG.PASSWORD_RESET }
 
+    return { success: true, message: SUCCESS_MSG.PASSWORD_RESET }
   }
 }

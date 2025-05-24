@@ -21,13 +21,13 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.DOUBLE,
       allowNull: false,
       defaultValue: 0.0,
-      comment: 'Total earned commission by the affiliate',
+      comment: 'Total earned commission by the affiliate'
     },
     wageredAmount: {
       type: DataTypes.DOUBLE,
       allowNull: false,
       defaultValue: 0.0,
-      comment: 'Total amount wagered by the referred user',
+      comment: 'Total amount wagered by the referred user'
     },
     isActive: {
       type: DataTypes.BOOLEAN,
@@ -42,8 +42,8 @@ module.exports = function (sequelize, DataTypes) {
 
   })
   UserAffiliations.associate = function (model) {
-    UserAffiliations.belongsTo(model.User, { foreignKey: 'affiliateUserId', as: 'referrer',  })
-    UserAffiliations.belongsTo(model.User, { foreignKey: 'referredUserId', as: 'referredUser', })
+    UserAffiliations.belongsTo(model.User, { foreignKey: 'affiliateUserId', as: 'referrer' })
+    UserAffiliations.belongsTo(model.User, { foreignKey: 'referredUserId', as: 'referredUser' })
   }
   return UserAffiliations
 }

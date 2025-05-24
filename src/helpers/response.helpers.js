@@ -16,7 +16,7 @@ export const sendResponse = ({ req, res, next }, data) => {
 export const sendSocketResponse = async ({ reqData, resCallback }, { data, defaultError }) => {
   const transaction = reqData.context.sequelizeTransaction
   if (data && !_.isEmpty(data)) {
-    if (transaction) await transaction.commit();
+    if (transaction) await transaction.commit()
     return resCallback({ data: data, errors: [] })
   } else {
     if (transaction) await transaction.rollback()
@@ -25,21 +25,19 @@ export const sendSocketResponse = async ({ reqData, resCallback }, { data, defau
   }
 }
 
-
 export const sendGSoftResponse = ({ req, res, next }, { successful, result, serviceErrors, defaultError }) => {
   if (successful && !_.isEmpty(result)) {
     console.log(result)
-    const status = GSOFT_STATUS[result.code] || { message: 'Unknown error', code: result.code };
+    const status = GSOFT_STATUS[result.code] || { message: 'Unknown error', code: result.code }
 
     res.payload = {
       ...result,
       apiversion: req.query?.apiversion,
       ...status
-    };
+    }
 
-    res.status(200).json(res.payload);
-  }
-  else {
+    res.status(200).json(res.payload)
+  } else {
     if (!_.isEmpty(serviceErrors)) {
       res.status(200).json({ ...GSOFT_STATUS.TECHNICAL_ERROR, apiversion: req.query?.apiversion })
     }

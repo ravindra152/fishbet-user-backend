@@ -12,7 +12,7 @@ import { GetWelcomeBonusHandler } from '@src/services/bonus/welcomeBonus/getWelc
 import { userId } from '@src/utils/common'
 
 export default class BonusController {
-  static async getAllBonus(req, res, next) {
+  static async getAllBonus (req, res, next) {
     try {
       const data = await GetAllBonusHandler.execute({ ...req.body, ...req.query, userId: userId(req) })
       sendResponse({ req, res, next }, data)
@@ -21,7 +21,7 @@ export default class BonusController {
     }
   }
 
-  static async getBonusDetail(req, res, next) {
+  static async getBonusDetail (req, res, next) {
     try {
       const data = await GetBonusDetailHandler.execute({ ...req.body, ...req.query, userId: userId(req) })
       sendResponse({ req, res, next }, data)
@@ -31,7 +31,7 @@ export default class BonusController {
   }
 
   // Bonus Drop
-  static async GetDropBonus(req, res, next) {
+  static async GetDropBonus (req, res, next) {
     try {
       const data = await GetDropBonusesHandler.execute({ ...req.query })
       sendResponse({ req, res, next }, data)
@@ -40,8 +40,7 @@ export default class BonusController {
     }
   }
 
-
-  static async claimDropbonus(req, res, next) {
+  static async claimDropbonus (req, res, next) {
     try {
       const data = await ClaimBonusDropHandler.execute({ ...req.body, ...req.query }, req.context)
       sendResponse({ req, res, next }, data)
@@ -51,7 +50,7 @@ export default class BonusController {
   }
 
   // Welcome Bonus
-  static async getWelcomebonus(req, res, next) {
+  static async getWelcomebonus (req, res, next) {
     try {
       const data = await GetWelcomeBonusHandler.execute({ ...req.body, ...req.query }, req.context)
       sendResponse({ req, res, next }, data)
@@ -60,7 +59,7 @@ export default class BonusController {
     }
   }
 
-  static async claimWelcomebonus(req, res, next) {
+  static async claimWelcomebonus (req, res, next) {
     try {
       const data = await ClaimWelcomeBonusHandler.execute({ ...req.body, ...req.query }, req.context)
       sendResponse({ req, res, next }, data)
@@ -69,7 +68,7 @@ export default class BonusController {
     }
   }
 
-  static async availBonus(req, res, next) {
+  static async availBonus (req, res, next) {
     try {
       const data = await AvailBonusHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -78,8 +77,7 @@ export default class BonusController {
     }
   }
 
-
-  static async getUserBonus(req, res, next) {
+  static async getUserBonus (req, res, next) {
     try {
       const data = await GetUserBonusHandler.execute({ ...req.body, ...req.query })
       sendResponse({ req, res, next }, data)
@@ -88,7 +86,7 @@ export default class BonusController {
     }
   }
 
-  static async cancelBonus(req, res, next) {
+  static async cancelBonus (req, res, next) {
     try {
       const data = await CancelBonusHandler.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)
@@ -96,5 +94,4 @@ export default class BonusController {
       next(error)
     }
   }
-
 }

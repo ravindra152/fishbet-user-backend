@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
     permission: {
       type: DataTypes.JSONB,
       allowNull: false
-    },
+    }
   }, {
     sequelize,
     underscored: true,

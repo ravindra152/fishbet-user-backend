@@ -6,7 +6,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { comparePassword } from '@src/utils/common'
 
 export class GetAuthTokenHandler extends BaseHandler {
-   async run () {
+  async run () {
     const { username, password } = this.args
     try {
       const user = await db.User.findOne({
@@ -16,7 +16,7 @@ export class GetAuthTokenHandler extends BaseHandler {
           model: db.Wallet,
           as: 'userWallet',
           attributes: ['balance', 'currencyCode']
-        },
+        }
       })
       if (!user) throw new AppError(Errors.USER_NOT_EXISTS)
       if (!await comparePassword(password, user.password)) throw new AppError(Errors.WRONG_PASSWORD_ERROR)

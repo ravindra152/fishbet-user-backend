@@ -7,7 +7,7 @@ import { pageValidation } from '@src/utils/common'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetVipTiersHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { limit, pageNo, search, orderBy, sort, isActive } = this.args
 
     // Initialize query filters

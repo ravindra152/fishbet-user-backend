@@ -4,7 +4,7 @@ import { dayjs } from '@src/libs/dayjs'
 import { TRANSACTION_PURPOSE } from '@src/utils/constants/public.constants'
 
 export class GetUserTransactionsHandler extends BaseHandler {
-  async run() {
+  async run () {
     const {
       pageNo = 1,
       limit = 10,

@@ -63,7 +63,7 @@ export const getClientIp = (req) => {
   return null
 }
 
-export function geoBlock() {
+export function geoBlock () {
   return async function (req, res, next) {
     try {
       const ip = await getClientIp(req)

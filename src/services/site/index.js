@@ -4,4 +4,3 @@ export * from './getCurrency'
 export * from './getLanguages'
 export * from './getLoyaltyLevel'
 export * from './getSiteDetail'
-

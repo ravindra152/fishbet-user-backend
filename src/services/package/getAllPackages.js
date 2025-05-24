@@ -6,7 +6,7 @@ import { pageValidation } from '@src/utils/common'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetAllPackagesHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { limit, pageNo } = this.args
 
     const { page, size } = pageValidation(pageNo, limit)

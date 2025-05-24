@@ -2,7 +2,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 import WalletEmitter from '@src/socket-resources/emmitter/wallet.emmitter'
 
 export class UpdateWalletBalanceHandler extends BaseHandler {
-  async run() {
+  async run () {
     const {
       Wallet: WalletModel
     } = this.context.dbModels

@@ -1,5 +1,5 @@
 'use strict'
-const { DOCUMENT_STATUS_TYPES, DOCUMENT_TYPES } = require("@src/utils/constant")
+const { DOCUMENT_STATUS_TYPES, DOCUMENT_TYPES } = require('@src/utils/constant')
 
 module.exports = function (sequelize, DataTypes) {
   const UserDocument = sequelize.define('UserDocument', {

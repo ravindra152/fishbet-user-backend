@@ -21,9 +21,10 @@ import { bonusRouter } from './bonus.routes'
 import { notificationRouter } from './notification.routes'
 import { liveChatRouter } from './liveChat.router'
 import { postalCodeRouter } from './postalCode.routes'
-import {socialLinksRouter} from './socialLinks.router'
-import {inovioPaymentRouter} from './inovioPayment.routes'
-import {verificationRouter} from './verification.route'
+import { socialLinksRouter } from './socialLinks.router'
+import { inovioPaymentRouter } from './inovioPayment.routes'
+// import {verificationRouter} from './verification.route'
+import { assureCardRouter } from './assureCard.routes'
 
 const v1router = express.Router()
 v1router.use('/vip-tier', vipTierRouter, responseValidationMiddleware({}))
@@ -43,8 +44,9 @@ v1router.use('/ticket', ticketRouter, responseValidationMiddleware({}))
 v1router.use('/live-chat', liveChatRouter, responseValidationMiddleware({}))
 v1router.use('/leader-board', leaderBoardRouter, responseValidationMiddleware({}))
 v1router.use('/get-social-links', socialLinksRouter, responseValidationMiddleware({}))
-v1router.use('/', verificationRouter, responseValidationMiddleware({}))
+// v1router.use('/', verificationRouter, responseValidationMiddleware({}))
 v1router.use('/', siteRouter, responseValidationMiddleware({}))
+v1router.use('/assure-card', assureCardRouter, responseValidationMiddleware({}))
 
 // v1router.use('/affiliate', requestValidationMiddleware({}), contextMiddleware(false), affiliateRouter, responseValidationMiddleware({}))
 // Casino Callbacks

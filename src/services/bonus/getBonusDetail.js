@@ -5,7 +5,7 @@ import { BaseHandler } from '@src/libs/logicBase'
 // import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetBonusDetailHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { bonusId, userId } = this.args
     const include = []
 

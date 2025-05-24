@@ -34,23 +34,23 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   },
-    {
-      sequelize,
-      tableName: 'casino_providers',
-      schema: 'public',
-      indexes: [
-        {
-          unique: true,
-          fields: ['unique_id', 'game_aggregator_id']
-        }
-      ],
-      timestamps: true,
-      underscored: true
-    })
+  {
+    sequelize,
+    tableName: 'casino_providers',
+    schema: 'public',
+    indexes: [
+      {
+        unique: true,
+        fields: ['unique_id', 'game_aggregator_id']
+      }
+    ],
+    timestamps: true,
+    underscored: true
+  })
 
   CasinoProvider.associate = function (models) {
     CasinoProvider.belongsTo(models.CasinoAggregator,
-      { foreignKey: 'gameAggregatorId' });
+      { foreignKey: 'gameAggregatorId' })
     CasinoProvider.belongsTo(models.CasinoGame, {
       as: 'casinoGames',
       foreignKey: 'id',

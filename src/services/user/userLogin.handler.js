@@ -9,7 +9,7 @@ import { USER_VIP_TIER_PROGRESS_KEYS } from '@src/utils/constants/constants'
 import { AddUserTierProgressHandler } from '../userTierProgress'
 
 export class UserLoginHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { username, password } = this.args
     const transaction = await this.context.sequelizeTransaction
 
@@ -73,6 +73,7 @@ export class UserLoginHandler extends BaseHandler {
     if (!await comparePassword(password, user.password)) throw new AppError(Errors.WRONG_PASSWORD_ERROR)
 
     const currentVipTier = user.userDetails ? user.userDetails.VipTier : null
+    console.log(currentVipTier,"====>")
     const nextVipTier = user.userDetails ? user.userDetails.nextVipTier : null
     const userTierProgress = user?.userTierProgresses || []
     await user.userDetails.set({ loginIpAddress: getRequestIP(this.context.req) }).save({ transaction })

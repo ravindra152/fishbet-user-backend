@@ -12,13 +12,12 @@ import { withdrawAmountsSchema } from '@src/json-schemas/payment/withdrawAmount.
 
 const paymentRouter = express.Router()
 
-//Nowpayments
+// Nowpayments
 paymentRouter.route('/create-payment').post(requestValidationMiddleware(), requestValidationMiddleware(createPaymentSchema), isUserAuthenticated, contextMiddleware(true), PaymentController.createPayment)
 paymentRouter.route('/get-payment-status').post(contextMiddleware(true), validateNowPaymentIPN, PaymentController.getIPNPaymentStatus)
 paymentRouter.route('/withdraw-amount').post(contextMiddleware(true), requestValidationMiddleware(withdrawAmountsSchema), isUserAuthenticated, PaymentController.createWithdrawalRequest)
 
 paymentRouter.route('/get-currencies').get(isUserAuthenticated, contextMiddleware(true), PaymentController.getCurrencies)
 paymentRouter.route('/get-conversion').get(isUserAuthenticated, contextMiddleware(false), requestValidationMiddleware(currencyConversionSchema), PaymentController.getConversion)
-
 
 export { paymentRouter }

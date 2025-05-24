@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-const { MESSAGE_STATUS, MESSAGE_TYPE } = require("@src/utils/constants/chat.constants");
+const { MESSAGE_STATUS, MESSAGE_TYPE } = require('@src/utils/constants/chat.constants')
 
 module.exports = function (sequelize, DataTypes) {
   const Message = sequelize.define('Message', {
@@ -38,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     isPrivate: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     chatGroupId: {
       type: DataTypes.BIGINT,
@@ -46,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     messageType: {
       type: DataTypes.ENUM(Object.values(MESSAGE_TYPE)),
-      defaultValue: MESSAGE_TYPE.MESSAGE,
+      defaultValue: MESSAGE_TYPE.MESSAGE
     },
     // sharedEvent: {
     //   type: DataTypes.JSONB,
@@ -68,15 +68,15 @@ module.exports = function (sequelize, DataTypes) {
     timestamps: true,
     underscored: true,
     paranoid: false
-  });
+  })
 
   Message.associate = function (models) {
-    Message.belongsTo(models.User, { foreignKey: 'actioneeId', as: 'user' });
-    Message.belongsTo(models.ChatRain, { foreignKey: 'chatRainId' });
-    Message.belongsTo(models.ChatGroup, { foreignKey: 'chatGroupId', as: 'group' });
+    Message.belongsTo(models.User, { foreignKey: 'actioneeId', as: 'user' })
+    Message.belongsTo(models.ChatRain, { foreignKey: 'chatRainId' })
+    Message.belongsTo(models.ChatGroup, { foreignKey: 'chatGroupId', as: 'group' })
     // Message.belongsTo(models.Message, { foreignKey: 'replyMessageId', as: 'replyMessage' });
-    Message.belongsTo(models.Tip, { foreignKey: 'tipId', as: 'tip' });
-  };
+    Message.belongsTo(models.Tip, { foreignKey: 'tipId', as: 'tip' })
+  }
 
-  return Message;
-};
+  return Message
+}

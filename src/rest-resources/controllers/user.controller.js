@@ -20,9 +20,7 @@ import { GetAllWithdrawRequestsHandler } from '@src/services/wallet'
 import { UpdateKycStatusService } from '@src/services/veriff/callbacks/updateKycStatus.service'
 import { CreateVeriffSessionService } from '@src/services/veriff/createVeriffSession.service'
 
-
 export default class UserController {
-
   static async getUserDetails (req, res, next) {
     try {
       const data = await GetUserDetailsHandler.execute(req.body, req.context)
@@ -50,7 +48,6 @@ export default class UserController {
     }
   }
 
-
   // static async checkEmailUsername(req, res, next) {
   //   try {
   //     const data = await CheckUniqueEmailUsername.execute({ ...req.query, ...req.body })
@@ -67,7 +64,6 @@ export default class UserController {
     } catch (error) {
       next(error)
     }
-
   }
 
   static async userLogout (req, res, next) {
@@ -79,9 +75,6 @@ export default class UserController {
     }
   }
 
-
-
-
   static async userSignUp (req, res, next) {
     try {
       const data = await UserSignUpHandler.execute(req.body, req.context)
@@ -90,7 +83,6 @@ export default class UserController {
       next(error)
     }
   }
-
 
   static async getWithdrawRequests (req, res, next) {
     try {
@@ -101,7 +93,6 @@ export default class UserController {
     }
   }
 
-
   static async getUserTransactions (req, res, next) {
     try {
       const data = await GetUserTransactionsHandler.execute({ ...req.body, ...req.query })
@@ -110,7 +101,6 @@ export default class UserController {
       next(error)
     }
   }
-
 
   static async verifyEmail (req, res, next) {
     try {
@@ -177,15 +167,16 @@ export default class UserController {
   }
 
   static async getOtp (req, res, next) {
-    console.log("req>>>>>>>>>>>>", req.body)
+    console.log('req>>>>>>>>>>>>', req.body)
     try {
       const data = await GetOtpHandler.execute({ ...req.body, ...req.query })
-      console.log("data>>>>>>>>>>>>>", data)
+      console.log('data>>>>>>>>>>>>>', data)
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)
     }
   }
+
   static async verifyOtp (req, res, next) {
     try {
       const data = await VerifyOtpHandler.execute({ ...req.body, ...req.query })
@@ -194,7 +185,6 @@ export default class UserController {
       next(error)
     }
   }
-
 
   static async createVeriffSession (req, res, next) {
     try {
@@ -213,6 +203,4 @@ export default class UserController {
       next(error)
     }
   }
-
-
 }

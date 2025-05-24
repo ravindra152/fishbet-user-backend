@@ -8,6 +8,7 @@ export class AppError extends Error {
     this.httpStatusCode = httpStatusCode || 500
     this.innerError = innerError
   }
+
   // Method to return the error response
   toResponse () {
     return {

@@ -52,12 +52,12 @@ module.exports = function (sequelize, DataTypes) {
     },
     newPasswordKey: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     newPasswordRequested: {
       type: DataTypes.DATE,
-      allowNull: true,
-    },
+      allowNull: true
+    }
   }, {
     sequelize,
     tableName: 'user_details',

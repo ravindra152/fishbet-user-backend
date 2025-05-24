@@ -7,7 +7,7 @@ import { SUCCESS_MSG } from '@src/utils/success'
 import { Op } from 'sequelize'
 
 export class GetAllGamesHandler extends BaseHandler {
-  async run() {
+  async run () {
     let { limit, pageNo, rating, category, provider, search, userId, deviceType, ipAddress, isFeatured } = this.args
 
     let query = { isActive: true }
@@ -51,14 +51,14 @@ export class GetAllGamesHandler extends BaseHandler {
       }
     ]
 
-    let casinoGameAttribute = ['id', 'orderId', 'casinoGameId', 'createdAt', 'name', 'casinoProviderId', 'devices', 'thumbnailUrl', 'mobileThumbnailUrl', 'returnToPlayer', 'demo', 'isFeatured', 'moreDetails']
+    const casinoGameAttribute = ['id', 'orderId', 'casinoGameId', 'createdAt', 'name', 'casinoProviderId', 'devices', 'thumbnailUrl', 'mobileThumbnailUrl', 'returnToPlayer', 'demo', 'isFeatured', 'moreDetails']
     if (userId) {
       include = [...include, {
         model: db.CasinoFavoriteGame,
         as: 'CasinoFavoriteGames',
         where: { userId },
         attributes: [[db.sequelize.literal('"CasinoFavoriteGames"."id" IS NOT NULL'), 'isFavorite']],
-        required: false,
+        required: false
       }]
     }
 
@@ -78,12 +78,10 @@ export class GetAllGamesHandler extends BaseHandler {
       return game
     })
 
-
     categoryGames.rows = casinoGames
     if (!categoryGames) {
       throw new AppError(Errors.GAME_NOT_FOUND)
     }
     return { categoryGames, message: SUCCESS_MSG.GET_SUCCESS }
-
   }
 }

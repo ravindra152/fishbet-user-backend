@@ -12,26 +12,22 @@ const schema = {
   required: ['user']
 }
 
-
-
 export class RemoveProfileImageHandler extends BaseHandler {
   get constraints () {
     return constraints
   }
 
-   async run () {
+  async run () {
     const { user } = this.args
 
-  
-      const profileImageName = user.profileImage.split(/[.-]+/)
-      const profileImageType = profileImageName.pop()
+    const profileImageName = user.profileImage.split(/[.-]+/)
+    const profileImageType = profileImageName.pop()
 
-      const key = `${config.get('env')}/user_profile_image/${user.userId}-${profileImageName.pop()}.${profileImageType}`
+    const key = `${config.get('env')}/user_profile_image/${user.userId}-${profileImageName.pop()}.${profileImageType}`
 
-      await removeLogo(key)
-      await user.set({ profileImage: null }).save()
+    await removeLogo(key)
+    await user.set({ profileImage: null }).save()
 
-      return { success: true, message: SUCCESS_MSG.REMOVE_SUCCESS }
-   
+    return { success: true, message: SUCCESS_MSG.REMOVE_SUCCESS }
   }
 }

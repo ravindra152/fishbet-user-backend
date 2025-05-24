@@ -5,9 +5,9 @@ import { BaseHandler } from '@src/libs/logicBase'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetSocialLinksHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { platform } = this.args
-    console.log("platform------------" , platform)
+    console.log('platform------------', platform)
 
     let query = {}
     if (platform) query = { platform }

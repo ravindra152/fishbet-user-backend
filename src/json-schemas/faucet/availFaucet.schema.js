@@ -2,7 +2,7 @@ export const awailFaucetSchema = {
   body: {
     type: 'object',
     properties: {
-      currencyCode: { type: 'string' },
+      currencyCode: { type: 'string' }
     },
     required: ['currencyCode']
   }

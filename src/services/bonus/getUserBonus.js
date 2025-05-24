@@ -6,11 +6,10 @@ import { pageValidation } from '@src/utils/common'
 import { SUCCESS_MSG } from '@src/utils/success'
 
 export class GetUserBonusHandler extends BaseHandler {
-  async run() {
+  async run () {
     const { limit, pageNo, userId } = this.args
     const query = { userId }
     let bonusQuery
-
 
     const { page, size } = pageValidation(pageNo, limit)
     if (this.args.status) query.bonusStatus = this.args.status
@@ -33,6 +32,5 @@ export class GetUserBonusHandler extends BaseHandler {
     if (!userBonus) throw new AppError(Errors.BONUS_NOT_FOUND)
 
     return { userBonus, messages: SUCCESS_MSG.GET_SUCCESS }
-
   }
 }

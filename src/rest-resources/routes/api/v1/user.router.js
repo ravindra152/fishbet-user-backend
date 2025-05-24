@@ -32,8 +32,8 @@ const args = { mergeParams: true }
 const userRouter = express.Router(args)
 
 // Public Routes
-userRouter.route('/sign-up').post( requestValidationMiddleware(userSignUpSchema), contextMiddleware(true), UserController.userSignUp)
-userRouter.route('/login').post( requestValidationMiddleware(userLoginSchema), contextMiddleware(false), UserController.userLogin)
+userRouter.route('/sign-up').post(requestValidationMiddleware(userSignUpSchema), contextMiddleware(true), UserController.userSignUp)
+userRouter.route('/login').post(requestValidationMiddleware(userLoginSchema), contextMiddleware(false), UserController.userLogin)
 
 userRouter.route('/verify-email').get(requestValidationMiddleware(verifyEmailSchema), contextMiddleware(true), UserController.verifyEmail)
 
@@ -54,11 +54,9 @@ userRouter.route('/withdraw-request')
 userRouter.route('/get-otp').get(contextMiddleware(false), requestValidationMiddleware(getOtpSchema), isUserAuthenticated, UserController.getOtp)
 userRouter.route('/verify-otp').put(contextMiddleware(true), requestValidationMiddleware(verifyOtpSchema), isUserAuthenticated, UserController.verifyOtp)
 
-
 // Veriff kyc verification
 userRouter.route('/init-veriff-kyc').get(contextMiddleware(true), isUserAuthenticated, requestValidationMiddleware({}), UserController.createVeriffSession)
 userRouter.route('/veriff-callback').post(contextMiddleware(true), requestValidationMiddleware({}), UserController.veriffCallback)
-
 
 // userRouter.route('/upate-user').post(contextMiddleware(false), isUserAuthenticated, UserController.userSignUp)
 userRouter.route('/verify-forget-password').post(contextMiddleware(true), requestValidationMiddleware(verifyForgotPasswordSchema), UserController.verifyForgetPassword)
@@ -120,6 +118,5 @@ userRouter.route('/get-all-bonus').get(requestValidationMiddleware(getAllBonusSc
 // userRouter.route('/avail-bonus').post(contextMiddleware(true), requestValidationMiddleware(availBonusSchema), isUserAuthenticated, BonusController.availBonus)
 // userRouter.route('/cancel-bonus').put(contextMiddleware(true), requestValidationMiddleware(cancelBonusSchema), isUserAuthenticated, BonusController.cancelBonus)
 // userRouter.route('/bonus-detail').get(requestValidationMiddleware(getBonusDetailSchema), isUserAuthenticated, BonusController.getBonusDetail)
-
 
 export { userRouter }

@@ -1,7 +1,6 @@
 import { Op } from 'sequelize'
 import db from '@src/db/models'
 
-
 export const MODEL_TYPE = {
   CASINO: 'casino-transaction',
   BANKING: 'transaction-banking'
