@@ -1,14 +1,30 @@
 import axios from 'axios'
 import { BaseHandler } from '@src/libs/logicBase'
-import { GLOBAL_SETTING } from '@src/utils/constants/constants'
+// import { GLOBAL_SETTING } from '@src/utils/constants/constants'
 import db from '@src/db/models'
+import { getRequestIP } from '@src/utils/common'
 export default class SendAssureCardHandler extends BaseHandler {
   async run () {
     const payload = this.args
+    // console.log("payload----------->", payload)
     const transaction = this.dbTransaction
     try {
-      console.log(">>>>>>>>>>>>>>>>>>>>>>", payload)
-      const userId = payload.userId;
+      const userId = payload.userId
+      // console.log("userId----------->" , userId)
+
+      const user = await db.User.findOne({
+        where: { user_id: userId },
+        transaction
+      })
+
+      // console.log("user----------->", user)
+
+      if (!user) {
+        return { error: 'User not found' }
+      }
+
+      const phoneNumber = user.phone || '+91000000000'
+
       const userDetails = await db.UserDetails.findOne({
         where: { userId },
         transaction
@@ -28,33 +44,36 @@ export default class SendAssureCardHandler extends BaseHandler {
           { transaction }
         )
       }
+
       const response = await axios.post(
         'https://blueassure.evssolutions.com/WebServices/Integrated/Main/V300/AssureCard',
         {
-          "meta": {
-            "credentials": {
-              "username": "E28030-AD4BB857-370E-472B-A29A-B692411A1301",
-              "password": "Tri5M%1MPL8Qdym"
-            },
-            "customerReference": userId
+          customerReference: userId, // ✅ Moved to root level
+          meta: {
+            credentials: {
+              username: 'E28030-AD4BB857-370E-472B-A29A-B692411A1301',
+              password: 'Tri5M%1MPL8Qdym'
+            }
           },
-          "data": {
-            "scanMode": "DeferredRequestLink",
-            "requireConsumerPortrait": true,
-            "documentType": "DriversLicense",
-            // "ssn": null,
-            "phoneNumber": "+919974952370"
-            // "emailAddress": null,
-            // "ipAddress": null,
-            // "similarityThreshold": null
+          data: {
+            scanMode: 'DeferredRequestLink',
+            requireConsumerPortrait: true,
+            documentType: 'DriversLicense',
+            phoneNumber: `+91${phoneNumber}`,
+            ipAddress: '122.161.4.17'
           }
         },
         {
           headers: { 'Content-Type': 'application/json' }
         }
       )
+
+      console.log(response, '-------------------------')
+
       return response.data
     } catch (error) {
+      console.log(error)
+
       // Optional: Add more sophisticated error handling/logging here
       return { error: 'Failed to send AssureCard request.', details: error?.response?.data || error.message }
     }

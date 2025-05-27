@@ -12,15 +12,11 @@ export class CreatePaymentService extends BaseHandler {
   async run () {
     try {
       const { packageId, currency, userId } = this.args
-      console.log("------------------------------>>>>CreatePaymentService", packageId)
-      console.log("------------------------------>>>>CreatePaymentService", currency)
-      console.log("------------------------------>>>>CreatePaymentService", userId)
 
       const packageDetails = await db.Package.findOne({
         where: { id: packageId, isActive: true },
         attributes: ['id', 'amount']
       })
-      console.log("------------------------------>>>>packageDetails", packageDetails)
       if (!packageDetails) throw new AppError(Errors.PACKAGE_NOT_FOUND)
 
       const orderId = 'ORION-' + userId + '-' + packageDetails.dataValues.id + '-' + dayjs().valueOf() + '-' + Math.random().toString().substring(2, 8)
@@ -35,8 +31,6 @@ export class CreatePaymentService extends BaseHandler {
         is_fee_paid_by_user: true
         // payin_extra_id: userId
       }
-      console.log("------------------------------>>>>options", options)
-
       const response = await axios({
         method: 'POST',
         url: config.get('nowPayment.url') + '/v1/payment',
@@ -46,15 +40,8 @@ export class CreatePaymentService extends BaseHandler {
         },
         data: options
       })
-
-      console.log("------------------------------>>>>end")
-
       console.log('config nowPayment URL:>>>>>>>>>>>', config.get('nowPayment.url'))
       console.log('config apiKey:>>>>>>>>>>>', config.get('nowPayment.apiKey'))
-
-
-      console.log("------------------------------>>>>response", response)
-
       if (!response) throw new AppError(Errors.PAYMENT_PROVIDER_INACTIVE)
       const data = response.data
       // await db.UserDepositAddress.create({
@@ -63,7 +50,6 @@ export class CreatePaymentService extends BaseHandler {
       //   currencyCode: currency
       // })
       const estimatedAmount = await GetCurrencyConversionService.execute({ amount: packageDetails.dataValues.amount, convertFrom: 'usd', convertTo: currency })
-      console.log("------------------------------>>>>estimatedAmount", estimatedAmount)
 
       return { estimatedAmount, address: data.pay_address }
     } catch (error) {

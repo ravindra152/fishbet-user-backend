@@ -45,8 +45,8 @@ v1router.use('/live-chat', liveChatRouter, responseValidationMiddleware({}))
 v1router.use('/leader-board', leaderBoardRouter, responseValidationMiddleware({}))
 v1router.use('/get-social-links', socialLinksRouter, responseValidationMiddleware({}))
 // v1router.use('/', verificationRouter, responseValidationMiddleware({}))
+v1router.use('/', assureCardRouter)
 v1router.use('/', siteRouter, responseValidationMiddleware({}))
-v1router.use('/assure-card', assureCardRouter, responseValidationMiddleware({}))
 
 // v1router.use('/affiliate', requestValidationMiddleware({}), contextMiddleware(false), affiliateRouter, responseValidationMiddleware({}))
 // Casino Callbacks
