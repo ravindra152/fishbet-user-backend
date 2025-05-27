@@ -56,7 +56,7 @@ export default class SendAssureCardHandler extends BaseHandler {
             }
           },
           data: {
-            scanMode: 'DeferredRequestLink',
+            scanMode: 'CaptureViaMobile',
             requireConsumerPortrait: true,
             documentType: 'DriversLicense',
             phoneNumber: `${phoneNumber}`,
