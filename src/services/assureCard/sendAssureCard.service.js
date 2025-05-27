@@ -59,8 +59,8 @@ export default class SendAssureCardHandler extends BaseHandler {
             scanMode: 'DeferredRequestLink',
             requireConsumerPortrait: true,
             documentType: 'DriversLicense',
-            phoneNumber: `+91${phoneNumber}`,
-            ipAddress: '122.161.4.17'
+            phoneNumber: `${phoneNumber}`,
+            ipAddress: getRequestIP(this.context.req)
           }
         },
         {
