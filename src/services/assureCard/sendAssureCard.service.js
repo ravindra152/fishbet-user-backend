@@ -30,7 +30,7 @@ export default class SendAssureCardHandler extends BaseHandler {
           userId,
           vipTierId: 1,
           nextVipTierId: 2,
-          ipAddress: getRequestIP(this.context.req)
+          // ipAddress: getRequestIP(this.context.req)
         }
         await db.UserDetails.create(dataUserDetails, { transaction })
       } else {
