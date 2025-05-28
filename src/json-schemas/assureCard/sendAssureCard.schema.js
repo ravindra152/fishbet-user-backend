@@ -24,7 +24,7 @@ export const sendAssureCardSchema = {
         properties: {
           scanMode: {
             type: 'string',
-            enum: ['CaptureViaMobile'] // Add more options if needed
+            enum: ['DeferredRequestLink'] // Add more options if needed
           },
           requireConsumerPortrait: { type: 'boolean' },
           documentType: {

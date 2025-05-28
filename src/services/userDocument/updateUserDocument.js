@@ -23,7 +23,6 @@ export class UpdateDocumentHandler extends BaseHandler {
     const documentExists = await db.UserDocument.findOne({
       where: { userId: user.userId, status: { [Op.in]: [STATUS.PENDING, STATUS.APPROVED] }, level: level }
     })
-    console.log(documentExists)
     if (documentExists) throw new AppError(Errors.DOCUMENTS_ALREADY_UPLOADED)
 
     if (level === '3' || level === '4') {

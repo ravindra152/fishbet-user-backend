@@ -167,10 +167,8 @@ export default class UserController {
   }
 
   static async getOtp (req, res, next) {
-    console.log('req>>>>>>>>>>>>', req.body)
     try {
       const data = await GetOtpHandler.execute({ ...req.body, ...req.query })
-      console.log('data>>>>>>>>>>>>>', data)
       sendResponse({ req, res, next }, data)
     } catch (error) {
       next(error)

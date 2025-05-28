@@ -6,19 +6,14 @@ import { getRequestIP } from '@src/utils/common'
 export default class SendAssureCardHandler extends BaseHandler {
   async run () {
     const payload = this.args
-    // console.log("payload----------->", payload)
     const transaction = this.dbTransaction
     try {
       const userId = payload.userId
-      // console.log("userId----------->" , userId)
 
       const user = await db.User.findOne({
         where: { user_id: userId },
         transaction
       })
-
-      // console.log("user----------->", user)
-
       if (!user) {
         return { error: 'User not found' }
       }
@@ -56,7 +51,7 @@ export default class SendAssureCardHandler extends BaseHandler {
             }
           },
           data: {
-            scanMode: 'CaptureViaMobile',
+            scanMode: 'DeferredRequestLink',
             requireConsumerPortrait: true,
             documentType: 'DriversLicense',
             phoneNumber: `${phoneNumber}`,
@@ -68,12 +63,11 @@ export default class SendAssureCardHandler extends BaseHandler {
         }
       )
 
-      console.log(response, '-------------------------')
+      console.log(response, 'response-------------------------')
 
       return response.data
     } catch (error) {
       console.log(error)
-
       // Optional: Add more sophisticated error handling/logging here
       return { error: 'Failed to send AssureCard request.', details: error?.response?.data || error.message }
     }

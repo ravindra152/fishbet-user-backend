@@ -15,7 +15,6 @@ export default class PaymentController {
    * @memberof PaymentController
    */
   static async createPayment (req, res, next) {
-    console.log("------------------------------>>>>createPayment" , req.body)
     try {
       const data = await CreatePaymentService.execute(req.body, req.context)
       sendResponse({ req, res, next }, data)

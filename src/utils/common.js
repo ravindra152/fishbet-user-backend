@@ -164,6 +164,21 @@ export const getRequestIP = (req) => {
   return ipAddress
 }
 
+
+// export const getRequestIP = (req) => {
+//   if (!req || !req.headers) return '0.0.0.0';
+
+//   let ipAddress =
+//     (req.headers['x-forwarded-for'] || '').split(',')[0] ||
+//     req.connection?.remoteAddress?.split(':ffff:')[1] ||
+//     req.ip;
+
+//   if (ipAddress === '::1') ipAddress = '1.1.1.1';
+
+//   return ipAddress;
+// };
+
+
 export const userId = (req) => {
   let token, response
 
@@ -179,6 +194,27 @@ export const userId = (req) => {
   }
   return null
 }
+
+// export const userId = (req) => {
+//   if (!req || !req.headers || !req.headers.authorization) return null;
+
+//   const authHeader = req.headers.authorization;
+//   if (!authHeader.startsWith('Bearer ')) return null;
+
+//   try {
+//     const token = authHeader.split(' ')[1];
+//     const encodedPayload = token.split('.')[1];
+//     const payload = Buffer.from(encodedPayload, 'base64');
+//     const response = JSON.parse(payload.toString());
+
+//     if (response.role) return null;
+//     return response.id;
+//   } catch (err) {
+//     console.error('Failed to decode token:', err);
+//     return null;
+//   }
+// };
+
 
 export const filterByName = (query, name) => {
   name = name.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_')

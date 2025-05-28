@@ -7,7 +7,6 @@ export default class ChatHandler {
     try {
       reqData = typeof reqData === 'string' ? JSON.parse(reqData) : reqData
       const data = await SendMessageHandler.execute({ ...reqData.payload, ...reqData.context.socket.operator }, reqData.context)
-      console.log(data)
       sendSocketResponse({ reqData, resCallback }, { data, defaultError: Errors.INTERNAL_SERVER_ERROR })
     } catch (error) {
       console.log(error)

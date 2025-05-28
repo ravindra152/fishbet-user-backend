@@ -16,7 +16,6 @@ export class UpdateKycStatusService extends BaseHandler {
     let newDocumentsList, query
     const veriffId = payload?.verification?.id || payload?.id || payload?.sessionId
     const userId = payload?.userId;
-    console.log(payload);
     try {
       const userOtherDetails = await db.UserDetails.findOne({
         where: { userId: userId },
@@ -28,8 +27,6 @@ export class UpdateKycStatusService extends BaseHandler {
         attributes: ['userId', 'veriffStatus', 'email', 'username', 'firstName', 'lastName', 'other'],
         transaction
       })
-
-      console.log("-------------------------->>>>",userDetails)
       /* if (payload?.action === 'submitted') { // condition of event webhook
           const data = await VeriffAxios.getVeriffDocuments(veriffId)
           newDocumentsList = data?.result?.images
@@ -53,14 +50,12 @@ export class UpdateKycStatusService extends BaseHandler {
         }
         query = { veriffApplicantId: veriffId, veriffStatus: DOCUMENT_STATUS_TYPES.REQUESTED }
       } */
-     console.log("==========================>")
       if (veriffId && payload.status) { // condition of decision webhook
 
         let veriffStatus
         if (userOtherDetails?.veriffApplicantId) {
           veriffStatus = payload?.verification?.decision || payload?.verification?.status
         }
-        console.log("?????===?????",payload.status,veriffStatus)
         query = { veriffStatus: veriffStatus }
         if (veriffStatus === VERIFF_STATUS.APPROVED) {
           await db.UserDocument.update({
@@ -140,7 +135,6 @@ export class UpdateKycStatusService extends BaseHandler {
       }
       return { success: true }
     } catch (error) {
-      console.log('=============', error)
       throw new AppError(error)
     }
   }

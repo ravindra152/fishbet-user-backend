@@ -35,7 +35,6 @@ export default class AssureCardController {
         }
       };
       const result = await UpdateKycStatusService.execute({ ...body, ...req.query }, req.context)
-      console.log('=== HIT /verification-webhook route ===')
 
       return sendAssureCardSuccessResponse({ req, res, next }, result)
     } catch (error) {
